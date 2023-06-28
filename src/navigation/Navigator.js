@@ -2,16 +2,16 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
-import Livros from '../screens/Livros';
-import Livro from '../screens/Livro';
 import Saloes from '../screens/Saloes';
 import Salao from '../screens/Salao';
-import Home from '../screens/Home';
 import Preload from '../screens/Preload';
 import SignUp from '../screens/SignUp';
 import ForgotPassword from '../screens/ForgotPassword';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import Menu from '../screens/Menu';
+import PerfilUsuario from '../screens/PerfilUsuario';
 
 import {COLORS} from '../assets/colors';
 import {StyleSheet, StatusBar} from 'react-native';
@@ -38,35 +38,26 @@ const AuthStack = () => (
 
 const AppStack = () => (
   <Tab.Navigator
-    initialRouteName="Home"
+    initialRouteName="Saloes"
     screenOptions={{
       headerShown: true,
     }}>
     <Tab.Screen
-      component={Home}
-      name="Home"
+      component={Saloes}
+      name="Saloes"
       options={{
         tabBarLabel: 'Home',
         // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
       }}
     />
-    <Tab.Screen
-      component={Livros}
-      name="Livros"
-      options={{
-        tabBarLabel: 'Livros',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: () => <Icon name="library" color={COLORS.primaryDark} />,
-      }}
-    />
         <Tab.Screen
-      component={Saloes}
-      name="Saloes"
+      component={Menu}
+      name="Menu"
       options={{
-        tabBarLabel: 'Salões',
+        tabBarLabel: 'Menu',
         // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: () => <Icon name="library" color={COLORS.primaryDark} />,
+        tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
       }}
     />
   </Tab.Navigator>
@@ -82,8 +73,14 @@ const Navigator = () => (
       }}>
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
-      <Stack.Screen component={Livro} name="Livro" />
       <Stack.Screen component={Saloes} name="Saloes" />
+      <Stack.Screen
+        component={PerfilUsuario}
+        name="PerfilUsuario"
+        options={{
+          presentation: 'modal',
+        }}
+      />
       {/* <Stack.Screen component={Salao} name="Salao" /> */}
     </Stack.Navigator>
   </NavigationContainer>

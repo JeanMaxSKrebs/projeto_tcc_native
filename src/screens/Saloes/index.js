@@ -16,10 +16,11 @@ const Saloes = ({navigation}) => {
 
   useEffect(() => {
     navigation.setOptions({
+      // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
       headerTitleAlign: 'center',
       // name: 'GERENCIA LIVROS',
-      title: 'BIBLIOTECA // LIVROS', // deixei a name pq senao muda o nome da tab
+      title: 'SALÕES', // deixei a name pq senao muda o nome da tab
       headerStyle: {backgroundColor: COLORS.primaryDark},
       headerTintColor: {color: COLORS.black},
       // eslint-disable-next-line react/no-unstable-nested-components
@@ -57,7 +58,7 @@ const Saloes = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar search={filterSalao} />
+      <SearchBar search={filterSalao} name={' Salão'} />
 
       <Image
         source={require('../../assets/images/logo.png')}

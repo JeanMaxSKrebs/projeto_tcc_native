@@ -4,10 +4,15 @@ import styled from 'styled-components/native';
 
 // import { Container } from './styles';
 
-const SearchBar = ({search}) => {
+const SearchBar = ({search, name}) => {
+  // console.log(search);
+  // console.log(name);
+
   return (
     <TextInput
-      placeholder="Pesquise livros"
+      color= 'black'
+      placeholderTextColor="gray"
+      placeholder={`Pesquise ${name}`}
       keyboardType="default"
       returnKeyType="go"
       onChangeText={t => {
