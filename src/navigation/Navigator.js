@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
 import Livros from '../screens/Livros';
 import Livro from '../screens/Livro';
+import Saloes from '../screens/Saloes';
+import Salao from '../screens/Salao';
 import Home from '../screens/Home';
 import Preload from '../screens/Preload';
 import SignUp from '../screens/SignUp';
@@ -58,6 +60,15 @@ const AppStack = () => (
         tabBarIcon: () => <Icon name="library" color={COLORS.primaryDark} />,
       }}
     />
+        <Tab.Screen
+      component={Saloes}
+      name="Saloes"
+      options={{
+        tabBarLabel: 'Salões',
+        // eslint-disable-next-line react/no-unstable-nested-components
+        tabBarIcon: () => <Icon name="library" color={COLORS.primaryDark} />,
+      }}
+    />
   </Tab.Navigator>
 );
 
@@ -72,6 +83,8 @@ const Navigator = () => (
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Livro} name="Livro" />
+      <Stack.Screen component={Saloes} name="Saloes" />
+      {/* <Stack.Screen component={Salao} name="Salao" /> */}
     </Stack.Navigator>
   </NavigationContainer>
 );
