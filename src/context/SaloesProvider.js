@@ -52,6 +52,7 @@ const fetchData = async () => {
         cidade: salao.cidade,
         capacidade: salao.capacidade,
         logo: salao.logo,
+        imagens: salao.imagens,
       }));
   
       setSaloes(saloes);
@@ -97,6 +98,7 @@ const fetchData = async () => {
           cidade: hall.cidade,
           capacidade: hall.capacidade,
           logo: hall.logo,
+          imagens: hall.imagens,
         },
         {merge: true},
       );

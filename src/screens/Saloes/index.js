@@ -6,6 +6,7 @@ import {SaloesContext} from '../../context/SaloesProvider';
 import {Image} from '../Preload/styles';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
+import { Container, FlatList } from './styles';
 
 import {CommonActions} from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
@@ -56,38 +57,26 @@ const Saloes = ({navigation}) => {
     }
   };
 
+  const renderItem = ({ item }) => (
+    <Item item={item} onPress={() => routeSalao(item)} />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar search={filterSalao} name={' Salão'} />
-
-      <Image
-        source={require('../../assets/images/logo.png')}
-        accessibilityLabel="logo do app"
-      />
-      <ScrollView>
+      <SearchBar search={filterSalao} name={' Salões '} />
         <Text style={styles.texto}> Coleções dos Saloes </Text>
-        <View style={styles.container}>
-          {saloesTemp.length > 0
-            ? saloesTemp.map((valor, key) => {
-                return (
-                  <Item
-                    item={valor}
-                    onPress={() => routeSalao(valor)}
-                    key={key}
-                  />
-                );
-              })
-            : saloes.map((valor, key) => {
-                return (
-                  <Item
-                    item={valor}
-                    onPress={() => routeSalao(valor)}
-                    key={key}
-                  />
-                );
-              })}
-        </View>
-      </ScrollView>
+        <Container>
+
+          {/* {console.log('saloes')}
+          {console.log(saloes)} */}
+          {/* {console.log('saloesTemp')}
+          {console.log(saloesTemp.length)} */}
+          <FlatList
+            data={saloesTemp.length > 0 ? saloesTemp : saloes}
+            renderItem={renderItem}
+            keyExtractor={item => item.uid}
+            />
+        </Container>
       {/* {loading && <Loading />} */}
       <AddFloatButton onClick={() => routeSalao(null)} />
     </SafeAreaView>
