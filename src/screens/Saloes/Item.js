@@ -37,8 +37,7 @@ const Botao = styled.TouchableHighlight`
   height: auto;
   /* margin: 0 0 0 0px; */
   padding: 0 40px 0 40px;
-  background-color: ${({active}) =>
-    active ? COLORS.primary : COLORS.terciary};
+  background-color: ${({active}) => active ? COLORS.primary : COLORS.terciary};
   border-radius: 30px;
 `;
 
@@ -128,7 +127,7 @@ const Item = ({item, onPress}) => {
 
         {activeButton === 'menu' ? (
           <>
-            <Container style={{height: 300}}>
+          <Container style={{height: 350}}>
               <TextDescricao>{item.descricao}</TextDescricao>
               <TextCidade>Cidade: {item.cidade}</TextCidade>
               <TextCapacidade>Capacidade: {item.capacidade}</TextCapacidade>
@@ -141,7 +140,7 @@ const Item = ({item, onPress}) => {
             </Container>
           </>
         ) : (
-          <Container style={{height: 300}}>
+          <Container style={{height: 350}}>
             <Swiper
               index={0}
               style={styles.wrapper}
@@ -156,7 +155,7 @@ const Item = ({item, onPress}) => {
                     <Image
                       source={{uri: image}}
                       key={image}
-                      style={{width: 280, height: 250, borderRadius: 15}}
+                      style={{width: 320, height: 300, borderRadius: 15}}
                     />
                   </View>
                 </>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
@@ -9,12 +9,17 @@ import SignUp from '../screens/SignUp';
 import ForgotPassword from '../screens/ForgotPassword';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Home from '../screens/Home';
 
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
 
 import {COLORS} from '../assets/colors';
 import {StyleSheet, StatusBar} from 'react-native';
+
+import {AuthUserContext} from '../context/AuthUserProvider';
+import { Text } from '../screens/PerfilUsuario/styles';
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,32 +41,58 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 
-const AppStack = () => (
-  <Tab.Navigator
+const AppStack = () => {
+  const {user, getUser, signOut} = useContext(AuthUserContext)
+  
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  // console.log('getUser');
+  console.log(user)
+
+  return(
+    <Tab.Navigator
     initialRouteName="Saloes"
     screenOptions={{
       headerShown: true,
     }}>
-    <Tab.Screen
-      component={Saloes}
-      name="Saloes"
-      options={{
-        tabBarLabel: 'Home',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-      }}
-    />
-        <Tab.Screen
-      component={Menu}
-      name="Menu"
-      options={{
-        tabBarLabel: 'Menu',
-        // eslint-disable-next-line react/no-unstable-nested-components
-        tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
-      }}
-    />
-  </Tab.Navigator>
-);
+      <>
+      {user && user.tipo == "Cliente" ? (
+          <Tab.Screen
+            component={Saloes}
+            name="Saloes"
+            options={{
+              tabBarLabel: 'Home',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+            }}
+            />
+        ) : (
+            <Tab.Screen
+            component={Home}
+            name="Saloes"
+            options={{
+              tabBarLabel: 'Home',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+            }}
+            />
+        )
+      }
+      <Tab.Screen
+              component={Menu}
+              name="Menu"
+              options={{
+                tabBarLabel: 'Menu',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
+              }}
+            />
+      </>
+    </Tab.Navigator>
+  );
+};
 
 const Navigator = () => (
   <NavigationContainer>
