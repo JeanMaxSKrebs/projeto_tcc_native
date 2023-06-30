@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert} from 'react-native';
+import {Alert, TouchableOpacity, Text, View } from 'react-native';
 import MeuButton from '../../components/MeuButton';
 import {Body, TextInput} from './styles';
 import auth from '@react-native-firebase/auth';
@@ -12,12 +12,27 @@ const SignUp = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmaSenha, setConfirmaSenha] = useState('');
+  const [tipo, setTipo] = useState('');
+
+  const [isChecked, setIsChecked] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const handleCheck = () => {
+    setIsChecked(!isChecked);
+  };
 
   const cadastrar = async () => {
     if (nome !== '' && email !== '' && senha !== '' && confirmaSenha !== '') {
       if (senha === confirmaSenha) {
+        console.log(isChecked);
+        if(isChecked)
+          setTipo('Cliente');
+        else
+          setTipo('Salão');
+          
         try {
+          console.log('tipo');
+          console.log(tipo);
           setLoading(true);
           await auth().createUserWithEmailAndPassword(email, senha);
           let userFirebase = auth().currentUser;
@@ -25,6 +40,7 @@ const SignUp = ({navigation}) => {
           let user = {};
           user.nome = nome;
           user.email = email;
+          user.tipo = tipo;
           // console.log(user);
           // console.log('SignUp Cadastrar: User Added!1');
           await userFirebase.sendEmailVerification();
@@ -43,6 +59,7 @@ const SignUp = ({navigation}) => {
             }),
           );
         } catch (e) {
+          setLoading(false);
           console.log('SignUp: cadastrar:' + e);
           switch (e.code) {
             case 'auth/email-already-in-use':
@@ -94,6 +111,12 @@ const SignUp = ({navigation}) => {
         secureTextEntry={true}
         onChangeText={t => setConfirmaSenha(t)}
       />
+      <TouchableOpacity onPress={handleCheck} >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text>Cadastrar como Cliente: </Text>
+          <Text>{isChecked ? '✓' : '○'}</Text>
+        </View>
+      </TouchableOpacity>
       <MeuButton texto={'Cadastrar'} onClick={cadastrar} />
       {loading && <Loading />}
     </Body>

@@ -71,6 +71,7 @@ const SignIn = ({navigation}) => {
           }),
         );
       } catch (e) {
+        setLoading(false);
         console.log('SignIn: erro em entrar:' + e);
         switch (e.code) {
           case 'auth/user-not-found':
