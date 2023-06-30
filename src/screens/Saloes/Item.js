@@ -151,13 +151,12 @@ const Item = ({item, onPress}) => {
               {/* {images.map((image, index) => ( */}
               {item.imagens.map((image, index) => (
                 <>
-                  <View style={styles.slide} key={index}>
+                  {/* <View style={styles.slide}> */}
                     <Image
                       source={{uri: image}}
-                      key={image}
                       style={{width: 320, height: 300, borderRadius: 15}}
                     />
-                  </View>
+                  {/* </View> */}
                 </>
               ))}
             </Swiper>

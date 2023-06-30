@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
 import Saloes from '../screens/Saloes';
+import Gerenciador from '../screens/Gerenciador';
 import Salao from '../screens/Salao';
 import Preload from '../screens/Preload';
 import SignUp from '../screens/SignUp';
@@ -49,7 +50,7 @@ const AppStack = () => {
   }, []);
 
   // console.log('getUser');
-  console.log(user)
+  // console.log(user)
 
   return(
     <Tab.Navigator
@@ -59,6 +60,7 @@ const AppStack = () => {
     }}>
       <>
       {user && user.tipo == "Cliente" ? (
+        <>
           <Tab.Screen
             component={Saloes}
             name="Saloes"
@@ -68,8 +70,10 @@ const AppStack = () => {
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
             />
+            </>
         ) : (
-            <Tab.Screen
+          <>
+           <Tab.Screen
             component={Home}
             name="Saloes"
             options={{
@@ -78,8 +82,27 @@ const AppStack = () => {
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
             />
+           {/* <Tab.Screen
+            component={Gerenciador}
+            name="Gerenciador"
+            options={{
+              tabBarLabel: 'Gerenciador',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+            }}
+            /> */}
+            </>
         )
       }
+      <Tab.Screen
+            component={Gerenciador}
+            name="Gerenciador"
+            options={{
+              tabBarLabel: 'Gerenciador',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+            }}
+            />
       <Tab.Screen
               component={Menu}
               name="Menu"

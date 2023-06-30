@@ -11,7 +11,7 @@ import { Container, FlatList } from './styles';
 import {CommonActions} from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
 
-const Saloes = ({navigation}) => {
+const Saloes = ({navigation, user}) => {
   const {saloes} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
@@ -58,7 +58,9 @@ const Saloes = ({navigation}) => {
   };
 
   const renderItem = ({ item }) => (
-    <Item item={item} onPress={() => routeSalao(item)} />
+    <Item key={item.nome} item={item} 
+    // onPress={() => routeSalao(item)}
+     />
   );
 
   return (
@@ -71,10 +73,12 @@ const Saloes = ({navigation}) => {
           {console.log(saloes)} */}
           {/* {console.log('saloesTemp')}
           {console.log(saloesTemp.length)} */}
+          {/* {console.log('saloes.id')} */}
+          {/* {console.log(saloes[0].id)}
+          {console.log(saloes)} */}
           <FlatList
             data={saloesTemp.length > 0 ? saloesTemp : saloes}
             renderItem={renderItem}
-            keyExtractor={item => item.uid}
             />
         </Container>
       {/* {loading && <Loading />} */}

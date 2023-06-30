@@ -3,36 +3,41 @@ import {useFocusEffect} from '@react-navigation/native'
 import {ToastAndroid} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import supabase from '../services/supabase';
+
 import {AuthUserContext} from './AuthUserProvider';
 
-export const SaloesContext = createContext({});
+export const SalaoContext = createContext({});
 
-export const SaloesProvider = ({children}) => {
-  const [saloes, setSaloes] = useState([]);
+export const SalaoProvider = ({children}) => {
+  const [salao, setSalao] = useState([]);
   const {user, getUser, signOut} = useContext(AuthUserContext);
 
-  const showToast = message => {
-    ToastAndroid.show(message, ToastAndroid.SHORT);
-  };
-
-  const getHallsData = async () => {
-    const {data} = supabase.get('/saloes');
-    console.log(response.data);
-
-    setSaloes(data);
-  }
   useEffect(() => {
     getUser();
   }, []);
 
   useEffect(() => {
-    console.log("entrou saloes")
+    // console.log("entrou salao")
     console.log(user)
-    fetchData();
+    // fetchData();
+    getHallData();
 
   }, []);
+  const showToast = message => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
 
-const fetchData = async () => {
+  const getHallData = async () => {
+    console.log(user);
+    console.log('user123');
+
+    const {data} = supabase.get('/saloes');
+
+    setSalao(data);
+  }
+  
+
+  const fetchData = async () => {
     try {
       const { data, error } = await supabase.get('saloes');
   
@@ -42,7 +47,7 @@ const fetchData = async () => {
       }
   
       const saloes = data.map((salao) => ({
-        id: salao.id,
+        uid: salao.id,
         nome: salao.nome,
         email: salao.email,
         autor: salao.autor,
@@ -56,42 +61,15 @@ const fetchData = async () => {
         imagens: salao.imagens,
       }));
   
-      setSaloes(saloes);
+      setSalao(salao);
     } catch (error) {
       console.error('Erro ao buscar os salões:', error);
     }
   };
-  
-
-
-
-  const saveHall = async hall => {
-    // console.log(hall)
-    try {
-      await firestore().collection('saloes').doc(hall.uid).set(
-        {
-          nome: hall.nome,
-          email: hall.email,
-          descricao: hall.descricao,
-          cnpj: hall.cnpj,
-          endereco: hall.endereco,
-          cidade: hall.cidade,
-          capacidade: hall.capacidade,
-          logo: hall.logo,
-          imagens: hall.imagens,
-        },
-        {merge: true},
-      );
-      return true;
-    } catch (error) {
-      console.error('HallProvider, saveHall: ', error);
-      return false;
-    }
-  };
 
   return (
-    <SaloesContext.Provider value={{saloes, saveHall}}>
+    <SalaoContext.Provider value={{salao, getHallData}}>
       {children}
-    </SaloesContext.Provider>
+    </SalaoContext.Provider>
   );
 };

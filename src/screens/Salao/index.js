@@ -13,7 +13,7 @@ const Salao = ({route, navigation}) => {
   const [volume, setVolume] = useState('');
   const [uid, setUid] = useState('');
   const [loading, setLoading] = useState(false);
-  const {saveHall, deleteHall} = useContext(SaloesContext);
+  const {saveHall} = useContext(SaloesContext);
 
   // console.log(route)
   // console.log(route.params)
