@@ -69,8 +69,7 @@ const Salao = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <Button></Button>
-        <Container>
+      <Container>
           <View style={styles.slide}>
             <Image
               source={{uri: logo}}
@@ -80,7 +79,7 @@ const Salao = ({route, navigation}) => {
           </View>
           <Text>{nome}</Text>
           <ContainerImage>
-            <Swiper
+          <Swiper
               index={0}
               style={styles.wrapper}
               onIndexChanged={handleSlideChange}

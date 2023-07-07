@@ -20,18 +20,6 @@ export const SaloesProvider = ({children}) => {
     setSaloes(data);
   };
 
-  //   useFocusEffect(
-  //     useCallback(() => {
-  //     getHallsData();
-  //   }, []),
-  //   )
-
-  /* afsfasfasf
-safsafasf
-asfsafa
-fasfaf
-*/
-
   const fetchData = async () => {
     try {
       const {data, error} = await supabase.get('saloes');
@@ -59,27 +47,6 @@ fasfaf
     }
   };
 
-  useEffect(() => {
-    const listener = firestore()
-      .collection('saloes')
-      .orderBy('nome')
-      .onSnapshot(snapShot => {
-        let data = [];
-        snapShot.forEach(doc => {
-          data.push({
-            uid: doc.id,
-            nome: doc.data().nome,
-            descricao: doc.data().descricao,
-          });
-        });
-        setSaloes(data);
-      });
-    fetchData();
-
-    return () => {
-      listener();
-    };
-  }, []);
 
   const saveHall = async hall => {
     // console.log(hall)

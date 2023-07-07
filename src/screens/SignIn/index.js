@@ -52,14 +52,23 @@ const SignIn = ({navigation}) => {
     // console.log(`email: ${email} senha: ${senha}`);
     if (email && senha) {
       try {
-        // console.log('entrou'),
+        console.log('entrou');
+        console.log(email);
+        console.log(senha);
         // setEmail('');
         // setSenha('');
 
         setLoading(true);
+        console.log('entrou1');
+        // await auth().signInWithEmailAndPassword('jeanmaxskrebs@gmail.com', 'Teste123');
         await auth().signInWithEmailAndPassword(email, senha);
+        console.log('entrou2');
         await storeUserSession(email, senha);
+        
+        console.log('entrou');
+        
         setLoading(false);
+        console.log('saiu');
         if (!auth().currentUser.emailVerified) {
           Alert.alert('Erro', 'Você deve verificar seu email para prosseguir.');
           return;
