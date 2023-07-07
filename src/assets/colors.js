@@ -12,5 +12,5 @@ export const COLORS = {
   gray: 'gray',
   black: 'black',
   white: 'white',
-  red: 'red,',
+  red: 'red',
 };

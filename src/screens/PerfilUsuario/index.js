@@ -200,8 +200,8 @@ const PerfilUsuario = ({navigation}) => {
         onChangeText={t => setNewPassConfirm(t)}
       />
       <MeuButton texto="Salvar" onClick={salvar} />
+      <MeuButton texto="Alterar Senha" onClick={alterarSenha} />
       <DeleteButton texto="Excluir Conta" onClick={excluir} />
-      <DeleteButton texto="Alterar Senha" onClick={alterarSenha} />
       {loading && <Loading />}
     </Body>
   );
