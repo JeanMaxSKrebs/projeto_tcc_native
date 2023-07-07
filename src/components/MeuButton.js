@@ -16,7 +16,7 @@ export default MeuButton;
 const styles = StyleSheet.create({
   texto: {
     fontSize: 25,
-    color: COLORS.primary,
+    color: COLORS.secundary,
   },
   button: {
     top: 10,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.primaryDark,
+    backgroundColor: COLORS.primary,
     padding: 10,
     margin: 10,
     borderRadius: 5,

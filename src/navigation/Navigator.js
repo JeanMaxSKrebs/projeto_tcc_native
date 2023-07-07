@@ -146,8 +146,8 @@ const SignInStyle = {
   // headerLeft: false,
   headerTitleAlign: 'center',
   title: 'Bem Vindo',
-  headerStyle: {backgroundColor: COLORS.secundary},
-  headerTitleStyle: {color: COLORS.primaryDark},
+  headerStyle: {backgroundColor: COLORS.primaryShadow},
+  headerTitleStyle: {color: COLORS.black},
 };
 const SignUpStyle = {
   // headerLeft: false,

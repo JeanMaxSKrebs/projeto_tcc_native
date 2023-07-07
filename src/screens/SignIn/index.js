@@ -159,18 +159,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.background,
   },
   divSuperior: {
     flex: 5,
     alignItems: 'center',
-    backgroundColor: COLORS.secundary,
+    backgroundColor: COLORS.primaryShadow,
   },
   divInferior: {
     flex: 1,
     alignItems: 'center',
     marginTop: 20,
-    backgroundColor: COLORS.secundary,
+    backgroundColor: COLORS.primaryShadow,
   },
   image: {
     height: 150,
