@@ -1,26 +1,20 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
 import Saloes from '../screens/Saloes';
-import Gerenciador from '../screens/Gerenciador';
 import Salao from '../screens/Salao';
 import Preload from '../screens/Preload';
 import SignUp from '../screens/SignUp';
 import ForgotPassword from '../screens/ForgotPassword';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Home from '../screens/Home';
 
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
 
 import {COLORS} from '../assets/colors';
 import {StyleSheet, StatusBar} from 'react-native';
-
-import {AuthUserContext} from '../context/AuthUserProvider';
-import { Text } from '../screens/PerfilUsuario/styles';
-
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,80 +36,32 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 
-const AppStack = () => {
-  const {user, getUser, signOut} = useContext(AuthUserContext)
-  
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  // console.log('getUser');
-  // console.log(user)
-
-  return(
-    <Tab.Navigator
+const AppStack = () => (
+  <Tab.Navigator
     initialRouteName="Saloes"
     screenOptions={{
       headerShown: true,
     }}>
-      <>
-      {user && user.tipo == "Cliente" ? (
-        <>
-          <Tab.Screen
-            component={Saloes}
-            name="Saloes"
-            options={{
-              tabBarLabel: 'Home',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            />
-            </>
-        ) : (
-          <>
-           <Tab.Screen
-            component={Home}
-            name="Saloes"
-            options={{
-              tabBarLabel: 'Home',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            />
-           {/* <Tab.Screen
-            component={Gerenciador}
-            name="Gerenciador"
-            options={{
-              tabBarLabel: 'Gerenciador',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            /> */}
-            </>
-        )
-      }
-      <Tab.Screen
-            component={Gerenciador}
-            name="Gerenciador"
-            options={{
-              tabBarLabel: 'Gerenciador',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            />
-      <Tab.Screen
-              component={Menu}
-              name="Menu"
-              options={{
-                tabBarLabel: 'Menu',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
-              }}
-            />
-      </>
-    </Tab.Navigator>
-  );
-};
+    <Tab.Screen
+      component={Saloes}
+      name="Saloes"
+      options={{
+        tabBarLabel: 'Home',
+        // eslint-disable-next-line react/no-unstable-nested-components
+        tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+      }}
+    />
+    <Tab.Screen
+      component={Menu}
+      name="Menu"
+      options={{
+        tabBarLabel: 'Menu',
+        // eslint-disable-next-line react/no-unstable-nested-components
+        tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
+      }}
+    />
+  </Tab.Navigator>
+);
 
 const Navigator = () => (
   <NavigationContainer>
@@ -128,6 +74,7 @@ const Navigator = () => (
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
+      <Stack.Screen component={Salao} name="Salao" />
       <Stack.Screen
         component={PerfilUsuario}
         name="PerfilUsuario"

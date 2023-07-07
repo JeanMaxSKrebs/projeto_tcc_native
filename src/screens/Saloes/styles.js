@@ -8,6 +8,6 @@ export const Container = styled.SafeAreaView`
 `;
 
 export const FlatList = styled.FlatList`
-  width: 90%;
+  width: 80%;
   height: 100%;
 `;

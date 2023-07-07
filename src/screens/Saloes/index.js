@@ -6,12 +6,12 @@ import {SaloesContext} from '../../context/SaloesProvider';
 import {Image} from '../Preload/styles';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
-import { Container, FlatList } from './styles';
+import {Container, FlatList} from './styles';
 
 import {CommonActions} from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
 
-const Saloes = ({navigation, user}) => {
+const Saloes = ({navigation}) => {
   const {saloes} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
@@ -30,7 +30,8 @@ const Saloes = ({navigation, user}) => {
   }, [navigation]);
 
   const routeSalao = item => {
-    //console.log(item);
+    console.log('a');
+    console.log(item);
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Salao',
@@ -57,32 +58,27 @@ const Saloes = ({navigation, user}) => {
     }
   };
 
-  const renderItem = ({ item }) => (
-    <Item key={item.nome} item={item} 
-    // onPress={() => routeSalao(item)}
-     />
+  const renderItem = ({item}) => (
+    <Item item={item} onPress={() => routeSalao(item)} />
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar search={filterSalao} name={'Salões'} />
-        <Text style={styles.texto}> Coleções dos Saloes </Text>
-        <Container>
-
-          {/* {console.log('saloes')}
+      <SearchBar search={filterSalao} name={' Salões '} />
+      <Text style={styles.texto}> Coleções dos Saloes </Text>
+      <Container>
+        {/* {console.log('saloes')}
           {console.log(saloes)} */}
-          {/* {console.log('saloesTemp')}
+        {/* {console.log('saloesTemp')}
           {console.log(saloesTemp.length)} */}
-          {/* {console.log('saloes.id')} */}
-          {/* {console.log(saloes[0].id)}
-          {console.log(saloes)} */}
-          <FlatList
-            data={saloesTemp.length > 0 ? saloesTemp : saloes}
-            renderItem={renderItem}
-            />
-        </Container>
+        <FlatList
+          data={saloesTemp.length > 0 ? saloesTemp : saloes}
+          renderItem={renderItem}
+          keyExtractor={item => item.uid}
+        />
+      </Container>
       {/* {loading && <Loading />} */}
-      <AddFloatButton onClick={() => routeSalao(null)} />
+      {/* <AddFloatButton onClick={() => routeSalao(null)} /> */}
     </SafeAreaView>
   );
 };

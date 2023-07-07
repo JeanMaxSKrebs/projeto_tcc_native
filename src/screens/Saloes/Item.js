@@ -4,7 +4,6 @@ import {View, Image, Text, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import {COLORS} from '../../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
-import AppIntroSlider from 'react-native-app-intro-slider';
 import Swiper from 'react-native-swiper';
 
 const Button = styled.TouchableHighlight`
@@ -37,7 +36,8 @@ const Botao = styled.TouchableHighlight`
   height: auto;
   /* margin: 0 0 0 0px; */
   padding: 0 40px 0 40px;
-  background-color: ${({active}) => active ? COLORS.primary : COLORS.terciary};
+  background-color: ${({active}) =>
+    active ? COLORS.primary : COLORS.terciary};
   border-radius: 30px;
 `;
 
@@ -127,7 +127,7 @@ const Item = ({item, onPress}) => {
 
         {activeButton === 'menu' ? (
           <>
-          <Container style={{height: 350}}>
+            <Container style={{height: 300}}>
               <TextDescricao>{item.descricao}</TextDescricao>
               <TextCidade>Cidade: {item.cidade}</TextCidade>
               <TextCapacidade>Capacidade: {item.capacidade}</TextCapacidade>
@@ -140,7 +140,7 @@ const Item = ({item, onPress}) => {
             </Container>
           </>
         ) : (
-          <Container style={{height: 350}}>
+          <Container style={{height: 300}}>
             <Swiper
               index={0}
               style={styles.wrapper}
@@ -151,12 +151,13 @@ const Item = ({item, onPress}) => {
               {/* {images.map((image, index) => ( */}
               {item.imagens.map((image, index) => (
                 <>
-                  {/* <View style={styles.slide}> */}
+                  <View style={styles.slide} key={index}>
                     <Image
                       source={{uri: image}}
-                      style={{width: 320, height: 300, borderRadius: 15}}
+                      key={image}
+                      style={{width: 280, height: 250, borderRadius: 15}}
                     />
-                  {/* </View> */}
+                  </View>
                 </>
               ))}
             </Swiper>
