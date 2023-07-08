@@ -2,7 +2,8 @@ import React, {createContext, useEffect, useState, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {ToastAndroid} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import supabase from '../services/supabase';
+// import supabase from '../services/supabase';
+import { supabase  } from "../../supabase/supabase";
 
 export const SaloesContext = createContext({});
 
@@ -14,21 +15,38 @@ export const SaloesProvider = ({children}) => {
   };
 
   const getHallsData = async () => {
-    const {data} = supabase.get('/saloes');
-    console.log(response.data);
+    // const {data} = supabase.get('/saloes');
+    // console.log(response.data);
 
-    setSaloes(data);
+    // setSaloes(data);
   };
+
+  //   useFocusEffect(
+  //     useCallback(() => {
+  //     getHallsData();
+  //   }, []),
+  //   )
+
+  /* afsfasfasf
+safsafasf
+asfsafa
+fasfaf
+*/
 
   const fetchData = async () => {
     try {
-      const {data, error} = await supabase.get('saloes');
+
+      // let { data: saloes, error } = await supabase
+      // .from('saloes')
+      // .select('*')
+      const {data, error} = await supabase.from('saloes').select('*');
 
       if (error) {
         console.error('Erro ao buscar os salões:', error);
         return;
       }
-
+      // console.log('data');
+      // console.log(data);
       const saloes = data.map(salao => ({
         uid: salao.id,
         nome: salao.nome,
@@ -40,6 +58,8 @@ export const SaloesProvider = ({children}) => {
         logo: salao.logo,
         imagens: salao.imagens,
       }));
+      // console.log('fetch')
+      // console.log(saloes)
 
       setSaloes(saloes);
     } catch (error) {
@@ -47,6 +67,9 @@ export const SaloesProvider = ({children}) => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const saveHall = async hall => {
     // console.log(hall)

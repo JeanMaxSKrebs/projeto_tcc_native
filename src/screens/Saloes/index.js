@@ -42,9 +42,9 @@ const Saloes = ({navigation}) => {
   const filterSalao = text => {
     // console.log(text);
     let filtro = [];
-    saloes.filter(livro => {
-      if (livro.nome.toLowerCase().includes(text.toLowerCase())) {
-        filtro.push(livro);
+    saloes.filter(salao => {
+      if (salao.nome.toLowerCase().includes(text.toLowerCase())) {
+        filtro.push(salao);
       }
     });
     // console.log('filtro');
