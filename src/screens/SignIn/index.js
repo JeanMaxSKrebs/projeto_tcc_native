@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   hr: {
     width: '30%',
     height: 1,
-    borderBottomColor: COLORS.gray,
+    borderBottomColor: 'gray',
     borderBottomWidth: 2,
   },
   cadastrarSe: {

@@ -8,24 +8,30 @@ import firestore from '@react-native-firebase/firestore';
 import Loading from '../../components/Loading';
 
 import { SalaoContext } from '../../context/SalaoProvider';
+import { ClienteContext } from '../../context/ClienteProvider.js';
 
   const SignUp = ({navigation}) => {
-  // const [nome, setNome] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [senha, setSenha] = useState('');
-  // const [confirmaSenha, setConfirmaSenha] = useState('');
-  const [nome, setNome] = useState('jean');
-  const [email, setEmail] = useState('jeanskrebs@gmail.com');
-  const [senha, setSenha] = useState('Teste123');
-  const [confirmaSenha, setConfirmaSenha] = useState('Teste123');
-  const [cpf, setCpf] = useState('04506635078');
-  const [cnpj, setCnpj] = useState('01855743000106');
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmaSenha, setConfirmaSenha] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [cnpj, setCnpj] = useState('');
+
+  // const [nome, setNome] = useState('jean');
+  // const [email, setEmail] = useState('jeanmaxskrebs@gmail.com');
+  // const [senha, setSenha] = useState('Teste123');
+  // const [confirmaSenha, setConfirmaSenha] = useState('Teste123');
+  // const [cpf, setCpf] = useState('04506635078');
+  // const [cnpj, setCnpj] = useState('01855743000106');
+
   const [tipo, setTipo] = useState('Cliente');
 
   const [isChecked, setIsChecked] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const { saveSalao } = useContext(SalaoContext);
+  const { saveCliente } = useContext(ClienteContext);
 
   const handleCheck = () => {
     setIsChecked(!isChecked);
@@ -48,7 +54,11 @@ import { SalaoContext } from '../../context/SalaoProvider';
               email: email,
               cpf: cpf,
             };
-            // await saveCliente(salaoData);
+            console.log('clienteData')
+            console.log('clienteData')
+            console.log(clienteData)
+            // : undefined is not a function
+            await saveCliente(clienteData);
           } else {
             const salaoData = {
               nome: nome,
@@ -115,14 +125,14 @@ import { SalaoContext } from '../../context/SalaoProvider';
         placeholder="Nome Completo"
         keyboardType="default"
         returnKeyType="next"
-        defaultValue="jean" 
+        // defaultValue="jean" 
         onChangeText={t => setNome(t)}
       />
       <TextInput
         placeholder="Email"
         keyboardType="email-address"
         returnKeyType="next"
-        defaultValue="jeanskrebs@gmail.com" 
+        // defaultValue="jeanmaxskrebs@gmail.com" 
         onChangeText={t => setEmail(t)}
       />
       <TextInput
@@ -130,7 +140,7 @@ import { SalaoContext } from '../../context/SalaoProvider';
         keyboardType="default"
         returnKeyType="next"
         secureTextEntry={true}
-        defaultValue="Teste123" 
+        // defaultValue="Teste123" 
         onChangeText={t => setSenha(t)}
       />
       <TextInput
@@ -138,7 +148,7 @@ import { SalaoContext } from '../../context/SalaoProvider';
         keyboardType="default"
         returnKeyType="send"
         secureTextEntry={true}
-        defaultValue="Teste123" 
+        // defaultValue="Teste123" 
         onChangeText={t => setConfirmaSenha(t)}
       />
       <TouchableOpacity onPress={handleCheck} >
@@ -151,13 +161,13 @@ import { SalaoContext } from '../../context/SalaoProvider';
         placeholder="Cpf"
         keyboardType="numeric"
         returnKeyType="next"
-        defaultValue="04516635078" 
+        // defaultValue="04516635078" 
         onChangeText={t => setCpf(t)}
       /> : <TextInput
           placeholder="Cnpj"
           keyboardType="numeric"
           returnKeyType="next"
-          defaultValue="01855743000106" 
+          // defaultValue="01855743000106" 
           onChangeText={t => setCnpj(t)}
         />
       }
