@@ -21,18 +21,6 @@ export const SaloesProvider = ({children}) => {
     // setSaloes(data);
   };
 
-  //   useFocusEffect(
-  //     useCallback(() => {
-  //     getHallsData();
-  //   }, []),
-  //   )
-
-  /* afsfasfasf
-safsafasf
-asfsafa
-fasfaf
-*/
-
   const fetchData = async () => {
     try {
 
@@ -69,7 +57,7 @@ fasfaf
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [saloes]);
 
   const saveHall = async hall => {
     // console.log(hall)

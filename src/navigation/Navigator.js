@@ -11,6 +11,8 @@ import ForgotPassword from '../screens/ForgotPassword';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Home from '../screens/Home';
+import Manutencao from '../screens/Manutencao';
+import AtualizarDados from '../screens/AtualizarDados';
 
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
@@ -60,7 +62,7 @@ const AppStack = () => {
       <>
       {user && user.tipo == "Cliente" ? (
         <>
-          <Tab.Screen
+          {/* <Tab.Screen
             component={Saloes}
             name="Saloes"
             options={{
@@ -68,11 +70,11 @@ const AppStack = () => {
               // eslint-disable-next-line react/no-unstable-nested-components
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
-            />
+            /> */}
             </>
         ) : (
           <>
-           <Tab.Screen
+           {/* <Tab.Screen
             component={Home}
             name="Saloes"
             options={{
@@ -80,8 +82,20 @@ const AppStack = () => {
               // eslint-disable-next-line react/no-unstable-nested-components
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
+            /> */}
+           <Tab.Screen
+            component={Gerenciador}
+            name="Gerenciador"
+            options={{
+              tabBarLabel: 'Home',
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+            }}
             />
-           {/* <Tab.Screen
+            </>
+        )
+      }
+      {/* <Tab.Screen
             component={Gerenciador}
             name="Gerenciador"
             options={{
@@ -90,18 +104,6 @@ const AppStack = () => {
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
             /> */}
-            </>
-        )
-      }
-      <Tab.Screen
-            component={Gerenciador}
-            name="Gerenciador"
-            options={{
-              tabBarLabel: 'Gerenciador',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            />
       <Tab.Screen
               component={Menu}
               name="Menu"
@@ -127,6 +129,8 @@ const Navigator = () => (
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
+      <Stack.Screen component={Manutencao} name="Manutencao" />
+      <Stack.Screen component={AtualizarDados} name="AtualizarDados" />
       <Stack.Screen component={Salao} name="Salao" />
       <Stack.Screen
         component={PerfilUsuario}
