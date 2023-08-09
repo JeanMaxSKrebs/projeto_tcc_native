@@ -20,22 +20,22 @@ export const SalaoProvider = ({children}) => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
-
-  useEffect(() => {
     
-    console.log("entrou salao")
-    console.log(user)
-    // fetchData();
-    getHallData();
+    if (user !== null) {
+      console.log("entrou salao ffffffffffffff")
+      // console.log(user)
+      // fetchData();
+      getHallData();
+    } else {
+      getUser();
+    }
   }, []);
 
 
 
   const getHallData = async () => {
-    console.log(user);
-    console.log('user123');
+    // console.log(user);
+    // console.log('user123');
     try {
 
     const { data: salao, error } = await supabase
@@ -59,8 +59,8 @@ export const SalaoProvider = ({children}) => {
   }
 
   const saveSalao = async (salaoData) => {
-    console.log('salaoData');
-    console.log(salaoData);
+    // console.log('salaoData');
+    // console.log(salaoData);
     
     try {
       const { data: insertedData, error: insertError } = await supabase
@@ -73,11 +73,12 @@ export const SalaoProvider = ({children}) => {
           cnpj: salaoData.cnpj,
           endereco: salaoData.endereco,
           cidade: salaoData.cidade,
-          capacidade: salaoData.capacidade,
+          // capacidade: salaoData.capacidade,
           // logo: salaoData.logo,
           // imagens: salaoData.imagens,
           
-          //logo e imagens estaticas
+          //logo e imagens e capacidade estaticas
+          capacidade: 100,
           logo: 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20c.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBjLmpwZWciLCJpYXQiOjE2ODc5OTg1MjgsImV4cCI6MTcxOTUzNDUyOH0.iJ9sEu3ZVZKffB294lldjTv-cyOZjlfn_sFQUqcI31Q&t=2023-06-29T00%3A28%3A48.663Z',
           imagens: [
             "https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20a.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBhLmpwZWciLCJpYXQiOjE2ODc5OTgzOTksImV4cCI6MTcxOTUzNDM5OX0.WI1WLP0lK-y3_8Hbc--JoHCUaJ8CASA5pUnV24kvO4o&t=2023-06-29T00%3A26%3A39.877Z",
@@ -87,8 +88,8 @@ export const SalaoProvider = ({children}) => {
         
       ])
 
-      console.log('data')
-      console.log(insertedData)
+      // console.log('data')
+      // console.log(insertedData)
               
       if (insertError) {
         console.error('Erro ao inserir os salões:', insertError);
@@ -105,8 +106,8 @@ export const SalaoProvider = ({children}) => {
   };
 
   const updateSalao = async (salaoData) => {
-    console.log('salaoData');
-    console.log(salaoData);
+    // console.log('salaoData');
+    // console.log(salaoData);
   
     try {
       const { data: updatedData, error: updateError } = await supabase
@@ -132,8 +133,8 @@ export const SalaoProvider = ({children}) => {
         })
         .match({ id: salaoData.id });
   
-      console.log('data');
-      console.log(updatedData);
+      // console.log('data');
+      // console.log(updatedData);
       getHallData()
       if (updateError) {
         console.error('Erro ao atualizar o salão:', updateError);

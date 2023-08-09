@@ -5,6 +5,9 @@ import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 import Saloes from '../screens/Saloes';
 import Gerenciador from '../screens/Gerenciador';
+import NovoOrcamento from '../screens/Orcamento/novo';
+import Orcamento from '../screens/Orcamento';
+import Orcamentos from '../screens/Orcamentos';
 import Salao from '../screens/Salao';
 import Preload from '../screens/Preload';
 import ForgotPassword from '../screens/ForgotPassword';
@@ -62,7 +65,7 @@ const AppStack = () => {
       <>
       {user && user.tipo == "Cliente" ? (
         <>
-          {/* <Tab.Screen
+          <Tab.Screen
             component={Saloes}
             name="Saloes"
             options={{
@@ -70,7 +73,7 @@ const AppStack = () => {
               // eslint-disable-next-line react/no-unstable-nested-components
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
-            /> */}
+            />
             </>
         ) : (
           <>
@@ -130,6 +133,9 @@ const Navigator = () => (
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
       <Stack.Screen component={Manutencao} name="Manutencao" />
+      <Stack.Screen component={NovoOrcamento} name="NovoOrcamento" />
+      <Stack.Screen component={Orcamento} name="Orcamento" />
+      <Stack.Screen component={Orcamentos} name="Orcamentos" />
       <Stack.Screen component={AtualizarDados} name="AtualizarDados" />
       <Stack.Screen component={Salao} name="Salao" />
       <Stack.Screen

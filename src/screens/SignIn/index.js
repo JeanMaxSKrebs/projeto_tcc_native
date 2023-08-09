@@ -144,10 +144,10 @@ const SignIn = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
-      {loading && <Loading />}
-    </SafeAreaView>
-  );
-};
+      </SafeAreaView>
+      );
+    };
+    // {loading && <Loading />}
 
 export default SignIn;
 

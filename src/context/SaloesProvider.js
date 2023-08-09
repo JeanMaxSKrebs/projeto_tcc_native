@@ -15,13 +15,6 @@ export const SaloesProvider = ({children}) => {
   };
 
   const getHallsData = async () => {
-    // const {data} = supabase.get('/saloes');
-    // console.log(response.data);
-
-    // setSaloes(data);
-  };
-
-  const fetchData = async () => {
     try {
 
       // let { data: saloes, error } = await supabase
@@ -56,7 +49,7 @@ export const SaloesProvider = ({children}) => {
   };
 
   useEffect(() => {
-    fetchData();
+    getHallsData();
   }, [saloes]);
 
   const saveHall = async hall => {
@@ -88,7 +81,7 @@ export const SaloesProvider = ({children}) => {
       .doc(uid)
       .delete()
       .then(() => {
-        showToast('Livro excluído.');
+        showToast('Salão excluído.');
       })
       .catch(error => {
         console.error('HallProvider, deleteHall: ', error);

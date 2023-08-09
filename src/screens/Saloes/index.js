@@ -30,8 +30,8 @@ const Saloes = ({navigation}) => {
   }, [navigation]);
 
   const routeSalao = item => {
-    console.log('a');
-    console.log(item);
+    // console.log('a');
+    // console.log(item);
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Salao',
@@ -49,10 +49,10 @@ const Saloes = ({navigation}) => {
     });
     // console.log('filtro');
     // console.log(filtro);
-    console.log(filtro.length);
+    // console.log(filtro.length);
     if (filtro.length > 0) {
       setSaloesTemp(filtro);
-      console.log(filtro.length);
+      // console.log(filtro.length);
     } else {
       setSaloesTemp([]);
     }

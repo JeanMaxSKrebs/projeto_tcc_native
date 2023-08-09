@@ -112,7 +112,7 @@ const AtualizarDados = ({navigation}) => {
         placeholder="Cidade"
         keyboardType="default"
         returnKeyType="next"
-        onChangeText={t => setEndereco(t)}
+        onChangeText={t => setCidade(t)}
         />
       <MeuButton texto="Salvar" onClick={salvar} />
       {loading && <Loading />}

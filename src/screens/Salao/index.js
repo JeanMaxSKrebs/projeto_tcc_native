@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {Container, FlatList, ContainerImage} from './styles';
 import MeuButton from '../../components/MeuButton';
+import MeuButtonMetade from '../../components/MeuButtonMetade';
+import AnotherButtonMetade from '../../components/AnotherButtonMetade';
 import Loading from '../../components/Loading';
 import {SaloesContext} from '../../context/SaloesProvider';
 import DeleteButton from '../../components/DeleteButton';
@@ -21,6 +23,11 @@ import {COLORS} from '../../assets/colors';
 const Salao = ({route, navigation}) => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [capacidade, setCapacidade] = useState('');
+  const [festasRealizadas, setfestasRealizadas] = useState('0');
+  const [festasAgendadas, setfestasAgendadas] = useState('0');
   const [uid, setUid] = useState('');
   const [imagens, setImagens] = useState([]);
   const [logo, setLogo] = useState('');
@@ -44,6 +51,9 @@ const Salao = ({route, navigation}) => {
       console.log(route.params.value);
       setNome(route.params.value.nome);
       setDescricao(route.params.value.descricao);
+      setEndereco(route.params.value.endereco)
+      setCidade(route.params.value.cidade)
+      setCapacidade(route.params.value.capacidade)
       setUid(route.params.value.uid);
       setImagens(route.params.value.imagens);
       setLogo(route.params.value.logo);
@@ -77,7 +87,28 @@ const Salao = ({route, navigation}) => {
               style={{width: 280, height: 250, borderRadius: 15}}
             />
           </View>
-          <Text>{nome}</Text>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+              <Text style={styles.nome} >{nome}</Text>
+              <Text style={styles.descricao} >{descricao}</Text>
+              <Text style={styles.endereco}>{endereco}</Text>
+              <Text style={styles.cidade}>{cidade}</Text>
+              <Text style={styles.capacidade}>Capacidade: {capacidade}</Text>
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <MeuButtonMetade texto="Orçar" onClick={() => routeGerenciador('VisaoCliente')} style={{ width: '45%' }} />
+            <MeuButtonMetade texto="Reservar" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <MeuButtonMetade texto="Ver Agenda" onClick={() => routeGerenciador('VerAgenda')} style={{ width: '45%' }} />
+            <MeuButtonMetade texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
+          </View>
+          
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <AnotherButtonMetade prefixo={festasRealizadas} texto="Festas Realizadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
+            <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
+          </View>
           <ContainerImage>
           <Swiper
               index={0}
@@ -100,6 +131,7 @@ const Salao = ({route, navigation}) => {
               ))}
             </Swiper>
           </ContainerImage>
+
         </Container>
         {/* {loading && <Loading />} */}
         {/* <AddFloatButton onClick={() => routeSalao(null)} /> */}

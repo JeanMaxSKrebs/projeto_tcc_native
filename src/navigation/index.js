@@ -2,7 +2,7 @@ import React from 'react';
 import {SaloesProvider} from '../context/SaloesProvider';
 import {SalaoProvider} from '../context/SalaoProvider';
 import {ClienteProvider} from '../context/ClienteProvider';
-import {LivrosProvider} from '../context/LivrosProvider';
+import {OrcamentosProvider} from '../context/OrcamentosProvider';
 import {AuthUserProvider} from '../context/AuthUserProvider';
 import {ProfileProvider} from '../context/ProfileProvider';
 import {ApiProvider} from '../context/ApiProvider';
@@ -15,15 +15,15 @@ export default function Providers() {
     <AuthUserProvider>
         <ApiProvider>
           <ProfileProvider>
-            <LivrosProvider>
               <SaloesProvider>
                 <SalaoProvider>
                   <ClienteProvider>
-                    <Navigator />
+                    <OrcamentosProvider>
+                        <Navigator />
+                    </OrcamentosProvider>
                   </ClienteProvider>
                 </SalaoProvider>
               </SaloesProvider>
-            </LivrosProvider>
         </ProfileProvider>
         </ApiProvider>
       </AuthUserProvider>

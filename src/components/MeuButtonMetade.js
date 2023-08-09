@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, TouchableHighlight, StyleSheet} from 'react-native';
 import {COLORS} from '../assets/colors';
 
-const MeuButton = props => {
+const MeuButtonMetade = props => {
   console.log(props);
   return (
     <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
@@ -11,7 +11,7 @@ const MeuButton = props => {
   );
 };
 
-export default MeuButton;
+export default MeuButtonMetade;
 
 const styles = StyleSheet.create({
   texto: {

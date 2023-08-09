@@ -44,7 +44,14 @@ const Gerenciador = ({navigation, user}) => {
           }),
         );
         break;
-      // case 'TelaOrcamento':
+      case 'TelaOrcamento':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Orcamentos',
+            params: { value: item }
+          }),
+        );
+        break;
       // case 'TelaReservas':
       // case 'VerAgenda':
       // case 'Conversar':
@@ -69,8 +76,8 @@ const Gerenciador = ({navigation, user}) => {
   return (
     <SafeAreaView style={styles.container}>
         <>
-        {console.log('salao')}
-        {console.log(salao)}
+        {/* {console.log('salao')}
+        {console.log(salao)} */}
         
           {/* <View>
             <Image

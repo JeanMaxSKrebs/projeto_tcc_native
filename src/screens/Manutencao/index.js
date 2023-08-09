@@ -6,19 +6,7 @@ import MeuButton from '../../components/MeuButton'
 const Manutencao = ({route, navigation}) => {
 
     const item  = route.params.value;
-
-  useEffect(() => {
-    navigation.setOptions({
-      // headerLeft: false,
-      headerTitleAlign: 'center',
-      title: 'BEM VINDO', // deixei a name pq senao muda o nome da tab
-      headerStyle: {backgroundColor: COLORS.red},
-      headerTintColor: {color: COLORS.black},
-      headerRight: () => <LogoutButton />,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+    
   const voltar = () => {
     navigation.goBack();
     };
