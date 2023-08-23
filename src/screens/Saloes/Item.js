@@ -149,17 +149,24 @@ const Item = ({item, onPress}) => {
               prevButton={<CustomPrevButton />}
               nextButton={<CustomNextButton />}>
               {/* {images.map((image, index) => ( */}
-              {item.imagens.map((image, index) => (
-                <>
-                  <View style={styles.slide} key={index}>
+              {item.imagens.map((image, index) => {
+                console.log('Image:', image);
+                // console.log('index:', index);
+                // console.log('item.uid:', item.uid); 
+                const uniqueKey = `${item.uid}_${index}`;
+                console.log('uniqueKey:', uniqueKey);
+
+                return (
+                  <>
+                  <View style={styles.slide} key={uniqueKey}>
                     <Image
                       source={{uri: image}}
-                      key={image}
+                      key={uniqueKey+image}
                       style={{width: 280, height: 250, borderRadius: 15}}
                     />
                   </View>
                 </>
-              ))}
+              )})}
             </Swiper>
             <Botao
               onPress={onPress}

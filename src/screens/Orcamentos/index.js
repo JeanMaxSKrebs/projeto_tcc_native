@@ -12,7 +12,7 @@ import MeuButton from '../../components/MeuButton';
 import {CommonActions} from '@react-navigation/native';
 
 const Orcamentos = ({route, navigation}) => {
-  const {orcamentos, getBudgetData} = useContext(OrcamentosContext);
+  const {orcamentos,  getBudgetData} = useContext(OrcamentosContext);
   const [orcamentosTemp, setOrcamentosTemp] = useState([]);
 
   const voltar = () => {
@@ -20,13 +20,13 @@ const Orcamentos = ({route, navigation}) => {
     };
 
   const routeOrcamento = item => {
-    console.log('a');
-    console.log(item);
+    // console.log('calica');
+    // console.log(item);
     switch (item) {
       case 'NovoOrcamento':
         navigation.dispatch(
           CommonActions.navigate({
-            name: item,
+            name: 'NovoOrcamento',
             params: { value: item },
           }),
         );
@@ -43,12 +43,14 @@ const Orcamentos = ({route, navigation}) => {
   };
 
   useEffect(() => {
+    // console.log('entrou orcamentos')
+    // console.log(route)
     getBudgetData();
   }, []);
 
     const renderItem = ({item}) => (
-      console.log('itemitemitem'),
-      console.log(item),
+      // console.log('itemitemitem'),
+      // console.log(item),
         <Item item={item} onPress={() => routeOrcamento(item)} />
       );
 
@@ -76,7 +78,7 @@ const Orcamentos = ({route, navigation}) => {
             keyExtractor={item => item.id}
             />
           <Content>
-              <MeuButton texto={'Novo Orçamento'} cor={COLORS.primary}  onPress={() => routeOrcamento('NovoOrcamento')}/>
+              <MeuButton texto="Novo Orçamento" cor={COLORS.primary}  onClick={() => routeOrcamento('NovoOrcamento')}/>
           </Content>
           </Container>
       </View>

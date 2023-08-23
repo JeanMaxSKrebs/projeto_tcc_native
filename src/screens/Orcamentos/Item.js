@@ -13,8 +13,8 @@ const Item = ({item, onPress}) => {
 
     return (
     <Button  onPress={onPress}>
-    {console.log('item123')}
-    {console.log(item)}
+    {/* {console.log('item123')}
+    {console.log(item)} */}
       <Texto tamanho={20} texto={item.nome} cor={COLORS.black}/>
       <Texto tamanho={15} texto={`Descrição: ${item.descricao}`}/>
 

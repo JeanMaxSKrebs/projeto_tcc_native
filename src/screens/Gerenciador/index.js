@@ -2,7 +2,6 @@ import React, {useEffect, useContext, useState} from 'react';
 import {SafeAreaView, ScrollView, View, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
-import {SaloesContext} from '../../context/SaloesProvider';
 import {Image} from '../Preload/styles';
 // import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
@@ -13,14 +12,17 @@ import SearchBar from '../../components/SearchBar';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
 import MeuButton from '../../components/MeuButton';
 import { SalaoContext } from '../../context/SalaoProvider';
+import { SaloesContext } from '../../context/SaloesProvider';
 import {AuthUserContext} from '../../context/AuthUserProvider';
 
 const Gerenciador = ({navigation, user}) => {
   const {salao, getHallData} = useContext(SalaoContext);
+  const {getHallsData} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
   useEffect(() => {
     getHallData();
+    getHallsData();
     navigation.setOptions({
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
@@ -88,11 +90,13 @@ const Gerenciador = ({navigation, user}) => {
             <MeuButton texto="Alterar Logo" onClick={''} />
           </View> */}
           <View style={{ alignItems: 'center' }}>
-            <Image
-              source={{ uri: salao.logo }}
-              key={salao.logo}
-              style={{ width: 320, height: 300, borderRadius: 15 }}
-            />
+            {salao.logo && (
+              <Image
+                source={{ uri: salao.logo }}
+                key={salao.logo}
+                style={{ width: 320, height: 300, borderRadius: 15 }}
+              />
+            )}
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <Text style={styles.nome} >{salao.nome}</Text>
               <Text style={styles.descricao} >{salao.descricao}</Text>

@@ -81,11 +81,13 @@ const Salao = ({route, navigation}) => {
       <ScrollView>
       <Container>
           <View style={styles.slide}>
-            <Image
-              source={{uri: logo}}
-              key={logo}
-              style={{width: 280, height: 250, borderRadius: 15}}
-            />
+          {logo && (
+          <Image
+            source={{ uri: logo }}
+            key={logo}
+            style={{ width: 280, height: 250, borderRadius: 15 }}
+          />
+        )}
           </View>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <Text style={styles.nome} >{nome}</Text>
@@ -121,11 +123,14 @@ const Salao = ({route, navigation}) => {
               {imagens.map((image, index) => (
                 <>
                   <View style={styles.slide} key={index}>
+                  {logo && (
+
                     <Image
                       source={{uri: image}}
                       key={image}
                       style={{width: 280, height: 250, borderRadius: 15}}
                     />
+                    )}
                   </View>
                 </>
               ))}

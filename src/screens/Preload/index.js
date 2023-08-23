@@ -7,7 +7,7 @@ import {Container, Image} from './styles';
 import {COLORS} from '../../assets/colors';
 
 const Preload = ({navigation}) => {
-  // console.log('oi')
+
   async function retrieveUserSession() {
     try {
       const session = await EncryptedStorage.getItem('user_session');
@@ -31,6 +31,7 @@ const Preload = ({navigation}) => {
 
   const entrar = async () => {
     const userSession = await retrieveUserSession();
+    // console.log('userSession');
     // console.log(userSession);
     if (userSession) {
       try {

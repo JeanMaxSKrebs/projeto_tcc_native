@@ -5,6 +5,7 @@ import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 import Saloes from '../screens/Saloes';
 import Gerenciador from '../screens/Gerenciador';
+import AlterarOrcamento from '../screens/Orcamento/alterar';
 import NovoOrcamento from '../screens/Orcamento/novo';
 import Orcamento from '../screens/Orcamento';
 import Orcamentos from '../screens/Orcamentos';
@@ -50,7 +51,12 @@ const AppStack = () => {
   const {user, getUser, signOut} = useContext(AuthUserContext)
   
   useEffect(() => {
-    getUser();
+    if(!user) {
+      getUser();
+    } else {
+      console.log('user conectado:' + user)
+      console.log(user)
+    }
   }, []);
 
   // console.log('getUser');
@@ -133,6 +139,7 @@ const Navigator = () => (
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
       <Stack.Screen component={Manutencao} name="Manutencao" />
+      <Stack.Screen component={AlterarOrcamento} name="AlterarOrcamento" />
       <Stack.Screen component={NovoOrcamento} name="NovoOrcamento" />
       <Stack.Screen component={Orcamento} name="Orcamento" />
       <Stack.Screen component={Orcamentos} name="Orcamentos" />

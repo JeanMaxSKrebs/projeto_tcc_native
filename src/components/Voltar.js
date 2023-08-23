@@ -3,7 +3,7 @@ import {Text, View, TouchableHighlight, StyleSheet} from 'react-native';
 import {COLORS} from '../assets/colors';
 
 const Voltar = props => {
-  console.log(props);
+  // console.log(props);
   return (
     <View style={styles.content}>
       <View style={styles.area}>

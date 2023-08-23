@@ -22,11 +22,12 @@ export const SalaoProvider = ({children}) => {
   useEffect(() => {
     
     if (user !== null) {
-      console.log("entrou salao ffffffffffffff")
       // console.log(user)
-      // fetchData();
+      // console.log('user salao')
       getHallData();
     } else {
+      // console.log(user)
+      // console.log('user aaaaa')
       getUser();
     }
   }, []);
@@ -34,8 +35,8 @@ export const SalaoProvider = ({children}) => {
 
 
   const getHallData = async () => {
-    // console.log(user);
-    // console.log('user123');
+    console.log(user);
+    console.log('max aqui');
     try {
 
     const { data: salao, error } = await supabase

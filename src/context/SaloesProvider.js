@@ -1,14 +1,17 @@
-import React, {createContext, useEffect, useState, useCallback} from 'react';
+import React, {createContext, useEffect, useState, useContext} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import {ToastAndroid} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 // import supabase from '../services/supabase';
-import { supabase  } from "../../supabase/supabase";
+import { supabase } from "../../supabase/supabase";
+
+import {AuthUserContext} from './AuthUserProvider';
 
 export const SaloesContext = createContext({});
 
 export const SaloesProvider = ({children}) => {
   const [saloes, setSaloes] = useState([]);
+  const {user, getUser, signOut} = useContext(AuthUserContext);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -23,7 +26,7 @@ export const SaloesProvider = ({children}) => {
       const {data, error} = await supabase.from('saloes').select('*');
 
       if (error) {
-        console.error('Erro ao buscar os salões:', error);
+        console.error('Erro ao buscar os salões: (001)', error);
         return;
       }
       // console.log('data');
@@ -39,8 +42,8 @@ export const SaloesProvider = ({children}) => {
         logo: salao.logo,
         imagens: salao.imagens,
       }));
-      // console.log('fetch')
-      // console.log(saloes)
+      console.log('fetch')
+      console.log(saloes)
 
       setSaloes(saloes);
     } catch (error) {
@@ -49,8 +52,17 @@ export const SaloesProvider = ({children}) => {
   };
 
   useEffect(() => {
-    getHallsData();
-  }, [saloes]);
+    if (user !== null) {
+      console.log(user)
+      console.log('user saloes')
+      // console.log(user)
+      getHallsData();
+    } else {
+      console.log(user)
+      console.log('user aaaaa')
+      getUser();
+    }
+  }, []);
 
   const saveHall = async hall => {
     // console.log(hall)
@@ -89,7 +101,7 @@ export const SaloesProvider = ({children}) => {
   };
 
   return (
-    <SaloesContext.Provider value={{saloes, saveHall, deleteHall}}>
+    <SaloesContext.Provider value={{saloes, getHallsData, saveHall, deleteHall}}>
       {children}
     </SaloesContext.Provider>
   );

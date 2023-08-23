@@ -3,7 +3,7 @@ import {Text, StyleSheet} from 'react-native';
 import {COLORS} from '../assets/colors';
 
 const Texto = props => {
-  console.log(props);
+  // console.log(props);
   return (
     <Text style={[styles.texto, { fontSize: props.tamanho, color:props.cor }]}>{props.texto}
     </Text>  );

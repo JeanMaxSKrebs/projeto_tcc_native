@@ -34,7 +34,8 @@ export const OrcamentosProvider = ({children}) => {
         id: orcamento.id,
         nome: orcamento.nome,
         descricao: orcamento.descricao,
-        valor_total: orcamento.valor_total
+        valorBase: orcamento.valor_base,
+        valorTotal: orcamento.valor_total
       }));
 
       // console.log('orcamentosopcao')

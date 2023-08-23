@@ -12,10 +12,12 @@ import {CommonActions} from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
 
 const Saloes = ({navigation}) => {
-  const {saloes} = useContext(SaloesContext);
+  const {saloes, getHallsData} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
+
   useEffect(() => {
+    getHallsData();
     navigation.setOptions({
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
@@ -58,19 +60,26 @@ const Saloes = ({navigation}) => {
     }
   };
 
-  const renderItem = ({item}) => (
-    <Item item={item} onPress={() => routeSalao(item)} />
-  );
+  const renderItem = ({ item }) => {
+    // console.log('item:', item);
+    // console.log('item.uid:', item.uid);
+    
+    return (
+      <Item item={item} onPress={() => routeSalao(item)} />
+    );
+  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar search={filterSalao} name={' Salões '} />
-      <Text style={styles.texto}> Coleções dos Saloes </Text>
+      <Text style={styles.texto}> Coleções dos Salões </Text>
       <Container>
         {/* {console.log('saloes')}
           {console.log(saloes)} */}
         {/* {console.log('saloesTemp')}
           {console.log(saloesTemp.length)} */}
+
         <FlatList
           data={saloesTemp.length > 0 ? saloesTemp : saloes}
           renderItem={renderItem}
