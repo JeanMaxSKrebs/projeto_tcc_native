@@ -22,21 +22,22 @@ const Orcamento = ({route, navigation}) => {
     navigation.goBack();
   };
   // ({item}) 
-  const handleSubmit = ({item}) => {
-    console.log("TESTE")
-    console.log(item)
+  const routeOrcamento = item => {
+    // console.log("TESTE")
+    // console.log(item)
     navigation.dispatch(
       CommonActions.navigate({
         name: 'AlterarOrcamento',
         params: { value: item },
       }),
-    );  };
+    );
+  };
   
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
-          <AlterarOrcamentoButton item={item} onClick={() => handleSubmit(item)} />
+          <AlterarOrcamentoButton item={item} onClick={() => routeOrcamento(item)} />
         <View>
           <View>
             {/* {console.log('item000')}

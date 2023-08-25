@@ -18,6 +18,8 @@ export const SaloesProvider = ({children}) => {
   };
 
   const getHallsData = async () => {
+    console.log(user);
+    console.log('max aqui saloes');
     try {
 
       // let { data: saloes, error } = await supabase
@@ -42,8 +44,8 @@ export const SaloesProvider = ({children}) => {
         logo: salao.logo,
         imagens: salao.imagens,
       }));
-      console.log('fetch')
-      console.log(saloes)
+      // console.log('fetch')
+      // console.log(saloes)
 
       setSaloes(saloes);
     } catch (error) {
@@ -58,8 +60,8 @@ export const SaloesProvider = ({children}) => {
       // console.log(user)
       getHallsData();
     } else {
-      console.log(user)
-      console.log('user aaaaa')
+      // console.log(user)
+      // console.log('user aaaaa')
       getUser();
     }
   }, []);

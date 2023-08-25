@@ -15,7 +15,7 @@ import { SalaoContext } from '../../context/SalaoProvider';
 import { SaloesContext } from '../../context/SaloesProvider';
 import {AuthUserContext} from '../../context/AuthUserProvider';
 
-const Gerenciador = ({navigation, user}) => {
+const Gerenciador = ({navigation}) => {
   const {salao, getHallData} = useContext(SalaoContext);
   const {getHallsData} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
@@ -37,6 +37,8 @@ const Gerenciador = ({navigation, user}) => {
   }, [navigation]);
 
   const routeGerenciador = item => {
+    // console.log('gerenciador');
+    // console.log(item);
     switch (item) {
       case 'AtualizarDados':
         navigation.dispatch(
@@ -50,7 +52,7 @@ const Gerenciador = ({navigation, user}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamentos',
-            params: { value: item }
+            params: { value: item, salao: salao }
           }),
         );
         break;

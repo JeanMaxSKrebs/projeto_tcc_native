@@ -12,7 +12,8 @@ const AlterarOrcamento = ({route, navigation}) => {
   // console.log(route)
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [preco, setPreco] = useState('');
+  const [valorBase, setValorBase] = useState('');
+  const [valorTotal, setValorTotal] = useState('');
 
   const item = route.params.value;
   
@@ -20,8 +21,15 @@ const AlterarOrcamento = ({route, navigation}) => {
     navigation.goBack();
   };
   
-  const handleSubmit = () => {
-    // Perform actions with the submitted nome and descricao values
+  const routeOrcamento = item => {
+    // console.log("TESTE")
+    // console.log(item)
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'Orcamento',
+        params: { value: item },
+      }),
+    );
   };
   
   return (
@@ -31,7 +39,7 @@ const AlterarOrcamento = ({route, navigation}) => {
         <View>
           <View>
             {console.log('item123')}
-            {console.log(item)}
+            {/* {console.log(item)} */}
             <Texto tamanho={40} texto={nome} tipo={'orcamento'}></Texto>
           </View>
           <View>
@@ -47,12 +55,12 @@ const AlterarOrcamento = ({route, navigation}) => {
             />
             <TextInput
               placeholder="Preço "
-              value={descricao}
-              onChangeText={setDescricao}
+              value={valorBase}
+              onChangeText={setValorBase}
             />
           </View>
         </View>
-        <MeuButton texto="Alterar Orçamento" onClick={() => handleSubmit} />
+        <MeuButton texto="Alterar Orçamento" onClick={() => routeOrcamento()} />
         <MeuButton texto="Voltar" onClick={() => voltar()} />
       </View>
     </SafeAreaView>

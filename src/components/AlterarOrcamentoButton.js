@@ -3,22 +3,22 @@ import {Text, View, TouchableHighlight, StyleSheet} from 'react-native';
 import {COLORS} from '../assets/colors';
 import Texto from './Texto';
 
-const AlterarOrcamentoButton = ({item}) => {
-  console.log(item);
+const AlterarOrcamentoButton = props => {
+  // console.log(props.item);
   return (
     <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
       <View style={styles.content}>
         <View style={styles.areaNome}>
-          <Texto style={styles.item} tamanho={25} texto={item.nome}></Texto>
+          <Texto style={styles.item} tamanho={25} texto={props.item.nome}></Texto>
         </View>
         <View style={styles.areaValor}>
           <View>
             <Texto tamanho={15} texto={'Valor Base: '}></Texto>
-            <Texto tamanho={25} texto={'R$ ' + item.valorBase}></Texto>
+            <Texto tamanho={25} texto={'R$ ' + props.item.valorBase}></Texto>
           </View>
           <View>
             <Texto tamanho={15} texto={'Valor Total: '}></Texto>
-            <Texto tamanho={25} texto={'R$ ' + item.valorTotal}></Texto>
+            <Texto tamanho={25} texto={'R$ ' + props.item.valorTotal}></Texto>
           </View>
         </View>
       </View>

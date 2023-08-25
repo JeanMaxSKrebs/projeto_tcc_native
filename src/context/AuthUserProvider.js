@@ -7,10 +7,17 @@ export const AuthUserContext = createContext({});
 
 export const AuthUserProvider = ({children}) => {
   const [user, setUser] = useState(null); //usuário que está na sessão
-  
+  const [isMounted, setIsMounted] = useState(true);
+
   useEffect(() => {
+    setIsMounted(true);
+
     // Carrega o usuário da sessão armazenada, se existir
     retrieveUserSession();
+
+    return () => {
+      setIsMounted(false);
+    };
   }, []);
 
   /*
@@ -36,8 +43,9 @@ export const AuthUserProvider = ({children}) => {
   async function retrieveUserSession() {
     try {
       const session = await EncryptedStorage.getItem('user_session');
-      if (session) {
-        const { email, senha } = JSON.parse(session);
+      // if (session) {
+      if (session && isMounted) {
+        const {email, senha} = JSON.parse(session);
         signIn(email, senha); // Tenta fazer login com as credenciais armazenadas
       }
     } catch (e) {
@@ -70,7 +78,6 @@ export const AuthUserProvider = ({children}) => {
       }
       await storeUserSession(email, senha);
       if (await getUser(senha)) {
-
         return 'ok';
       } else {
         return 'Problemas ao buscar o seu perfil. Contate o administrador.';

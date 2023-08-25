@@ -6,81 +6,88 @@ import Item from './Item';
 
 import {View, Container, FlatList, Content} from './styles';
 import LogoutButton from '../../components/LogoutButton';
-import Texto from '../../components/Texto'
-import Voltar from '../../components/Voltar'
+import Texto from '../../components/Texto';
+import Voltar from '../../components/Voltar';
 import MeuButton from '../../components/MeuButton';
 import {CommonActions} from '@react-navigation/native';
 
 const Orcamentos = ({route, navigation}) => {
-  const {orcamentos,  getBudgetData} = useContext(OrcamentosContext);
+  const {orcamentos, getBudgetData} = useContext(OrcamentosContext);
   const [orcamentosTemp, setOrcamentosTemp] = useState([]);
 
   const voltar = () => {
     navigation.goBack();
-    };
+  };
 
   const routeOrcamento = item => {
     // console.log('calica');
     // console.log(item);
+    // console.log(route.params.value);
+    // console.log(route.params.salao);
+
     switch (item) {
       case 'NovoOrcamento':
         navigation.dispatch(
           CommonActions.navigate({
             name: 'NovoOrcamento',
-            params: { value: item },
+            params: {value: route.params.value, salao: route.params.salao},
           }),
         );
-      break;
+        break;
       default:
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamento',
-            params: { value: item }
+            params: {value: item, salao: route.params.salao},
           }),
         );
-      break;
+        break;
     }
   };
 
   useEffect(() => {
     // console.log('entrou orcamentos')
     // console.log(route)
-    getBudgetData();
+    getBudgetData(route.params.salao.id);
   }, []);
 
-    const renderItem = ({item}) => (
-      // console.log('itemitemitem'),
-      // console.log(item),
-        <Item item={item} onPress={() => routeOrcamento(item)} />
-      );
+  const renderItem = ({item}) => (
+    // console.log('itemitemitem'),
+    // console.log(item),
+    <Item item={item} onPress={() => routeOrcamento(item)} />
+  );
 
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
-      {/* {console.log('orcametno item: ' + item)} */}
-      {/* {console.log('orcametno temp: ' + orcamentosTemp)} */}
-      {/* {console.log('orcametnos: ' + orcamentos)} */}
-      {/* {console.log('1')}
+        {/* {console.log('orcametno item: ' + item)} */}
+        {/* {console.log('orcametno temp: ' + orcamentosTemp)} */}
+        {/* {console.log('orcametnos: ' + orcamentos)} */}
+        {/* {console.log('1')}
       {console.log(orcamentos)}
     {console.log('2')} */}
-      {/* {console.log(orcamentos[0].nome)} */}
-      {/* <Text>{orcamentos[0].nome}</Text> */}
+        {/* {console.log(orcamentos[0].nome)} */}
+        {/* <Text>{orcamentos[0].nome}</Text> */}
 
         <Container>
-          <Content style={{ padding: 20 }}>
-            <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary}/>
+          <Content style={{padding: 20}}>
+            <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary} />
           </Content>
-            
+          {console.log(orcamentos.length)}
           <FlatList
             data={orcamentosTemp.length > 0 ? orcamentosTemp : orcamentos}
             renderItem={renderItem}
             keyExtractor={item => item.id}
-            />
+          />
           <Content>
-              <MeuButton texto="Novo Orçamento" cor={COLORS.primary}  onClick={() => routeOrcamento('NovoOrcamento')}/>
+            <MeuButton
+              texto="Novo Orçamento"
+              cor={COLORS.primary}
+              onClick={() => routeOrcamento('NovoOrcamento')}
+            />
           </Content>
-          </Container>
+        </Container>
       </View>
     </SafeAreaView>
   );
