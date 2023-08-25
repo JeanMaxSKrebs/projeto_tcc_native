@@ -12,14 +12,14 @@ import {CommonActions} from '@react-navigation/native';
 const NovoOrcamento = ({route, navigation}) => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [valorBase, setValorBase] = useState('');
+  const [valorBase, setValorBase] = useState(0);
   const {orcamento, saveOrcamento} = useContext(OrcamentosContext);
 
   const voltar = () => {
     navigation.goBack();
   };
 
-  console.log(route.params)
+  // console.log(route.params)
 
   const salvar = async () => {
     const newOrcamento = {
@@ -32,7 +32,7 @@ const NovoOrcamento = ({route, navigation}) => {
     try {
       const newOrcamentoId = await saveOrcamento(newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: newOrcamentoId};
-
+    
       navigation.dispatch(
         CommonActions.navigate({
           name: 'Orcamento',
@@ -61,7 +61,7 @@ const NovoOrcamento = ({route, navigation}) => {
           <TextInput
             keyboardType="numeric"
             placeholder="Valor Base"
-            value={valorBase}
+            value={valorBase !== 0 ? valorBase.toString() : ""}
             onChangeText={setValorBase}
           />
         </View>

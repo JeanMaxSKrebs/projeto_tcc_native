@@ -17,7 +17,7 @@ export const OrcamentosProvider = ({children}) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
-  const getBudgetData = async (id) => {
+  const getBudgetData = async id => {
     try {
       const {data, error} = await supabase
         .from('orcamentos')
@@ -46,7 +46,7 @@ export const OrcamentosProvider = ({children}) => {
 
   useEffect(() => {
     if (user !== null) {
-      getBudgetData();
+      getBudgetData(user.id);
     } else {
       getUser();
     }
@@ -54,6 +54,8 @@ export const OrcamentosProvider = ({children}) => {
 
   const saveOrcamento = async (orcamentoData, itensData) => {
     try {
+      console.log('orcamentoData');
+      console.log(orcamentoData);
       // console.log(itensData);
       // Primeiro, insira o orçamento na tabela 'orcamentos'
       const {data: orcamento, error: orcamentoError} = await supabase
@@ -64,13 +66,16 @@ export const OrcamentosProvider = ({children}) => {
             nome: orcamentoData.nome,
             descricao: orcamentoData.descricao,
             valor_base: orcamentoData.valorBase,
-            valor_total: 0, // O valor total será calculado posteriormente
+            valor_itens: 0, // O valor total será calculado posteriormente
+            valor_total: valor_base + valor_itens,
           },
-        ]);
+        ])
+        .select('id');
 
       if (orcamentoError) {
         throw orcamentoError;
       }
+
       if (itensData) {
         // Agora, insira os itens de orçamento na tabela 'itens_orcamentos'
         const itensToInsert = itensData.map(item => ({
@@ -102,9 +107,15 @@ export const OrcamentosProvider = ({children}) => {
         if (updateError) {
           throw updateError;
         }
-        
+
         return {orcamento: updatedOrcamento[0], itens};
       }
+
+      // console.log('orcamento');
+      // console.log(orcamento[0]);
+      // console.log(orcamento[0].id);
+  
+      return orcamento[0].id;
     } catch (error) {
       console.error('Erro ao salvar orçamento:', error);
       return {error: 'Erro ao salvar orçamento.'};
@@ -121,14 +132,17 @@ export const OrcamentosProvider = ({children}) => {
       const {data: updatedOrcamento, error: updateError} = await supabase
         .from('orcamentos')
         .update({
+          salao_id: orcamentoData.salaoId,
           nome: orcamentoData.nome,
           descricao: orcamentoData.descricao,
+          valor_base: orcamentoData.valorBase,
         })
         .match({id: orcamentoId});
 
       if (updateError) {
         throw updateError;
       }
+      if (novosItensData) {
 
       // Atualize os itens de orçamento
       // Primeiro, delete os itens antigos
@@ -174,6 +188,10 @@ export const OrcamentosProvider = ({children}) => {
       }
 
       return {orcamento: updatedOrcamento, novosItens};
+    }
+
+    return true;
+
     } catch (error) {
       console.error('Erro ao atualizar orçamento:', error);
       return {error: 'Erro ao atualizar orçamento.'};

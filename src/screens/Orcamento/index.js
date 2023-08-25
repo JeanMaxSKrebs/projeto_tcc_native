@@ -17,18 +17,20 @@ const Orcamento = ({route, navigation}) => {
   const [valorTotal, setValorTotal] = useState('');
 
   const item = route.params.value;
+  const salao = route.params.salao;
   
   const voltar = () => {
     navigation.goBack();
   };
-  // ({item}) 
+
   const routeOrcamento = item => {
     // console.log("TESTE")
     // console.log(item)
+    // console.log(route)
     navigation.dispatch(
       CommonActions.navigate({
         name: 'AlterarOrcamento',
-        params: { value: item },
+        params: { value: item, salao: salao },
       }),
     );
   };
