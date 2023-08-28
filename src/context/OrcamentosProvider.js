@@ -11,7 +11,7 @@ export const OrcamentosContext = createContext({});
 
 export const OrcamentosProvider = ({children}) => {
   const [orcamentos, setOrcamentos] = useState([]);
-  const {user, getUser, signOut} = useContext(AuthUserContext);
+  const {user, getUser} = useContext(AuthUserContext);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -44,13 +44,15 @@ export const OrcamentosProvider = ({children}) => {
     }
   };
 
-  useEffect(() => {
-    if (user !== null) {
-      getBudgetData(user.id);
-    } else {
-      getUser();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     console.log(user)
+  //     console.log(user.id)
+  //     getBudgetData(user.id);
+  //   } else {
+  //     getUser();
+  //   }
+  // }, []);
 
   const saveOrcamento = async (orcamentoData, itensData) => {
     try {

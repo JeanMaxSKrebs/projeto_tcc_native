@@ -12,6 +12,7 @@ export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({children}) => {
   const [salao, setSalao] = useState([]);
+  const [itens, setItens] = useState([]);
   const {user, getUser, signOut} = useContext(AuthUserContext);
 
   const showToast = message => {
@@ -36,11 +37,12 @@ export const SalaoProvider = ({children}) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     if (user !== null) {
       // console.log(user)
       // console.log('user salao')
-      getHallData();
+      await getHallData();
+      getItensData(salao.id);
     } else {
       // console.log(user)
       // console.log('user aaaaa')
@@ -155,8 +157,38 @@ export const SalaoProvider = ({children}) => {
   //   }
   // };
 
+  const getItensData = async salaoId => {
+    try {
+      const {data, error} = await supabase
+        .from('itens')
+        .select('*')
+
+      if (error) {
+        console.error('Erro ao buscar os itens:', error);
+        return;
+      }
+      // console.log(data.length)
+      const filteredData = data.filter(item => item.salao_id.includes(salaoId));
+      // console.log(filteredData.length)
+
+      const fetchedItens = filteredData.map(item => ({
+        id: item.id,
+        nome: item.nome,
+        valorUnitario: item.valor_unitario,
+        quantidade: item.quantidade,
+      }));
+      console.log('fetchedItens');
+      console.log(fetchedItens);
+      setItens({fetchedItens});
+
+      return {fetchedItens};
+    } catch (error) {
+      console.error('Erro ao buscar os itens:', error);
+    }
+  };
+
   return (
-    <SalaoContext.Provider value={{salao, saveSalao, updateSalao, getHallData}}>
+    <SalaoContext.Provider value={{itens, getItensData, salao, saveSalao, updateSalao, getHallData}}>
       {children}
     </SalaoContext.Provider>
   );

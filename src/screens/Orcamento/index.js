@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {SafeAreaView, Text, StyleSheet} from 'react-native';
 import {COLORS} from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
-import AlterarOrcamentoButton from '../../components/AlterarOrcamentoButton';
+import AlterarOrcamentoButton from '../../components/Orcamento/AlterarOrcamentoButton';
+import AdicionarItemButton from '../../components/Orcamento/AdicionarItemButton';
+import OrcamentoItens from '../OrcamentoItens';
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
-import { Container, FlatList, Content, TextInput,  View} from './styles';
+import {Container, FlatList, Content, TextInput, View} from './styles';
 import {CommonActions} from '@react-navigation/native';
-
 
 const Orcamento = ({route, navigation}) => {
   // console.log(route)
@@ -18,7 +19,7 @@ const Orcamento = ({route, navigation}) => {
 
   const item = route.params.value;
   const salao = route.params.salao;
-  
+
   const voltar = () => {
     navigation.goBack();
   };
@@ -30,16 +31,19 @@ const Orcamento = ({route, navigation}) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'AlterarOrcamento',
-        params: { value: item, salao: salao },
+        params: {value: item, salao: salao},
       }),
     );
   };
-  
+
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
-          <AlterarOrcamentoButton item={item} onClick={() => routeOrcamento(item)} />
+        <AlterarOrcamentoButton
+          item={item}
+          onClick={() => routeOrcamento(item)}
+        />
         <View>
           <View>
             {/* {console.log('item000')}
@@ -47,7 +51,11 @@ const Orcamento = ({route, navigation}) => {
             <Texto tamanho={40} texto={nome} tipo={'orcamento'}></Texto>
           </View>
           <View>
-            <Texto texto={'AI CALICA'}></Texto>
+            <AdicionarItemButton
+              item={item}
+              onClick={() => routeOrcamento(item)}
+            />
+            <OrcamentoItens item={item} salao={salao}></OrcamentoItens>
           </View>
         </View>
       </View>

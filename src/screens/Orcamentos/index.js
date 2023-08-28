@@ -3,7 +3,7 @@ import {SafeAreaView, Text} from 'react-native';
 import {COLORS} from '../../assets/colors';
 import {OrcamentosContext} from '../../context/OrcamentosProvider';
 import Item from './Item';
-
+import {useFocusEffect} from '@react-navigation/native';
 import {View, Container, FlatList, Content} from './styles';
 import LogoutButton from '../../components/LogoutButton';
 import Texto from '../../components/Texto';
@@ -34,6 +34,14 @@ const Orcamentos = ({route, navigation}) => {
           }),
         );
         break;
+      case 'GerenciarItens':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Itens',
+            params: {value: route.params.value, salao: route.params.salao},
+          }),
+        );
+        break;
       default:
         navigation.dispatch(
           CommonActions.navigate({
@@ -44,17 +52,30 @@ const Orcamentos = ({route, navigation}) => {
         break;
     }
   };
+  const [hasFocused, setHasFocused] = useState(false);
+  useFocusEffect(() => {
+    console.log(hasFocused);
+    if (!hasFocused) {
+      // Código a ser executado quando a tela fica ativa pela primeira vez
+      // console.log('entrou orcamentos')
+      // console.log(route)
+      getBudgetData(route.params.salao.id);
 
-  useEffect(() => {
-    // console.log('entrou orcamentos')
-    // console.log(route)
-    getBudgetData(route.params.salao.id);
-  }, []);
+      // Marcar que a tela já focou uma vez
+      setHasFocused(true);
+    }
+  });
 
   const renderItem = ({item}) => (
     // console.log('itemitemitem'),
     // console.log(item),
-    <Item item={item} onPress={() => routeOrcamento(item)} />
+    <Item
+      item={item}
+      onPress={() => {
+        routeOrcamento(item);
+        setHasFocused(false);
+      }}
+    />
   );
 
   return (
@@ -85,6 +106,11 @@ const Orcamentos = ({route, navigation}) => {
               texto="Novo Orçamento"
               cor={COLORS.primary}
               onClick={() => routeOrcamento('NovoOrcamento')}
+            />
+            <MeuButton
+              texto="Gerenciar Itens"
+              cor={COLORS.primary}
+              onClick={() => routeOrcamento('GerenciarItens')}
             />
           </Content>
         </Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
-import { COLORS } from '../assets/colors';
+import { COLORS } from '../../assets/colors';
 
 const AlterarOrcamentoButton = props => {
   // console.log(props);

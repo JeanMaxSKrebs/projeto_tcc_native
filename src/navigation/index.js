@@ -13,20 +13,19 @@ import Navigator from './Navigator';
 export default function Providers() {
   return (
     <AuthUserProvider>
-        <ApiProvider>
-          <ProfileProvider>
-              <SaloesProvider>
-                <SalaoProvider>
-                  <ClienteProvider>
-                    <OrcamentosProvider>
-                        <Navigator />
-                    </OrcamentosProvider>
-                  </ClienteProvider>
-                </SalaoProvider>
-              </SaloesProvider>
+      <ApiProvider>
+        <ProfileProvider>
+          <SaloesProvider>
+            <SalaoProvider>
+              <ClienteProvider>
+                <OrcamentosProvider>
+                    <Navigator />
+                </OrcamentosProvider>
+              </ClienteProvider>
+            </SalaoProvider>
+          </SaloesProvider>
         </ProfileProvider>
-        </ApiProvider>
-      </AuthUserProvider>
-
+      </ApiProvider>
+    </AuthUserProvider>
   );
 }
