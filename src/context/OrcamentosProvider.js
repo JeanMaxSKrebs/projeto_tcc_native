@@ -69,7 +69,7 @@ export const OrcamentosProvider = ({children}) => {
             descricao: orcamentoData.descricao,
             valor_base: orcamentoData.valorBase,
             valor_itens: 0, // O valor total será calculado posteriormente
-            valor_total: valor_base + valor_itens,
+            valor_total: orcamentoData.valorTotal,
           },
         ])
         .select('id');
@@ -77,7 +77,8 @@ export const OrcamentosProvider = ({children}) => {
       if (orcamentoError) {
         throw orcamentoError;
       }
-
+      console.log('itensData')
+      console.log(itensData)
       if (itensData) {
         // Agora, insira os itens de orçamento na tabela 'itens_orcamentos'
         const itensToInsert = itensData.map(item => ({
