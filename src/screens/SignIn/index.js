@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {TextInput} from 'react-native';
 import {
   SafeAreaView,
@@ -16,6 +16,7 @@ import auth from '@react-native-firebase/auth';
 import {CommonActions} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Loading from '../../components/Loading';
+import { AuthUserContext } from '../../context/AuthUserProvider'
 
 const SignIn = ({navigation}) => {
   // console.log(app);
@@ -23,6 +24,7 @@ const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const { getUser } = useContext(AuthUserContext)
 
   const recuperarSenha = () => {
     // alert('abrir modal recuperar senha');
@@ -62,6 +64,8 @@ const SignIn = ({navigation}) => {
         // await auth().signInWithEmailAndPassword('jeanmaxskrebs@gmail.com', 'Teste123');
         await auth().signInWithEmailAndPassword(email, senha);
         await storeUserSession(email, senha);
+        //para ver se o usuario fica setado corretamente
+        await getUser(senha);
         
         
         setLoading(false);

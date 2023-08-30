@@ -19,10 +19,15 @@ const Gerenciador = ({navigation}) => {
   const {salao, getHallData} = useContext(SalaoContext);
   const {getHallsData} = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
+  const {user} = useContext(AuthUserContext);
 
   useEffect(() => {
-    getHallData();
-    getHallsData();
+    // console.log('gerenciador user')
+    // console.log(user)
+    if(user) {
+      getHallData();
+      getHallsData();
+    }
     navigation.setOptions({
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
@@ -34,7 +39,7 @@ const Gerenciador = ({navigation}) => {
       // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => <LogoutButton />,
     });
-  }, [navigation]);
+  }, [navigation, user]);
 
   const routeGerenciador = item => {
     // console.log('gerenciador');
@@ -79,11 +84,11 @@ const Gerenciador = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-        <>
+      <>
         {/* {console.log('salao')}
         {console.log(salao)} */}
-        
-          {/* <View>
+
+        {/* <View>
             <Image
               source={{uri: salao.logo}}//TODO
               key={salao.logo}
@@ -91,41 +96,41 @@ const Gerenciador = ({navigation}) => {
             />
             <MeuButton texto="Alterar Logo" onClick={''} />
           </View> */}
-          <View style={{ alignItems: 'center' }}>
-            {salao.logo && (
-              <Image
-                source={{ uri: salao.logo }}
-                key={salao.logo}
-                style={{ width: 320, height: 300, borderRadius: 15 }}
-              />
-            )}
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={styles.nome} >{salao.nome}</Text>
-              <Text style={styles.descricao} >{salao.descricao}</Text>
-              <Text style={styles.endereco}>{salao.endereco}</Text>
-              <Text style={styles.cidade}>{salao.cidade}</Text>
-              <Text style={styles.capacidade}>Capacidade: {salao.capacidade}</Text>
-            </View>
+        <View style={{ alignItems: 'center' }}>
+          {salao.logo && (
+            <Image
+              source={{ uri: salao.logo }}
+              key={salao.logo}
+              style={{ width: 320, height: 300, borderRadius: 15 }}
+            />
+          )}
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Text style={styles.nome} >{salao.nome}</Text>
+            <Text style={styles.descricao} >{salao.descricao}</Text>
+            <Text style={styles.endereco}>{salao.endereco}</Text>
+            <Text style={styles.cidade}>{salao.cidade}</Text>
+            <Text style={styles.capacidade}>Capacidade: {salao.capacidade}</Text>
           </View>
+        </View>
 
 
-        </>
-        <Container>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <MeuButtonMetade texto="Tela Orçamento" onClick={() => routeGerenciador('TelaOrcamento')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Tela de Reservas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
-          </View>
+      </>
+      <Container>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <MeuButtonMetade texto="Tela Orçamento" onClick={() => routeGerenciador('TelaOrcamento')} style={{ width: '45%' }} />
+          <MeuButtonMetade texto="Tela de Reservas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
+        </View>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <MeuButtonMetade texto="Ver Agenda" onClick={() => routeGerenciador('VerAgenda')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
-          </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <MeuButtonMetade texto="Ver Agenda" onClick={() => routeGerenciador('VerAgenda')} style={{ width: '45%' }} />
+          <MeuButtonMetade texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
+        </View>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <MeuButtonMetade texto="Visão Cliente" onClick={() => routeGerenciador('VisaoCliente')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Atualizar Dados" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
-          </View>
-        </Container>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <MeuButtonMetade texto="Visão Cliente" onClick={() => routeGerenciador('VisaoCliente')} style={{ width: '45%' }} />
+          <MeuButtonMetade texto="Atualizar Dados" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
+        </View>
+      </Container>
       {/* {loading && <Loading />} */}
     </SafeAreaView>
   );

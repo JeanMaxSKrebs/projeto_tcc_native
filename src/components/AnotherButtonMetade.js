@@ -3,7 +3,7 @@ import {Text, TouchableHighlight, View, StyleSheet} from 'react-native';
 import {COLORS} from '../assets/colors';
 
 const AnotherButtonMetade = props => {
-  console.log(props);
+  // console.log(props);
   return (
     <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
         <View>

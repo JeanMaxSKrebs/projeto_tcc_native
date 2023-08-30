@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 import Saloes from '../screens/Saloes';
@@ -13,7 +13,7 @@ import Orcamentos from '../screens/Orcamentos';
 import Salao from '../screens/Salao';
 import Preload from '../screens/Preload';
 import ForgotPassword from '../screens/ForgotPassword';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Home from '../screens/Home';
 import Manutencao from '../screens/Manutencao';
@@ -22,10 +22,10 @@ import AtualizarDados from '../screens/AtualizarDados';
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
 
-import {COLORS} from '../assets/colors';
-import {StyleSheet, StatusBar} from 'react-native';
+import { COLORS } from '../assets/colors';
+import { StyleSheet, StatusBar } from 'react-native';
 
-import {AuthUserContext} from '../context/AuthUserProvider';
+import { AuthUserContext } from '../context/AuthUserProvider';
 import { Text } from '../screens/PerfilUsuario/styles';
 
 const Stack = createNativeStackNavigator();
@@ -49,42 +49,37 @@ const AuthStack = () => (
 );
 
 const AppStack = () => {
-  const {user, getUser, signOut} = useContext(AuthUserContext)
-  
+  const { user } = useContext(AuthUserContext)
+
   useEffect(() => {
-    if(!user) {
-      getUser();
-    } else {
-      console.log('user conectado:' + user)
+    if (user) {
+      console.log('email user conectado: ' + user.email)
       console.log(user)
     }
-  }, []);
+  }, [user]);
 
-  // console.log('getUser');
-  // console.log(user)
-
-  return(
+  return (
     <Tab.Navigator
-    initialRouteName="Saloes"
-    screenOptions={{
-      headerShown: true,
-    }}>
+      initialRouteName="Saloes"
+      screenOptions={{
+        headerShown: true,
+      }}>
       <>
-      {user && user.tipo == "Cliente" ? (
-        <>
-          <Tab.Screen
-            component={Saloes}
-            name="Saloes"
-            options={{
-              tabBarLabel: 'Home',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
+        {user && user.tipo == "Cliente" ? (
+          <>
+            <Tab.Screen
+              component={Saloes}
+              name="Saloes"
+              options={{
+                tabBarLabel: 'Home',
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+              }}
             />
-            </>
+          </>
         ) : (
           <>
-           {/* <Tab.Screen
+            {/* <Tab.Screen
             component={Home}
             name="Saloes"
             options={{
@@ -93,19 +88,19 @@ const AppStack = () => {
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
             /> */}
-           <Tab.Screen
-            component={Gerenciador}
-            name="Gerenciador"
-            options={{
-              tabBarLabel: 'Home',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
+            <Tab.Screen
+              component={Gerenciador}
+              name="Gerenciador"
+              options={{
+                tabBarLabel: 'Home',
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
+              }}
             />
-            </>
+          </>
         )
-      }
-      {/* <Tab.Screen
+        }
+        {/* <Tab.Screen
             component={Gerenciador}
             name="Gerenciador"
             options={{
@@ -114,15 +109,15 @@ const AppStack = () => {
               tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
             }}
             /> */}
-      <Tab.Screen
-              component={Menu}
-              name="Menu"
-              options={{
-                tabBarLabel: 'Menu',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
-              }}
-            />
+        <Tab.Screen
+          component={Menu}
+          name="Menu"
+          options={{
+            tabBarLabel: 'Menu',
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tabBarIcon: () => <Icon name="list" color={COLORS.primaryDark} />,
+          }}
+        />
       </>
     </Tab.Navigator>
   );
@@ -165,22 +160,22 @@ const SignInStyle = {
   // headerLeft: false,
   headerTitleAlign: 'center',
   title: 'Bem Vindo',
-  headerStyle: {backgroundColor: COLORS.primaryShadow},
-  headerTitleStyle: {color: COLORS.black},
+  headerStyle: { backgroundColor: COLORS.primaryShadow },
+  headerTitleStyle: { color: COLORS.black },
 };
 const SignUpStyle = {
   // headerLeft: false,
   headerTitleAlign: 'center',
   title: 'Cadastre-se',
-  headerStyle: {backgroundColor: COLORS.secundary},
-  headerTitleStyle: {color: COLORS.primaryDark},
+  headerStyle: { backgroundColor: COLORS.secundary },
+  headerTitleStyle: { color: COLORS.primaryDark },
   headerTintColor: COLORS.primaryDark,
 };
 const ForgotPasswordStyle = {
   headerTitleAlign: 'center',
   title: 'Esqueceu a Senha',
-  headerStyle: {backgroundColor: COLORS.secundary},
-  headerTitleStyle: {color: COLORS.primaryDark},
+  headerStyle: { backgroundColor: COLORS.secundary },
+  headerTitleStyle: { color: COLORS.primaryDark },
   headerTintColor: COLORS.primaryDark,
 };
 

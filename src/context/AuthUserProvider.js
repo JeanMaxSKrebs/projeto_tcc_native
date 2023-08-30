@@ -1,23 +1,16 @@
-import React, {createContext, useState, useEffect} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 export const AuthUserContext = createContext({});
 
-export const AuthUserProvider = ({children}) => {
+export const AuthUserProvider = ({ children }) => {
   const [user, setUser] = useState(null); //usuário que está na sessão
-  const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    setIsMounted(true);
-
     // Carrega o usuário da sessão armazenada, se existir
     retrieveUserSession();
-
-    return () => {
-      setIsMounted(false);
-    };
   }, []);
 
   /*
@@ -43,9 +36,12 @@ export const AuthUserProvider = ({children}) => {
   async function retrieveUserSession() {
     try {
       const session = await EncryptedStorage.getItem('user_session');
-      // if (session) {
-      if (session && isMounted) {
-        const {email, senha} = JSON.parse(session);
+      // console.log('session')
+      // console.log(session)
+      if (session) {
+        const { email, senha } = JSON.parse(session);
+        // console.log('email e senha')
+        // console.log(email, senha)
         signIn(email, senha); // Tenta fazer login com as credenciais armazenadas
       }
     } catch (e) {

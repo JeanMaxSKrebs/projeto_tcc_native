@@ -1,29 +1,29 @@
-import React, {createContext, useEffect, useState, useContext} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {ToastAndroid} from 'react-native';
+import React, { createContext, useEffect, useState, useContext } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { ToastAndroid } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 // import supabase from '../services/supabase';
 // import supabase from '../services/supabaseClient';
-import {supabase} from '../../supabase/supabase';
+import { supabase } from '../../supabase/supabase';
 
-import {AuthUserContext} from './AuthUserProvider';
+import { AuthUserContext } from './AuthUserProvider';
 
 export const SalaoContext = createContext({});
 
-export const SalaoProvider = ({children}) => {
+export const SalaoProvider = ({ children }) => {
   const [salao, setSalao] = useState([]);
   const [itens, setItens] = useState([]);
-  const {user, getUser, signOut} = useContext(AuthUserContext);
+  const { user, getUser, signOut } = useContext(AuthUserContext);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
   const getHallData = async () => {
-    console.log(user);
-    console.log('max aqui');
+    // console.log(user);
+    // console.log('max aqui');
     try {
-      const {data: salao, error} = await supabase
+      const { data: salao, error } = await supabase
         .from('saloes')
         .select('*')
         .eq('email', user.email);
@@ -37,11 +37,11 @@ export const SalaoProvider = ({children}) => {
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     if (user !== null) {
       // console.log(user)
       // console.log('user salao')
-      await getHallData();
+      getHallData();
       getItensData(salao.id);
     } else {
       // console.log(user)
