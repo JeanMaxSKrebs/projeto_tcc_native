@@ -55,7 +55,7 @@ export const SalaoProvider = ({children}) => {
     // console.log(salaoData);
 
     try {
-      const {data: insertedData, error: insertError} = await supabase
+      const { data: insertedData, error: insertError } = await supabase
         .from('saloes')
         .insert([
           {
@@ -77,16 +77,58 @@ export const SalaoProvider = ({children}) => {
               'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20b.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBiLmpwZWciLCJpYXQiOjE2ODc5OTg0NDEsImV4cCI6MTcxOTUzNDQ0MX0.-bBq524qvk8b_D9BkqpcCoDCQM_jEh_xwhN0yDvxWjY&t=2023-06-29T00%3A27%3A21.406Z',
             ],
           },
-        ]);
+        ])
+        .select()
 
       // console.log('data')
       // console.log(insertedData)
 
       if (insertError) {
-        console.error('Erro ao inserir os salões:', insertError);
+        console.error('Erro ao inserir o salão:', insertError);
         return;
       }
-      console.log('Salões inseridos com sucesso:', insertedData);
+      // console.log('Salões inseridos com sucesso:', insertedData);
+
+
+      const { data: itemsData, error: itemsError } = await supabase
+        .from('itens')
+        .select('id');
+
+      if (itemsError) {
+        console.error('Erro ao pegar itens do salão:', itemsError);
+        return;
+      }
+      // console.log('itens inseridos com sucesso:', itemsData);
+
+      console.log('itensdata')
+      console.log(itemsData)
+
+      // console.log('insertedData[0].id')
+      // console.log(insertedData[0].id)
+      const newSalaoId = insertedData[0].id;
+
+      const { error: updateError } = await Promise.all(
+        itemsData.map(async item => {
+          const { data, error } = await supabase
+            .from('itens_saloes')
+            .insert([
+              { salao_id: newSalaoId, item_id: item.id },
+            ])
+
+          if (error) {
+            // Lidar com o erro, se necessário
+            console.log('error')
+            console.log(error)
+          }
+          console.log(data)
+          return data;
+        })
+      );
+
+      if (updateError) {
+        console.error('Erro ao atualizar os itens do salão:', updateError);
+        return;
+      }
 
       // setSalao((prevSaloes) => [...prevSaloes, data[0]]);
 
@@ -101,7 +143,7 @@ export const SalaoProvider = ({children}) => {
     // console.log(salaoData);
 
     try {
-      const {data: updatedData, error: updateError} = await supabase
+      const { data: updatedData, error: updateError } = await supabase
         .from('saloes')
         .update({
           nome: salaoData.nome,
@@ -121,7 +163,7 @@ export const SalaoProvider = ({children}) => {
             'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20b.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBiLmpwZWciLCJpYXQiOjE2ODc5OTg0NDEsImV4cCI6MTcxOTUzNDQ0MX0.-bBq524qvk8b_D9BkqpcCoDCQM_jEh_xwhN0yDvxWjY&t=2023-06-29T00%3A27%3A21.406Z',
           ],
         })
-        .match({id: salaoData.id});
+        .match({ id: salaoData.id });
 
       // console.log('data');
       // console.log(updatedData);
@@ -159,7 +201,7 @@ export const SalaoProvider = ({children}) => {
 
   const getItensData = async salaoId => {
     try {
-      const {data, error} = await supabase
+      const { data, error } = await supabase
         .from('itens')
         .select('*')
 
@@ -179,16 +221,16 @@ export const SalaoProvider = ({children}) => {
       }));
       console.log('fetchedItens');
       console.log(fetchedItens);
-      setItens({fetchedItens});
+      setItens({ fetchedItens });
 
-      return {fetchedItens};
+      return { fetchedItens };
     } catch (error) {
       console.error('Erro ao buscar os itens:', error);
     }
   };
 
   return (
-    <SalaoContext.Provider value={{itens, getItensData, salao, saveSalao, updateSalao, getHallData}}>
+    <SalaoContext.Provider value={{ itens, getItensData, salao, saveSalao, updateSalao, getHallData }}>
       {children}
     </SalaoContext.Provider>
   );
