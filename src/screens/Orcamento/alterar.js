@@ -17,9 +17,9 @@ const AlterarOrcamento = ({route, navigation}) => {
   const [salaoId, setSalaoId] = useState(0);
   const [id, setId] = useState(0);
 
-  const {orcamento, updateOrcamento} = useContext(OrcamentosContext);
+  const {updateOrcamento} = useContext(OrcamentosContext);
 
-  const item = route.params.value;
+  const orcamento = route.params.orcamento;
   const salao = route.params.salao;
 
   const voltar = () => {
@@ -27,14 +27,16 @@ const AlterarOrcamento = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    // console.log('item123')
-    // console.log(item.id);
+    console.log('orcamento123')
+    console.log(orcamento);
     // console.log(salao.id);
     setSalaoId(salao.id);
-    setId(item.id);
-    setNome(item.nome);
-    setDescricao(item.descricao);
-    setValorBase(item.valorBase);
+    if(orcamento) {
+      setId(orcamento.id);
+      setNome(orcamento.nome);
+      setDescricao(orcamento.descricao);
+      setValorBase(orcamento.valorBase);
+    }
   }, []);
 
   const salvar = async () => {
@@ -43,15 +45,17 @@ const AlterarOrcamento = ({route, navigation}) => {
       nome: nome,
       descricao: descricao,
       valorBase: valorBase,
+      valorTotal: valorBase,
     };
     try {
       await updateOrcamento(id, newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: id};
-
+      console.log(newOrcamentoWithId)
       navigation.dispatch(
         CommonActions.navigate({
+          // igual ta na tela orcamentos
           name: 'Orcamento',
-          params: {value: newOrcamentoWithId},
+          params: {value: newOrcamentoWithId, salao: salao},
         }),
       );
     } catch (error) {

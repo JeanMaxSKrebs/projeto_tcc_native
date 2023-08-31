@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import { COLORS } from '../../assets/colors';
 
-const AlterarOrcamentoButton = props => {
+const AlterarOrcamento = props => {
   // console.log(props);
   return (
     <View style={styles.content}>
@@ -15,7 +15,7 @@ const AlterarOrcamentoButton = props => {
   );
 };
 
-export default AlterarOrcamentoButton;
+export default AlterarOrcamento;
 
 const styles = StyleSheet.create({
   texto: {

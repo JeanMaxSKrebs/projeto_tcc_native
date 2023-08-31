@@ -201,29 +201,50 @@ export const SalaoProvider = ({ children }) => {
 
   const getItensData = async salaoId => {
     try {
+      // console.log(salaoId)
+
       const { data, error } = await supabase
-        .from('itens')
-        .select('*')
+      .from('itens_saloes')
+      .select(`
+        *,
+        itens ( nome, descricao )
+      `)
+      .eq('salao_id', salaoId);
+    
+
+
+      // const { data, error } = await supabase
+      //   .from('itens_saloes')
+      //   .select('*')
+      //   .eq('salao_id', salaoId);
 
       if (error) {
         console.error('Erro ao buscar os itens:', error);
         return;
       }
+      console.log('data[0]');
+      console.log(data[0]);
       // console.log(data.length)
-      const filteredData = data.filter(item => item.salao_id.includes(salaoId));
-      // console.log(filteredData.length)
 
-      const fetchedItens = filteredData.map(item => ({
-        id: item.id,
-        nome: item.nome,
-        valorUnitario: item.valor_unitario,
-        quantidade: item.quantidade,
+      const fetchedItens = data.map(dado => ({
+        id: dado.id,
+        salaoId: dado.salao_id,
+        itemId: dado.item_id,
+        valorUnitario: dado.valor_unitario,
+        quantidadeMaxima: dado.quantidade,
+        nome: dado.itens.nome,
+        descricao: dado.itens.descricao,
       }));
-      console.log('fetchedItens');
-      console.log(fetchedItens);
-      setItens({ fetchedItens });
+      // console.log('fetchedItens');
+      // console.log(fetchedItens);
 
-      return { fetchedItens };
+
+
+
+
+      setItens(fetchedItens);
+
+      return fetchedItens;
     } catch (error) {
       console.error('Erro ao buscar os itens:', error);
     }

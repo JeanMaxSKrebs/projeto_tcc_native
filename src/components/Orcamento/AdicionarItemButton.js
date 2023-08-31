@@ -3,7 +3,7 @@ import {Text, View, TouchableHighlight, StyleSheet} from 'react-native';
 import {COLORS} from '../../assets/colors';
 import Texto from '../Texto';
 
-const AlterarOrcamentoButton = props => {
+const AdicionarItemButton = props => {
   // console.log(props.item);
   return (
     <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
@@ -13,7 +13,7 @@ const AlterarOrcamentoButton = props => {
         </View>
         <View style={styles.areaButton}>
           <View style={styles.buttonPlus}>
-            <Texto tamanho={40} texto={'+'}></Texto>
+            <Texto tamanho={35} texto={'+'} cor={COLORS.primary}></Texto>
           </View>
         </View>
       </View>
@@ -21,7 +21,7 @@ const AlterarOrcamentoButton = props => {
   );
 };
 
-export default AlterarOrcamentoButton;
+export default AdicionarItemButton;
 
 const styles = StyleSheet.create({
   texto: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   button: {
-    height: 70,
+    height: 80,
     width: '80%',
     justifyContent: 'center',
   },
@@ -44,16 +44,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   areaButton: {
-    flex: 0.15,
+    flex: 0.20,
     justifyContent: 'center',
     height: '100%',
     paddingLeft: 20,
     // backgroundColor:COLORS.primary
   },
   area: {
-    flex: 0.85, // flex para determinar a proporção
+    flex: 0.80, // flex para determinar a proporção
     justifyContent: 'center',
     height: '100%',
-    borderColor:COLORS.primary
+    // borderColor:COLORS.primary
   },
 });
