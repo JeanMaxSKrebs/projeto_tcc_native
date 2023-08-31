@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, Modal, TouchableOpacity } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { SalaoContext } from '../../context/SalaoProvider';
 import Voltar from '../../components/Voltar';
+import Texto from '../../components/Texto';
+import { COLORS } from '../../assets/colors';
+import ItemButton from '../../components/Itens/ItemButton';
+import ItemModal from '../../components/Itens/modal';
+import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
   const { itens, getItensData } = useContext(SalaoContext);
   // const [itens, setItens] = useState([]);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const voltar = () => {
     navigation.goBack();
@@ -22,23 +30,68 @@ const Itens = ({ route, navigation }) => {
     getItensData(route.params.salao.id)
   }, []);
 
+  //TODO
+  const atualizar = () => {
+    console.log('atualizar');
+  };
+  const excluir = () => {
+    console.log('excluir');
+  };
+
+  const alterarItem = (item) => {
+    setSelectedItem(item);
+    setModalVisible(true);
+  };
+
+  const renderModal = () => {
+    if (!selectedItem) {
+      return null;
+    }
+
+    return (
+      <ItemModal item={selectedItem} isModalVisible onPress={(retorno) => {
+        setSelectedItem(null)
+        setModalVisible(false)
+        { retorno === 'atualizar' ? atualizar() : excluir() }
+      }
+      }
+      />
+    );
+  };
+
+  const renderItem = ({ item }) => {
+    // console.log('item');
+    // console.log(item);
+    // console.log('item.uid:', item.uid);
+    const shouldInvertDirection = item.id % 2 === 1;
+    // console.log(shouldInvertDirection)
+    return (
+      <ItemButton item={item} onPress={() => alterarItem(item)} direita={shouldInvertDirection} />
+    );
+  };
+
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
-        <View>
-          <Text>Itens Screen</Text>
+        <Texto tamanho={30} cor={COLORS.secundary} texto={'Itens / Utensílios'}></Texto>
+        {/* <ScrollView style={{ height: 400, margin: 10 }}> */}
+        <Container>
+
           {/* Renderize os itens aqui */}
-          {console.log('itens screen')}
-          {console.log(itens)}
-          {itens.map(item => (
-            <View key={item.id}>
-              <Text>{item.nome}</Text>
-            </View>
-          ))}
-        </View>
+          {/* {console.log('itens screen')}
+          {console.log(itens)} */}
+          <FlatList
+            data={itens}
+            renderItem={renderItem}
+            keyExtractor={item => item.uid}
+          />
+          {renderModal()}
+
+        </Container>
+        {/* </ScrollView> */}
       </View>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

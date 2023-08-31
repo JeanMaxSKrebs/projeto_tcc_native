@@ -207,7 +207,7 @@ export const SalaoProvider = ({ children }) => {
       .from('itens_saloes')
       .select(`
         *,
-        itens ( nome, descricao )
+        itens ( nome, descricao, imagem )
       `)
       .eq('salao_id', salaoId);
     
@@ -234,6 +234,7 @@ export const SalaoProvider = ({ children }) => {
         quantidadeMaxima: dado.quantidade,
         nome: dado.itens.nome,
         descricao: dado.itens.descricao,
+        imagem: dado.itens.imagem,
       }));
       // console.log('fetchedItens');
       // console.log(fetchedItens);
