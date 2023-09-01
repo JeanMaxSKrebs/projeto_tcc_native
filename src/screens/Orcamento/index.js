@@ -25,8 +25,9 @@ const Orcamento = ({ route, navigation }) => {
   };
 
   const routeOrcamento = (item, nextView) => {
-    // console.log("TESTE")
-    // console.log(item)
+    console.log("TESTE")
+    console.log(item)
+    console.log(salao)
     // console.log(route)
     navigation.dispatch(
       CommonActions.navigate({

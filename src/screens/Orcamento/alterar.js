@@ -29,6 +29,8 @@ const AlterarOrcamento = ({route, navigation}) => {
   useEffect(() => {
     console.log('orcamento123')
     console.log(orcamento);
+    console.log('salao')
+    console.log(salao);
     // console.log(salao.id);
     setSalaoId(salao.id);
     if(orcamento) {
@@ -50,7 +52,9 @@ const AlterarOrcamento = ({route, navigation}) => {
     try {
       await updateOrcamento(id, newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: id};
+      console.log('newOrcamentoWithId')
       console.log(newOrcamentoWithId)
+      console.log(salao)
       navigation.dispatch(
         CommonActions.navigate({
           // igual ta na tela orcamentos

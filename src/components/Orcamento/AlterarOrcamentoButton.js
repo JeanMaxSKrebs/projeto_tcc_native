@@ -4,7 +4,8 @@ import {COLORS} from '../../assets/colors';
 import Texto from '../Texto';
 
 const AlterarOrcamentoButton = props => {
-  console.log(props.item);
+  // console.log('props.item');
+  // console.log(props.item);
   return (
     <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
       <View style={styles.content}>

@@ -18,12 +18,12 @@ const NovoOrcamento = ({route, navigation}) => {
   const voltar = () => {
     navigation.goBack();
   };
-
   // console.log(route.params)
+  let salao = route.params.salao
 
   const salvar = async () => {
     const newOrcamento = {
-      salao_id: route.params.salao.id,
+      salao_id: salao.id,
       nome: nome,
       descricao: descricao,
       valorBase: valorBase,
@@ -36,7 +36,7 @@ const NovoOrcamento = ({route, navigation}) => {
       navigation.dispatch(
         CommonActions.navigate({
           name: 'Orcamento',
-          params: {value: newOrcamentoWithId},
+          params: {value: newOrcamentoWithId, salao: salao},
         }),
       );
     } catch (error) {
