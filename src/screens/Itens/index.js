@@ -10,7 +10,7 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itens, getItensData } = useContext(SalaoContext);
+  const { itensSaloes, getItensData } = useContext(SalaoContext);
   // const [itens, setItens] = useState([]);
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -19,6 +19,13 @@ const Itens = ({ route, navigation }) => {
   const voltar = () => {
     navigation.goBack();
   };
+  
+  console.log('Gerenciar itens')
+  console.log(route.params);
+  console.log(route.params.salao);
+  console.log(route.params.itensSaloes);
+
+  let salao = route.params.salao;
 
   useEffect(() => {
     console.log('entrou itens');
@@ -27,7 +34,7 @@ const Itens = ({ route, navigation }) => {
     // console.log(route.params.orcamento);
     // console.log(itens);
     // console.log(itens);
-    getItensData(route.params.salao.id)
+    getItensData(salao.id)
   }, []);
 
   //TODO
@@ -38,7 +45,7 @@ const Itens = ({ route, navigation }) => {
     console.log('excluir');
   };
 
-  const alterarItem = (item) => {
+  const modificarItem = (item) => {
     setSelectedItem(item);
     setModalVisible(true);
   };
@@ -66,7 +73,7 @@ const Itens = ({ route, navigation }) => {
     const shouldInvertDirection = item.id % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <ItemButton item={item} onPress={() => alterarItem(item)} direita={shouldInvertDirection} />
+      <ItemButton item={item} onPress={() => modificarItem(item)} direita={shouldInvertDirection} />
     );
   };
 
@@ -82,7 +89,7 @@ const Itens = ({ route, navigation }) => {
           {/* {console.log('itens screen')}
           {console.log(itens)} */}
           <FlatList
-            data={itens}
+            data={itensSaloes}
             renderItem={renderItem}
             keyExtractor={item => item.uid}
           />

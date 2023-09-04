@@ -12,7 +12,7 @@ export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({ children }) => {
   const [salao, setSalao] = useState([]);
-  const [itens, setItens] = useState([]);
+  const [itensSaloes, setItensSaloes] = useState([]);
   const { user, getUser, signOut } = useContext(AuthUserContext);
 
   const showToast = message => {
@@ -243,7 +243,7 @@ export const SalaoProvider = ({ children }) => {
 
 
 
-      setItens(fetchedItens);
+      setItensSaloes(fetchedItens);
 
       return fetchedItens;
     } catch (error) {
@@ -252,7 +252,7 @@ export const SalaoProvider = ({ children }) => {
   };
 
   return (
-    <SalaoContext.Provider value={{ itens, getItensData, salao, saveSalao, updateSalao, getHallData }}>
+    <SalaoContext.Provider value={{ itensSaloes, getItensData, salao, saveSalao, updateSalao, getHallData }}>
       {children}
     </SalaoContext.Provider>
   );

@@ -18,8 +18,8 @@ export const SaloesProvider = ({children}) => {
   };
 
   const getHallsData = async () => {
-    console.log(user);
-    console.log('max aqui saloes');
+    // console.log(user);
+    // console.log('max aqui saloes');
     try {
 
       // let { data: saloes, error } = await supabase

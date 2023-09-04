@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
 import Texto from "../../components/Texto";
 import { COLORS } from '../../assets/colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const ItemButton = ({ item, onPress, direita }) => {
@@ -22,7 +23,7 @@ const ItemButton = ({ item, onPress, direita }) => {
                     <View style={styles.quantidade}>
                         <TouchableOpacity style={styles.areaButton} onPress={onPress}>
                             <View style={styles.buttonPlus}>
-                                <Texto tamanho={30} texto={'+'} cor={COLORS.primary}></Texto>
+                                <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primaryDark} size={35} />} cor={COLORS.primary}></Texto>
                             </View>
                         </TouchableOpacity >
                     </View>
@@ -32,7 +33,7 @@ const ItemButton = ({ item, onPress, direita }) => {
                     <View style={styles.quantidade}>
                         <TouchableOpacity style={styles.areaButton} onPress={onPress}>
                             <View style={styles.buttonPlus}>
-                                <Texto tamanho={30} texto={'+'} cor={COLORS.primary}></Texto>
+                                <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primaryDark} size={35} />} cor={COLORS.primary}></Texto>
                             </View>
                         </TouchableOpacity >
                     </View>
@@ -82,7 +83,11 @@ const styles = StyleSheet.create({
     buttonPlus: {
         backgroundColor: COLORS.black,
         borderRadius: 15,
-        width: '50%'
+        width: '70%',
+        aspectRatio: 1,
+        marginRight: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     areaButton: {
         // backgroundColor: COLORS.primary,

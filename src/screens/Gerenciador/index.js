@@ -49,7 +49,7 @@ const Gerenciador = ({navigation}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: item,
-            params: { value: item },
+            params: { salao: salao },
           }),
         );
         break;
@@ -57,7 +57,7 @@ const Gerenciador = ({navigation}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamentos',
-            params: { value: item, salao: salao }
+            params: { salao: salao }
           }),
         );
         break;

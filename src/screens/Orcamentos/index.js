@@ -1,23 +1,30 @@
-import React, {useEffect, useContext, useState} from 'react';
-import {SafeAreaView, Text} from 'react-native';
-import {COLORS} from '../../assets/colors';
-import {OrcamentosContext} from '../../context/OrcamentosProvider';
+import React, { useEffect, useContext, useState } from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { COLORS } from '../../assets/colors';
+import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import Item from './Item';
-import {useFocusEffect} from '@react-navigation/native';
-import {View, Container, FlatList, Content} from './styles';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, Container, FlatList, Content } from './styles';
 import LogoutButton from '../../components/LogoutButton';
 import Texto from '../../components/Texto';
 import Voltar from '../../components/Voltar';
 import MeuButton from '../../components/MeuButton';
-import {CommonActions} from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 
-const Orcamentos = ({route, navigation}) => {
-  const {orcamentos, getBudgetData} = useContext(OrcamentosContext);
+const Orcamentos = ({ route, navigation }) => {
+  const { orcamentos, getBudgetData } = useContext(OrcamentosContext);
   const [orcamentosTemp, setOrcamentosTemp] = useState([]);
 
   const voltar = () => {
     navigation.goBack();
   };
+  // console.log('orcamentos')
+  // console.log(route.params);
+  // console.log(route.params.salao);
+  // console.log(route.params.itensSaloes);
+
+  let itensSaloes = route.params.itensSaloes;
+  let salao = route.params.salao;
 
   const routeOrcamento = item => {
     // console.log('calica');
@@ -30,7 +37,7 @@ const Orcamentos = ({route, navigation}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'NovoOrcamento',
-            params: {value: route.params.value, salao: route.params.salao},
+            params: { salao: salao },
           }),
         );
         break;
@@ -38,7 +45,7 @@ const Orcamentos = ({route, navigation}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Itens',
-            params: {value: route.params.value, salao: route.params.salao},
+            params: { salao: salao },
           }),
         );
         break;
@@ -46,7 +53,7 @@ const Orcamentos = ({route, navigation}) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamento',
-            params: {value: item, salao: route.params.salao},
+            params: {orcamento: item, salao: salao },
           }),
         );
         break;
@@ -59,14 +66,14 @@ const Orcamentos = ({route, navigation}) => {
       // Código a ser executado quando a tela fica ativa pela primeira vez
       // console.log('entrou orcamentos')
       // console.log(route)
-      getBudgetData(route.params.salao.id);
+      getBudgetData(salao.id);
 
       // Marcar que a tela já focou uma vez
       setHasFocused(true);
     }
   });
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     // console.log('itemitemitem'),
     // console.log(item),
     <Item
@@ -92,7 +99,7 @@ const Orcamentos = ({route, navigation}) => {
         {/* <Text>{orcamentos[0].nome}</Text> */}
 
         <Container>
-          <Content style={{padding: 20}}>
+          <Content style={{ padding: 20 }}>
             <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary} />
           </Content>
           {console.log(orcamentos.length)}

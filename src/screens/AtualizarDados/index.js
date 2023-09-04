@@ -10,7 +10,7 @@ import {CommonActions} from '@react-navigation/native';
 import {COLORS} from '../../assets/colors';
 import { SalaoContext } from '../../context/SalaoProvider';
 
-const AtualizarDados = ({navigation}) => {
+const AtualizarDados = ({route, navigation}) => {
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
   const [cidade, setCidade] = useState('');
@@ -19,8 +19,10 @@ const AtualizarDados = ({navigation}) => {
   const [capacidade, setCapacidade] = useState(0); 
 
   const [loading, setLoading] = useState(false);
-  const {salao, updateSalao} = useContext(SalaoContext);
-
+  const {updateSalao} = useContext(SalaoContext);
+  console.log(route.params)
+  let salao = route.params.salao;
+  console.log(salao)
   useEffect(() => {
     if (salao) {
       console.log(salao)
