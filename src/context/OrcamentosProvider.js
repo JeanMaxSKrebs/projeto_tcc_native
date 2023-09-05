@@ -11,7 +11,6 @@ export const OrcamentosContext = createContext({});
 
 export const OrcamentosProvider = ({children}) => {
   const [orcamentos, setOrcamentos] = useState([]);
-  const {user, getUser} = useContext(AuthUserContext);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);

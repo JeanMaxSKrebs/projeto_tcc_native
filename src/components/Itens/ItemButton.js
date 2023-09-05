@@ -6,18 +6,33 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const ItemButton = ({ item, onPress, direita, icone }) => {
+    // console.log('itemquero');
+    // console.log(item);
     return (
         <View>
             {direita ?
                 <View style={styles.container}>
-                    <Image
-                        style={styles.image}
-                        source={{ uri: item.imagem }}
-                        resizeMode="cover"
-                    />
+                    {item.novaImagem
+                        ? (<Image
+                            style={styles.image}
+                            source={{ uri: item.novaImagem }}
+                            resizeMode="cover"
+                        />)
+                        : (<Image
+                            style={styles.image}
+                            source={{ uri: item.imagem }}
+                            resizeMode="cover"
+                        />)
+                    }
                     <View style={styles.descricao}>
-                        <Texto tamanho={20} texto={item.nome} />
-                        <Texto tamanho={14} texto={item.descricao} />
+                        {item.novoNome
+                            ? (<Texto tamanho={20} texto={item.novoNome} />)
+                            : (<Texto tamanho={20} texto={item.nome} />)
+                        }
+                        {item.novaDescricao
+                            ? (<Texto tamanho={14} texto={item.novaDescricao} />)
+                            : (<Texto tamanho={14} texto={item.descricao} />)
+                        }
                         <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
                     </View>
                     <View style={styles.quantidade}>
@@ -52,15 +67,28 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
                         </TouchableOpacity >
                     </View>
                     <View style={styles.descricao}>
-                        <Texto tamanho={20} texto={item.nome} />
-                        <Texto tamanho={14} texto={item.descricao} />
+                        {item.novoNome
+                            ? (<Texto tamanho={20} texto={item.novoNome} />)
+                            : (<Texto tamanho={20} texto={item.nome} />)
+                        }
+                        {item.novaDescricao
+                            ? (<Texto tamanho={14} texto={item.novaDescricao} />)
+                            : (<Texto tamanho={14} texto={item.descricao} />)
+                        }
                         <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
                     </View>
-                    <Image
-                        style={styles.image}
-                        source={{ uri: item.imagem }}
-                        resizeMode="cover"
-                    />
+                    {item.novaImagem
+                        ? (<Image
+                            style={styles.image}
+                            source={{ uri: item.novaImagem }}
+                            resizeMode="cover"
+                        />)
+                        : (<Image
+                            style={styles.image}
+                            source={{ uri: item.imagem }}
+                            resizeMode="cover"
+                        />)
+                    }
                 </View>
             }
         </View>

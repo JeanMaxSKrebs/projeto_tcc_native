@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, Modal, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
+  View, Text, Modal, Image, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
 } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
@@ -19,6 +19,10 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   const [descricao, setDescricao] = useState(item.descricao);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima.toString());
   const [imagem, setImagem] = useState(item.imagem);
+  const [novoNome, setNovoNome] = useState(item.novoNome);
+  const [novaDescricao, setNovaDescricao] = useState(item.novaDescricao);
+  const [novaImagem, setNovaImagem] = useState(item.novaImagem);
+  const [newItem, setNewItem] = useState(item);
 
   return (
     <Modal
@@ -26,34 +30,55 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
       transparent={true}
       animationType="slide"
     >
-      <TouchableWithoutFeedback onPress={onPress}>
+      <TouchableWithoutFeedback onPress={() => onPress('fechar')}>
         <View style={styles.background}>
           <View style={styles.content}>
-            <TouchableOpacity style={styles.buttonClose} onPress={onPress}>
+            <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
               <Text>X</Text>
             </TouchableOpacity>
             <TextInput
               style={styles.TextInput}
               placeholder="Nome"
-              value={nome}
-              onChangeText={setNome}
+              value={novoNome == null ? nome : novoNome}
+              onChangeText={(text) => {
+                novoNome == null
+                  ? (setNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
+                  : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
+              }}
             />
             <TextInput
               style={styles.TextInput}
               placeholder="Descricão"
-              value={descricao}
-              onChangeText={setDescricao}
+              value={novaDescricao == null ? descricao : novaDescricao}
+              onChangeText={(text) => {
+                novaDescricao == null
+                  ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
+                  : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
+              }}
             />
             <TextInput
               style={styles.TextInput}
               placeholder="Quantidade Máxima"
               value={quantidadeMaxima}
-              onChangeText={setQuantidadeMaxima}
+              onChangeText={(text) => {
+                setQuantidadeMaxima(text);
+                setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });
+              }}
               keyboardType="numeric"
             />
+            <View>
+              {/* <TouchableOpacity onPress={pickImage}> */}
+              <Text>Selecionar Imagem</Text>
+              {/* </TouchableOpacity> */}
+              {novaImagem ? (
+                <Image source={{ uri: novaImagem }} style={styles.imagem} />
+              ) : (
+                imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
+              )}
+            </View>
             {acao === "atualizar" ? (
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => onPress('atualizar')}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
                   <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
@@ -62,11 +87,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
               </View>
             ) : acao === "adicionar" ? (
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => onPress('adicionar')}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
                   <Texto tamanho={0} texto={<Icon name="add" color={COLORS.primary} size={35} />}></Texto>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('fechar')}>
-                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
               </View>
             ) : acao === "excluir" ? (

@@ -11,7 +11,7 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itensSaloes, getItensSaloes } = useContext(ItensSaloesContext);
+  const { itensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // const [itens, setItens] = useState([]);
 
@@ -22,14 +22,14 @@ const Itens = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  console.log('Gerenciar itens')
+  // console.log('Gerenciar itens')
   // console.log(route.params);
   // console.log(route.params.salao);
 
   let salao = route.params.salao;
 
   useEffect(() => {
-    console.log('entrou itensSaloes');
+    // console.log('entrou itensSaloes');
     // console.log(route.params);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
@@ -48,13 +48,17 @@ const Itens = ({ route, navigation }) => {
     setModalVisible(false);
   };
 
-  const opcao = (resultado) => {
-    console.log('resultado');
-    console.log(resultado);
-    switch (resultado) {
+  const opcao = (newItem) => {
+    // console.log('newItem.situacao');
+    // console.log(newItem.situacao);
+    switch (newItem.situacao) {
       case 'atualizar':
-        console.log("oi");
-        fecharModal();
+        console.log('newItem123');
+        console.log(newItem);
+        if(updateItemItensSaloes(newItem)) {
+          getItensSaloes(salao.id)
+          fecharModal();
+        }
         break;
       case 'adicionar':
         fecharModal();
@@ -67,16 +71,18 @@ const Itens = ({ route, navigation }) => {
         break;
 
       default:
+
         fecharModal();
         break;
     }
 
   };
 
-  const handlePress = (valor) => {
-    console.log('valor')
-    console.log(valor)
-    opcao(valor);
+  const handlePress = (newItem) => {
+    console.log('newItem')
+    console.log(newItem)
+
+    opcao(newItem);
   };
 
   const renderModal = () => {
@@ -85,7 +91,7 @@ const Itens = ({ route, navigation }) => {
     }
 
     return (
-      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(valor) => handlePress(valor)}
+      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />
     );
   };

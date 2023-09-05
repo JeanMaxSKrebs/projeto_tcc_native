@@ -12,7 +12,6 @@ export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({ children }) => {
   const [salao, setSalao] = useState([]);
-  const [itensSaloes, setItensSaloes] = useState([]);
   const { user, getUser, signOut } = useContext(AuthUserContext);
 
   const showToast = message => {
@@ -42,7 +41,6 @@ export const SalaoProvider = ({ children }) => {
       // console.log(user)
       // console.log('user salao')
       getHallData();
-      getItensData(salao.id);
     } else {
       // console.log(user)
       // console.log('user aaaaa')
@@ -180,82 +178,8 @@ export const SalaoProvider = ({ children }) => {
     }
   };
 
-  // const selectAllByEmail = async (email) => {
-  //   try {
-  //     const { data: salao, error } = await supabase
-  //     .from('saloes')
-  //     .select('*')
-  //     .eq('email', email)
-
-  //     if (error) {
-  //       console.error('Erro ao buscar os salões:', error);
-  //       return;
-  //     }
-  //     console.log('salao123')
-  //     console.log(salao)
-  //     setSalao(salao);
-  //   } catch (error) {
-  //     console.error('Erro ao buscar os salões:', error);
-  //   }
-  // };
-
-  const getItensData = async salaoId => {
-    try {
-      // console.log(salaoId)
-
-      const { data, error } = await supabase
-      .from('itens_saloes')
-      .select(`
-        *,
-        itens ( nome, descricao, imagem )
-      `)
-      .eq('salao_id', salaoId);
-    
-
-
-      // const { data, error } = await supabase
-      //   .from('itens_saloes')
-      //   .select('*')
-      //   .eq('salao_id', salaoId);
-
-      if (error) {
-        console.error('Erro ao buscar os itens:', error);
-        return;
-      }
-      console.log('data[0]');
-      console.log(data[0]);
-      // console.log(data.length)
-
-      const fetchedItens = data.map(dado => ({
-        id: dado.id,
-        salaoId: dado.salao_id,
-        itemId: dado.item_id,
-        valorUnitario: dado.valor_unitario,
-        quantidadeMaxima: dado.quantidade,
-        nome: dado.itens.nome,
-        descricao: dado.itens.descricao,
-        imagem: dado.itens.imagem,
-        novoNome: dado.itens.novo_nome,
-        novaDescricao: dado.itens.nova_descricao,
-        novaImagem: dado.itens.nova_imagem,
-      }));
-      // console.log('fetchedItens');
-      // console.log(fetchedItens);
-
-
-
-
-
-      setItensSaloes(fetchedItens);
-
-      return fetchedItens;
-    } catch (error) {
-      console.error('Erro ao buscar os itens:', error);
-    }
-  };
-
   return (
-    <SalaoContext.Provider value={{ itensSaloes, getItensData, salao, saveSalao, updateSalao, getHallData }}>
+    <SalaoContext.Provider value={{ salao, saveSalao, updateSalao, getHallData }}>
       {children}
     </SalaoContext.Provider>
   );
