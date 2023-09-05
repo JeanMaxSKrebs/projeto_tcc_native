@@ -9,7 +9,8 @@ import AlterarOrcamento from '../screens/Orcamento/alterar';
 import AdicionarItens from '../screens/Itens/adicionar';
 import NovoOrcamento from '../screens/Orcamento/novo';
 import OrcamentoItens from '../screens/OrcamentoItens';
-import Itens from '../screens/Itens';
+// import Itens from '../screens/Itens';
+import ItensSaloes from '../screens/ItensSaloes';
 import Orcamento from '../screens/Orcamento';
 import Orcamentos from '../screens/Orcamentos';
 import Salao from '../screens/Salao';
@@ -140,7 +141,8 @@ const Navigator = () => (
       <Stack.Screen component={AlterarOrcamento} name="AlterarOrcamento" />
       <Stack.Screen component={NovoOrcamento} name="NovoOrcamento" />
       <Stack.Screen component={AdicionarItens} name="AdicionarItens" />
-      <Stack.Screen component={Itens} name="Itens" />
+      {/* <Stack.Screen component={Itens} name="Itens" /> */}
+      <Stack.Screen component={ItensSaloes} name="ItensSaloes" />
       <Stack.Screen component={OrcamentoItens} name="OrcamentoItens" />
       <Stack.Screen component={Orcamento} name="Orcamento" />
       <Stack.Screen component={Orcamentos} name="Orcamentos" />

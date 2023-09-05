@@ -5,7 +5,7 @@ import { COLORS } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const ItemButton = ({ item, onPress, direita }) => {
+const ItemButton = ({ item, onPress, direita, icone }) => {
     return (
         <View>
             {direita ?
@@ -21,9 +21,16 @@ const ItemButton = ({ item, onPress, direita }) => {
                         <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
                     </View>
                     <View style={styles.quantidade}>
-                        <TouchableOpacity style={styles.areaButton} onPress={onPress}>
+                        <TouchableOpacity style={styles.areaButton} onPress={() => onPress(icone)}>
                             <View style={styles.buttonPlus}>
-                                <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primaryDark} size={35} />} cor={COLORS.primary}></Texto>
+                                {icone === "atualizar" ? (
+                                    <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primary} size={35} />}></Texto>
+                                ) : icone === "adicionar" ? (
+                                    <Texto tamanho={0} texto={<Icon name="add" color={COLORS.primary} size={35} />}></Texto>
+                                ) : (
+                                    <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
+                                )
+                                }
                             </View>
                         </TouchableOpacity >
                     </View>
@@ -31,9 +38,16 @@ const ItemButton = ({ item, onPress, direita }) => {
                 :
                 <View style={styles.container}>
                     <View style={styles.quantidade}>
-                        <TouchableOpacity style={styles.areaButton} onPress={onPress}>
+                        <TouchableOpacity style={styles.areaButton} onPress={() => onPress(icone)}>
                             <View style={styles.buttonPlus}>
-                                <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primaryDark} size={35} />} cor={COLORS.primary}></Texto>
+                                {icone === "atualizar" ? (
+                                    <Texto tamanho={0} texto={<Icon name="create" color={COLORS.primary} size={35} />}></Texto>
+                                ) : icone === "adicionar" ? (
+                                    <Texto tamanho={0} texto={<Icon name="add" color={COLORS.primary} size={35} />}></Texto>
+                                ) : (
+                                    <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
+                                )
+                                }
                             </View>
                         </TouchableOpacity >
                     </View>

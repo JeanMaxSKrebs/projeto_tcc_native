@@ -44,7 +44,7 @@ const Orcamentos = ({ route, navigation }) => {
       case 'GerenciarItens':
         navigation.dispatch(
           CommonActions.navigate({
-            name: 'Itens',
+            name: 'ItensSaloes',
             params: { salao: salao },
           }),
         );

@@ -235,6 +235,9 @@ export const SalaoProvider = ({ children }) => {
         nome: dado.itens.nome,
         descricao: dado.itens.descricao,
         imagem: dado.itens.imagem,
+        novoNome: dado.itens.novo_nome,
+        novaDescricao: dado.itens.nova_descricao,
+        novaImagem: dado.itens.nova_imagem,
       }));
       // console.log('fetchedItens');
       // console.log(fetchedItens);
