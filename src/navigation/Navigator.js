@@ -137,7 +137,7 @@ const Navigator = () => (
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
-      <Stack.Screen component={Manutencao} name="Manutencao" />
+      <Stack.Screen component={Manutencao} name="Manutencao" options={{headerShown: true,}}/>
       <Stack.Screen component={AlterarOrcamento} name="AlterarOrcamento" />
       <Stack.Screen component={NovoOrcamento} name="NovoOrcamento" />
       <Stack.Screen component={AdicionarItens} name="AdicionarItens" />
