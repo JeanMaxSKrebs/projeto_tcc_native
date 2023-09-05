@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
-  View, Text, Modal, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+  View, Text, Modal, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
+} from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -12,8 +13,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   // console.log(isModalVisible)
   // console.log('onPress')
   // console.log(onPress)
-  console.log('acao')
-  console.log(acao)
+  // console.log('acao')
+  // console.log(acao)
   const [nome, setNome] = useState(item.nome);
   const [descricao, setDescricao] = useState(item.descricao);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima.toString());
@@ -52,22 +53,27 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
             />
             {acao === "atualizar" ? (
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={onPress}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress('atualizar')}>
                   <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonExcluir} onPress={onPress}>
+                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
                   <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
               </View>
             ) : acao === "adicionar" ? (
-              <TouchableOpacity style={styles.button} onPress={onPress}>
-                <Texto tamanho={0} texto={<Icon name="add" color={COLORS.primary} size={35} />}></Texto>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.buttonExcluir} onPress={onPress}>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress('adicionar')}>
+                  <Texto tamanho={0} texto={<Icon name="add" color={COLORS.primary} size={35} />}></Texto>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('fechar')}>
+                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
+                </TouchableOpacity>
+              </View>
+            ) : acao === "excluir" ? (
+              <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
                 <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
               </TouchableOpacity>
-            )
+            ) : null
             }
 
           </View >

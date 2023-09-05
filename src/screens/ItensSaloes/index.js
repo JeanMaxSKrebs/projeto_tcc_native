@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView, ScrollView, View, Text, Modal, TouchableOpacity } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
-import { SalaoContext } from '../../context/SalaoProvider';
+// import { SalaoContext } from '../../context/SalaoProvider';
+import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
 import { COLORS } from '../../assets/colors';
@@ -10,7 +11,7 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itensSaloes, getItensData } = useContext(SalaoContext);
+  const { itensSaloes, getItensSaloes } = useContext(ItensSaloesContext);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // const [itens, setItens] = useState([]);
 
@@ -34,16 +35,48 @@ const Itens = ({ route, navigation }) => {
     // console.log(route.params.orcamento);
     // console.log(itens);
     // console.log(itens);
-    getItensData(salao.id)
+    getItensSaloes(salao.id)
   }, []);
 
   const abrirModal = (item) => {
     setSelectedItem(item);
     setModalVisible(true);
   };
+
   const fecharModal = () => {
     setSelectedItem(null);
     setModalVisible(false);
+  };
+
+  const opcao = (resultado) => {
+    console.log('resultado');
+    console.log(resultado);
+    switch (resultado) {
+      case 'atualizar':
+        console.log("oi");
+        fecharModal();
+        break;
+      case 'adicionar':
+        fecharModal();
+
+        break;
+      case 'excluir':
+
+        fecharModal();
+
+        break;
+
+      default:
+        fecharModal();
+        break;
+    }
+
+  };
+
+  const handlePress = (valor) => {
+    console.log('valor')
+    console.log(valor)
+    opcao(valor);
   };
 
   const renderModal = () => {
@@ -52,7 +85,7 @@ const Itens = ({ route, navigation }) => {
     }
 
     return (
-      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={() => fecharModal()}
+      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(valor) => handlePress(valor)}
       />
     );
   };
