@@ -41,8 +41,8 @@ export const ItensSaloesProvider = ({ children }) => {
         return;
       }
       // console.log('data[0]');
-      console.log(data[0]);
-      console.log(data.length)
+      // console.log(data[0]);
+      // console.log(data.length)
 
       const fetchedItens = data.map(dado => ({
         id: dado.id,

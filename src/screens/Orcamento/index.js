@@ -24,21 +24,21 @@ const Orcamento = ({ route, navigation }) => {
   const salao = route.params.salao;
   const orcamento = route.params.orcamento;
 
-  console.log('orcamento')
-  console.log(route.params);
+  // console.log('orcamento')
+  // console.log(route.params); //orcamento e salao
   const voltar = () => {
     navigation.goBack();
   };
 
   const routeOrcamento = (orcamento, nextView) => {
-    console.log("TESTE")
-    console.log(orcamento)
-    console.log(salao)
+    // console.log("TESTE")
+    // console.log(orcamento)
+    // console.log(salao)
     // console.log(route)
     navigation.dispatch(
       CommonActions.navigate({
         name: nextView,
-        params: { item: orcamento, salao: salao },
+        params: { orcamento: orcamento, salao: salao },
       }),
     );
   }

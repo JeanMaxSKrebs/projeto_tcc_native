@@ -53,7 +53,7 @@ const Orcamentos = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamento',
-            params: {orcamento: item, salao: salao },
+            params: { orcamento: item, salao: salao },
           }),
         );
         break;
