@@ -56,7 +56,7 @@ export const ItensSaloesProvider = ({ children }) => {
           novaDescricao: dado.nova_descricao,
           novaImagem: dado.nova_imagem,
           novoNome: dado.novo_nome,
-          quantidadeMaxima: dado.quantidade,
+          quantidadeMaxima: dado.quantidade_maxima,
           salaoId: dado.salao_id,
           valorUnitario: dado.valor_unitario,
       }));
@@ -82,7 +82,7 @@ export const ItensSaloesProvider = ({ children }) => {
           salao_id: ItemItensSaloesData.salaoId,
           item_id: ItemItensSaloesData.itemId,
           valor_unitario: ItemItensSaloesData.valorUitario,
-          quantidadeMaxima: ItemItensSaloesData.quantidadeMaxima,
+          quantidadeMaxima: ItemItensSaloesData.quantidade_maxima,
           novo_nome: ItemItensSaloesData.novoNome,
           nova_descricao: ItemItensSaloesData.novaDescricao,
           nova_imagem: ItemItensSaloesData.novaImagem,

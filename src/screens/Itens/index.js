@@ -10,7 +10,6 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itensSaloes, getItensData } = useContext(SalaoContext);
   // const [itens, setItens] = useState([]);
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -67,7 +66,7 @@ const Itens = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-    // console.log('item');
+    // console.log('item456');
     // console.log(item);
     // console.log('item.uid:', item.uid);
     const shouldInvertDirection = item.id % 2 === 1;

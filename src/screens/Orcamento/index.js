@@ -9,6 +9,7 @@ import Texto from '../../components/Texto';
 import { Container, FlatList, Content, TextInput, View } from './styles';
 import { CommonActions } from '@react-navigation/native';
 import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider.js';
+import ItemButton from '../../components/Itens/ItemButton';
 import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 import ItemModal from '../../components/Itens/modal';
 
@@ -117,13 +118,14 @@ const Orcamento = ({ route, navigation }) => {
   };
   const renderItem = ({ item }) => {
     // console.log('item123');
-    // console.log(item.id);
+    // console.log(item);
 
     contador++;
     const shouldInvertDirection = contador % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <ListaItensOrcamentos itemOrcamento={item} onPress={() => abrirModal(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
+      <ItemButton item={item} onPress={() => abrirModal(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
+      // <ListaItensOrcamentos itemOrcamento={item} onPress={() => abrirModal(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
     );
   };
 
@@ -147,13 +149,16 @@ const Orcamento = ({ route, navigation }) => {
               item={orcamento}
               onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
             />
-            <FlatList
-              data={itensOrcamentos}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-            />
-            {renderModal()}
 
+            <Content style={{height: 250}}>
+              <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
+              <FlatList
+                data={itensOrcamentos}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+              />
+            </Content>
+            {renderModal()}
 
           </View>
         </View>

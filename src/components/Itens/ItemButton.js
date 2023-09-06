@@ -6,21 +6,25 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const ItemButton = ({ item, onPress, direita, icone }) => {
-    const [quantidade, setQuantidade] = useState();
+    // console.log('item000');
+    // console.log(item);
+
+    const [quantidade, setQuantidade] = useState(item.quantidade);
     const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
-  
+
     const [nome, setNome] = useState(item.itens.nome);
     const [descricao, setDescricao] = useState(item.itens.descricao);
     const [imagem, setImagem] = useState(item.itens.imagem);
-  
+
     const [novoNome, setNovoNome] = useState(item.novoNome);
     const [novaDescricao, setNovaDescricao] = useState(item.novaDescricao);
     const [novaImagem, setNovaImagem] = useState(item.novaImagem);
+
     return (
         <View>
             {direita ?
                 <View style={styles.container}>
-                    {novaImagem
+                    {novaImagem !== undefined && novaImagem !== null
                         ? (<Image
                             style={styles.image}
                             source={{ uri: novaImagem }}
@@ -85,7 +89,7 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
                         }
                         <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
                     </View>
-                    {novaImagem
+                    {novaImagem !== undefined && novaImagem !== null
                         ? (<Image
                             style={styles.image}
                             source={{ uri: novaImagem }}

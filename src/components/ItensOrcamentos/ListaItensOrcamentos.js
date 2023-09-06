@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
 import Texto from "../Texto";
 import { COLORS } from '../../assets/colors';
@@ -8,19 +8,30 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const ListaItensOrcamentos = ({ itemOrcamento, onPress, direita, icone }) => {
   // console.log('itemteste')
   // console.log(itemOrcamento)
+
+  const [quantidade, setQuantidade] = useState(itemOrcamento.quantidade);
+  const [quantidadeMaxima, setQuantidadeMaxima] = useState(itemOrcamento.quantidadeMaxima);
+
+  const [nome, setNome] = useState(itemOrcamento.itens.nome);
+  const [descricao, setDescricao] = useState(itemOrcamento.itens.descricao);
+  const [imagem, setImagem] = useState(itemOrcamento.itens.imagem);
+
+  const [novoNome, setNovoNome] = useState(itemOrcamento.novoNome);
+  const [novaDescricao, setNovaDescricao] = useState(itemOrcamento.novaDescricao);
+  const [novaImagem, setNovaImagem] = useState(itemOrcamento.novaImagem);
   return (
     <View>
       {direita ?
         <View style={styles.container}>
           <Image
             style={styles.image}
-            source={itemOrcamento.nova_imagem ? { uri: itemOrcamento.nova_imagem } : { uri: itemOrcamento.itens.imagem }}
+            source={novaImagem ? { uri: novaImagem } : { uri: imagem }}
             resizeMode="cover"
           />
           <View style={styles.descricao}>
-            <Texto tamanho={20} texto={itemOrcamento.novo_nome ? itemOrcamento.novo_nome : itemOrcamento.itens.nome} />
-            <Texto tamanho={14} texto={itemOrcamento.nova_descricao ? itemOrcamento.nova_descricao : itemOrcamento.itens.descricao} />
-            <Texto tamanho={14} texto={`Quantidade Máxima: ${itemOrcamento.quantidade}`} />
+            <Texto tamanho={20} texto={novoNome ? novoNome : nome} />
+            <Texto tamanho={14} texto={novaDescricao ? novaDescricao : descricao} />
+            <Texto tamanho={14} texto={`Quantidade: ${quantidade}`} />
           </View>
           <View style={styles.quantidade}>
             <TouchableOpacity style={styles.areaButton} onPress={() => onPress(icone)}>

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {COLORS} from '../../assets/colors';
+import { COLORS } from '../../assets/colors';
 //
 export const View = styled.SafeAreaView`
     color: black;
@@ -8,6 +8,7 @@ export const View = styled.SafeAreaView`
     width: 100%;
     margin-bottom: 20px;
     /* background-color: red; */
+
     `;
 export const Container = styled.SafeAreaView`
     padding: 1px;
@@ -15,10 +16,13 @@ export const Container = styled.SafeAreaView`
     width: 100%;
     height: 400px;
     `;
-export const Content = styled.SafeAreaView`
+export const Content = styled.View`
   align-items: center; 
   /* background-color: ${COLORS.primaryDark}; */
-  padding: 10% 0;
+  padding: 5%;
+  border-radius: 15px;
+  border-width: 2px;
+  border-color: ${COLORS.gray};
   `;
 
 export const FlatList = styled.FlatList`

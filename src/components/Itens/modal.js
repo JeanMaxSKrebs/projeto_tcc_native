@@ -17,7 +17,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   // console.log('acao')
   // console.log(acao)
   // const [quantidade, setQuantidade] = useState(item.quantidadeMaxima);
-  const [quantidade, setQuantidade] = useState();
+  const [quantidade, setQuantidade] = useState(item.quantidade);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
 
   const [nome, setNome] = useState(item.itens.nome);
@@ -29,7 +29,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   const [novaImagem, setNovaImagem] = useState(item.novaImagem);
 
   const [newItem, setNewItem] = useState(item);
-  const quantidadeValues = Array.from({ length: item.quantidadeMaxima }, (_, index) => (index + 1).toString());
+  const quantidadeValues = Array.from({ length: item.quantidade }, (_, index) => (index + 1).toString());
+  const quantidadeMaximaValues = Array.from({ length: item.quantidadeMaxima }, (_, index) => (index + 1).toString());
 
   const [selectedValue, setSelectedValue] = useState('option1');
 
@@ -72,14 +73,28 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
               />
               <TextInput
                 style={styles.TextInput}
-                placeholder="Quantidade Máxima"
+                placeholder={`Quantidade: ${quantidadeMaxima}`}
                 value={quantidade}
                 onChangeText={(text) => {
-                  setQuantidadeMaxima(text);
+                  if (text > quantidadeMaxima) {
+                    setQuantidade(quantidadeMaxima);
+                  } else {
+                    setQuantidade(quantidade)
+                  }
                   setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });
                 }}
                 keyboardType="numeric"
               />
+              <Picker style={{ width: 100, height: 50 }}
+                selectedValue={quantidade}
+                onValueChange={(item, index) => {
+                  setQuantidade(item);
+                }}
+              >
+                {quantidadeValues.map((value) => (
+                  <Picker.Item key={value} label={value} value={value} />
+                ))}
+              </Picker>
               <View>
                 {/* <TouchableOpacity onPress={pickImage}> */}
                 <Text>Selecionar Imagem</Text>
@@ -130,7 +145,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
                 placeholder={`Quantidade Máxima: ${quantidadeMaxima}`}
                 value={quantidade}
                 onChangeText={(text) => {
+                  console.log(text);
                   if (text > quantidadeMaxima) {
+                    console.log(quantidadeMaxima);
                     setQuantidade(quantidadeMaxima);
                   } else {
                     setQuantidade(text)
@@ -139,13 +156,13 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
                 }}
                 keyboardType="numeric"
               />
-              <Picker style={{width: 100, height: 50}}
+              <Picker style={{ width: 100, height: 50 }}
                 selectedValue={quantidade}
                 onValueChange={(item, index) => {
                   setQuantidade(item);
                 }}
               >
-                {quantidadeValues.map((value) => (
+                {quantidadeMaximaValues.map((value) => (
                   <Picker.Item key={value} label={value} value={value} />
                 ))}
               </Picker>

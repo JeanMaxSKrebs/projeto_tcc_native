@@ -96,7 +96,7 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-    // console.log('item');
+    // console.log('item789');
     // console.log(item);
     // console.log('item.uid:', item.uid);
     const shouldInvertDirection = item.id % 2 === 1;
