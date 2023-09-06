@@ -16,15 +16,18 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   // console.log(onPress)
   // console.log('acao')
   // console.log(acao)
-  const [nome, setNome] = useState(item.nome);
-  // const [descricao, setDescricao] = useState(item.descricao);
   // const [quantidade, setQuantidade] = useState(item.quantidadeMaxima);
   const [quantidade, setQuantidade] = useState();
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
-  const [imagem, setImagem] = useState(item.imagem);
+
+  const [nome, setNome] = useState(item.itens.nome);
+  const [descricao, setDescricao] = useState(item.itens.descricao);
+  const [imagem, setImagem] = useState(item.itens.imagem);
+
   const [novoNome, setNovoNome] = useState(item.novoNome);
   const [novaDescricao, setNovaDescricao] = useState(item.novaDescricao);
   const [novaImagem, setNovaImagem] = useState(item.novaImagem);
+
   const [newItem, setNewItem] = useState(item);
   const quantidadeValues = Array.from({ length: item.quantidadeMaxima }, (_, index) => (index + 1).toString());
 
@@ -70,7 +73,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
               <TextInput
                 style={styles.TextInput}
                 placeholder="Quantidade Máxima"
-                value={quantidadeMaxima.toString()}
+                value={quantidade}
                 onChangeText={(text) => {
                   setQuantidadeMaxima(text);
                   setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });

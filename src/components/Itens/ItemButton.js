@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
 import Texto from "../../components/Texto";
 import { COLORS } from '../../assets/colors';
@@ -6,34 +6,42 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const ItemButton = ({ item, onPress, direita, icone }) => {
-    // console.log('itemquero');
-    // console.log(item);
+    const [quantidade, setQuantidade] = useState();
+    const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
+  
+    const [nome, setNome] = useState(item.itens.nome);
+    const [descricao, setDescricao] = useState(item.itens.descricao);
+    const [imagem, setImagem] = useState(item.itens.imagem);
+  
+    const [novoNome, setNovoNome] = useState(item.novoNome);
+    const [novaDescricao, setNovaDescricao] = useState(item.novaDescricao);
+    const [novaImagem, setNovaImagem] = useState(item.novaImagem);
     return (
         <View>
             {direita ?
                 <View style={styles.container}>
-                    {item.novaImagem
+                    {novaImagem
                         ? (<Image
                             style={styles.image}
-                            source={{ uri: item.novaImagem }}
+                            source={{ uri: novaImagem }}
                             resizeMode="cover"
                         />)
                         : (<Image
                             style={styles.image}
-                            source={{ uri: item.imagem }}
+                            source={{ uri: imagem }}
                             resizeMode="cover"
                         />)
                     }
                     <View style={styles.descricao}>
-                        {item.novoNome
-                            ? (<Texto tamanho={20} texto={item.novoNome} />)
-                            : (<Texto tamanho={20} texto={item.nome} />)
+                        {novoNome
+                            ? (<Texto tamanho={20} texto={novoNome} />)
+                            : (<Texto tamanho={20} texto={nome} />)
                         }
-                        {item.novaDescricao
-                            ? (<Texto tamanho={14} texto={item.novaDescricao} />)
-                            : (<Texto tamanho={14} texto={item.descricao} />)
+                        {novaDescricao
+                            ? (<Texto tamanho={14} texto={novaDescricao} />)
+                            : (<Texto tamanho={14} texto={descricao} />)
                         }
-                        <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
+                        <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
                     </View>
                     <View style={styles.quantidade}>
                         <TouchableOpacity style={styles.areaButton} onPress={() => onPress(icone)}>
@@ -67,25 +75,25 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
                         </TouchableOpacity >
                     </View>
                     <View style={styles.descricao}>
-                        {item.novoNome
-                            ? (<Texto tamanho={20} texto={item.novoNome} />)
-                            : (<Texto tamanho={20} texto={item.nome} />)
+                        {novoNome
+                            ? (<Texto tamanho={20} texto={novoNome} />)
+                            : (<Texto tamanho={20} texto={nome} />)
                         }
-                        {item.novaDescricao
-                            ? (<Texto tamanho={14} texto={item.novaDescricao} />)
-                            : (<Texto tamanho={14} texto={item.descricao} />)
+                        {novaDescricao
+                            ? (<Texto tamanho={14} texto={novaDescricao} />)
+                            : (<Texto tamanho={14} texto={descricao} />)
                         }
-                        <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
+                        <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
                     </View>
-                    {item.novaImagem
+                    {novaImagem
                         ? (<Image
                             style={styles.image}
-                            source={{ uri: item.novaImagem }}
+                            source={{ uri: novaImagem }}
                             resizeMode="cover"
                         />)
                         : (<Image
                             style={styles.image}
-                            source={{ uri: item.imagem }}
+                            source={{ uri: imagem }}
                             resizeMode="cover"
                         />)
                     }

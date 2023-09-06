@@ -46,12 +46,12 @@ export const ItensOrcamentosProvider = ({ children }) => {
                     orcamentoId: dado.orcamento_id,
                     itensSaloesId: dado.itens_saloes_id,
                     valorTotal: dado.valor_total, //+ (dado.itens_saloes.valor_unitario *  dado.itens_saloes.quantidade)
-                    quantidadeMaxima: dado.quantidade,
+                    quantidade: dado.quantidade,
 
                     novoNome: dado.itens_saloes.novo_nome,
                     novaDescricao: dado.itens_saloes.nova_descricao,
                     novaImagem: dado.itens_saloes.nova_imagem,
-                    quantidade: dado.itens_saloes.quantidade,
+                    quantidadeMaxima: dado.itens_saloes.quantidade,
                     valorUnitario: dado.itens_saloes.valor_unitario,
                 })
             ));

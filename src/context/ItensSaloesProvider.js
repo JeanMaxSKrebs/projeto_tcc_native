@@ -45,17 +45,20 @@ export const ItensSaloesProvider = ({ children }) => {
       // console.log(data.length)
 
       const fetchedItens = data.map(dado => ({
-        id: dado.id,
-        salaoId: dado.salao_id,
-        itemId: dado.item_id,
-        valorUnitario: dado.valor_unitario,
-        quantidadeMaxima: dado.quantidade,
-        novoNome: dado.novo_nome,
-        novaDescricao: dado.nova_descricao,
-        novaImagem: dado.nova_imagem,
-        nome: dado.itens.nome,
-        descricao: dado.itens.descricao,
-        imagem: dado.itens.imagem,
+          created_at: dado.created_at,
+          id: dado.id,
+          item_id: dado.itemId,
+          itens: {
+            descricao: dado.itens.descricao,
+            imagem: dado.itens.imagem,
+            nome: dado.itens.nome,
+          },
+          novaDescricao: dado.nova_descricao,
+          novaImagem: dado.nova_imagem,
+          novoNome: dado.novo_nome,
+          quantidadeMaxima: dado.quantidade,
+          salaoId: dado.salao_id,
+          valorUnitario: dado.valor_unitario,
       }));
       // console.log('fetchedItens[0]');
       // console.log(fetchedItens[0]);
@@ -79,7 +82,7 @@ export const ItensSaloesProvider = ({ children }) => {
           salao_id: ItemItensSaloesData.salaoId,
           item_id: ItemItensSaloesData.itemId,
           valor_unitario: ItemItensSaloesData.valorUitario,
-          quantidade: ItemItensSaloesData.quantidadeMaxima,
+          quantidadeMaxima: ItemItensSaloesData.quantidadeMaxima,
           novo_nome: ItemItensSaloesData.novoNome,
           nova_descricao: ItemItensSaloesData.novaDescricao,
           nova_imagem: ItemItensSaloesData.novaImagem,

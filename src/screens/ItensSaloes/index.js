@@ -79,8 +79,8 @@ const Itens = ({ route, navigation }) => {
   };
 
   const handlePress = (newItem) => {
-    console.log('newItem')
-    console.log(newItem)
+    // console.log('newItem')
+    // console.log(newItem)
 
     opcao(newItem);
   };
@@ -89,7 +89,8 @@ const Itens = ({ route, navigation }) => {
     if (!selectedItem) {
       return null;
     }
-
+    // console.log('selectedItem itenssaloes');
+    // console.log(selectedItem);
     return (
       <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />

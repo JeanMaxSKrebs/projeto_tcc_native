@@ -10,6 +10,7 @@ import { Container, FlatList, Content, TextInput, View } from './styles';
 import { CommonActions } from '@react-navigation/native';
 import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider.js';
 import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
+import ItemModal from '../../components/Itens/modal';
 
 const Orcamento = ({ route, navigation }) => {
   const { itensOrcamentos, getItensOrcamentos, updateItemItensSaloes } = useContext(ItensOrcamentosContext);
@@ -17,7 +18,7 @@ const Orcamento = ({ route, navigation }) => {
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
   const [valorTotal, setValorTotal] = useState('');
-  const acao = "adicionar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
+  const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   let contador = 0;
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -55,20 +56,74 @@ const Orcamento = ({ route, navigation }) => {
     );
   }
 
-  const modificarItem = (orcamento) => {
-    setSelectedItem(orcamento);
+  const abrirModal = (item) => {
+    setSelectedItem(item);
     setModalVisible(true);
   };
 
+  const fecharModal = () => {
+    setSelectedItem(null);
+    setModalVisible(false);
+  };
+
+  const opcao = (newItem) => {
+    // console.log('newItem.situacao');
+    // console.log(newItem.situacao);
+    switch (newItem.situacao) {
+      case 'atualizar':
+        // console.log('newItem123');
+        // console.log(newItem);
+        if (updateItemItensSaloes(newItem)) {
+          getItensSaloes(salao.id)
+          fecharModal();
+        }
+        break;
+      case 'adicionar':
+        fecharModal();
+
+        break;
+      case 'excluir':
+
+        fecharModal();
+
+        break;
+
+      default:
+
+        fecharModal();
+        break;
+    }
+
+  };
+
+  const handlePress = (newItem) => {
+    console.log('newItem')
+    console.log(newItem)
+
+    opcao(newItem);
+  };
+
+
+  const renderModal = () => {
+    if (!selectedItem) {
+      return null;
+    }
+    // console.log('selectedItem');
+    // console.log(selectedItem);
+    return (
+      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
+      />
+    );
+  };
   const renderItem = ({ item }) => {
-    console.log('item123');
-    console.log(item.id);
+    // console.log('item123');
+    // console.log(item.id);
 
     contador++;
     const shouldInvertDirection = contador % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <ListaItensOrcamentos itemOrcamento={item} isModalVisible acao={acao} direita={shouldInvertDirection} onPress={(item) => handlePress(item)} />
+      <ListaItensOrcamentos itemOrcamento={item} onPress={() => abrirModal(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
     );
   };
 
@@ -97,6 +152,8 @@ const Orcamento = ({ route, navigation }) => {
               renderItem={renderItem}
               keyExtractor={(item) => item.id.toString()}
             />
+            {renderModal()}
+
 
           </View>
         </View>

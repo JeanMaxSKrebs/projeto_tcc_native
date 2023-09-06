@@ -11,7 +11,7 @@ import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
 
 
 const OrcamentoItens = ({ route, navigation }) => {
-  const { itensSaloes, getItensSaloes, updateItemItensSaloes} = useContext(ItensSaloesContext);
+  const { itensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
   const acao = "adicionar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // console.log('itemteste')
   // console.log(route.params)
@@ -27,7 +27,7 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    console.log('');
+    console.log('entrou OrcamnetoItens');
     // console.log(route.params);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
@@ -47,13 +47,13 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   const opcao = (newItem) => {
-    console.log('newItem.situacao');
-    console.log(newItem.situacao);
+    // console.log('newItem.situacao');
+    // console.log(newItem.situacao);
     switch (newItem.situacao) {
       case 'atualizar':
         // console.log('newItem123');
         // console.log(newItem);
-        if(updateItemItensSaloes(newItem)) {
+        if (updateItemItensSaloes(newItem)) {
           getItensSaloes(salao.id)
           fecharModal();
         }
@@ -87,6 +87,8 @@ const OrcamentoItens = ({ route, navigation }) => {
     if (!selectedItem) {
       return null;
     }
+    // console.log('selectedItem');
+    // console.log(selectedItem);
     return (
       <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />
