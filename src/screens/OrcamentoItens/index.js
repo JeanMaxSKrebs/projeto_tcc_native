@@ -5,7 +5,7 @@ import Texto from '../../components/Texto';
 import { COLORS } from '../../assets/colors';
 import ItemButton from '../../components/Itens/ItemButton';
 import ItemModal from '../../components/Itens/modal';
-import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
+// import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 import { Container, FlatList } from './styles';
 import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
 
@@ -18,7 +18,7 @@ const OrcamentoItens = ({ route, navigation }) => {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const item = route.params.item;
+
   const salao = route.params.salao;
   const orcamento = route.params.orcamento;
 
@@ -27,7 +27,7 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    console.log('entrou OrcamentoItens');
+    console.log('');
     // console.log(route.params);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);

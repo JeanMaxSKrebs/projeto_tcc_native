@@ -5,23 +5,22 @@ import { COLORS } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const ListaItensOrcamentos = ({ item, onPress, direita, orcamento }) => {
+const ListaItensOrcamentos = ({ itemOrcamento, onPress, direita }) => {
   console.log('itemteste')
-  console.log(item)
-  console.log(orcamento)
+  console.log(itemOrcamento)
   return (
     <View>
       {direita ?
         <View style={styles.container}>
           <Image
             style={styles.image}
-            source={{ uri: item.imagem }}
+            source={itemOrcamento.nova_imagem ? { uri: itemOrcamento.nova_imagem } : { uri: itemOrcamento.itens.imagem }}
             resizeMode="cover"
           />
           <View style={styles.descricao}>
-            <Texto tamanho={20} texto={item.nome} />
-            <Texto tamanho={14} texto={item.descricao} />
-            <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
+            <Texto tamanho={20} texto={itemOrcamento.novo_nome ? itemOrcamento.novo_nome : itemOrcamento.itens.nome} />
+            <Texto tamanho={14} texto={itemOrcamento.nova_descricao ? itemOrcamento.nova_descricao : itemOrcamento.itens.descricao} />
+            <Texto tamanho={14} texto={`Quantidade Máxima: ${itemOrcamento.quantidade}`} />
           </View>
           <View style={styles.quantidade}>
             <TouchableOpacity style={styles.areaButton} onPress={onPress}>
@@ -41,13 +40,13 @@ const ListaItensOrcamentos = ({ item, onPress, direita, orcamento }) => {
             </TouchableOpacity >
           </View>
           <View style={styles.descricao}>
-            <Texto tamanho={20} texto={item.nome} />
-            <Texto tamanho={14} texto={item.descricao} />
-            <Texto tamanho={14} texto={`Quantidade Máxima: ${item.quantidadeMaxima}`} />
+            <Texto tamanho={20} texto={itemOrcamento.novo_nome ? itemOrcamento.novo_nome : itemOrcamento.itens.nome} />
+            <Texto tamanho={14} texto={itemOrcamento.nova_descricao ? itemOrcamento.nova_descricao : itemOrcamento.itens.descricao} />
+            <Texto tamanho={14} texto={`Quantidade Máxima: ${itemOrcamento.quantidadeMaxima}`} />
           </View>
           <Image
             style={styles.image}
-            source={{ uri: item.imagem }}
+            source={itemOrcamento.nova_imagem ? { uri: itemOrcamento.nova_imagem } : { uri: itemOrcamento.itens.imagem }}
             resizeMode="cover"
           />
         </View>

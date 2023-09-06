@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import {COLORS} from '../../assets/colors';
-
+//
 export const View = styled.SafeAreaView`
     color: black;
     font-size: 30px;
@@ -10,12 +10,10 @@ export const View = styled.SafeAreaView`
     /* background-color: red; */
     `;
 export const Container = styled.SafeAreaView`
-    color: ${COLORS.primary};
-    width: 80%;
-    height: 90%;
-    background-color: ${COLORS.secundary};
-    justify-items: center;
-    border-radius: 15px;
+    padding: 1px;
+    align-items: center;
+    width: 100%;
+    height: 400px;
     `;
 export const Content = styled.SafeAreaView`
   align-items: center; 
@@ -26,6 +24,8 @@ export const Content = styled.SafeAreaView`
 export const FlatList = styled.FlatList`
   /* background-color: ${COLORS.gray}; */
   color: black;
+  width: 90%;
+  height: 100%;
   `;
 
 export const Button = styled.TouchableOpacity`

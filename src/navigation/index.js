@@ -9,6 +9,7 @@ import { ProfileProvider } from '../context/ProfileProvider';
 import { ApiProvider } from '../context/ApiProvider';
 
 import Navigator from './Navigator';
+import { ItensOrcamentosProvider } from '../context/ItensOrcamentosProvider';
 // import { NavigationContainer } from '@react-navigation/native';
 
 export default function Providers() {
@@ -20,7 +21,9 @@ export default function Providers() {
             <SalaoProvider>
               <OrcamentosProvider>
                 <ItensSaloesProvider>
-                  <Navigator />
+                  <ItensOrcamentosProvider>
+                    <Navigator />
+                  </ItensOrcamentosProvider>
                 </ItensSaloesProvider>
               </OrcamentosProvider>
             </SalaoProvider>

@@ -61,7 +61,7 @@ const Orcamentos = ({ route, navigation }) => {
   };
   const [hasFocused, setHasFocused] = useState(false);
   useFocusEffect(() => {
-    console.log(hasFocused);
+    // console.log(hasFocused);
     if (!hasFocused) {
       // Código a ser executado quando a tela fica ativa pela primeira vez
       // console.log('entrou orcamentos')
@@ -102,7 +102,7 @@ const Orcamentos = ({ route, navigation }) => {
           <Content style={{ padding: 20 }}>
             <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary} />
           </Content>
-          {console.log(orcamentos.length)}
+          {/* {console.log(orcamentos.length)} */}
           <FlatList
             data={orcamentosTemp.length > 0 ? orcamentosTemp : orcamentos}
             renderItem={renderItem}

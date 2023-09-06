@@ -4,28 +4,40 @@ import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
 import AlterarOrcamentoButton from '../../components/Orcamento/AlterarOrcamentoButton';
 import AdicionarItemButton from '../../components/Orcamento/AdicionarItemButton';
-import OrcamentoItens from '../OrcamentoItens';
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
 import { Container, FlatList, Content, TextInput, View } from './styles';
 import { CommonActions } from '@react-navigation/native';
-import { SalaoContext } from '../../context/SalaoProvider';
+import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider.js';
+import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 
 const Orcamento = ({ route, navigation }) => {
-  // console.log(route)
+  const { itensOrcamentos, getItensOrcamentos, updateItemItensSaloes } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
   const [valorTotal, setValorTotal] = useState('');
+  const acao = "adicionar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
+  let contador = 0;
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const salao = route.params.salao;
   const orcamento = route.params.orcamento;
+  useEffect(() => {
+    // console.log('entrou ItensOrcamentos');
+    // console.log(route.params);
+    // console.log(route.params.salao);
+    // console.log(route.params.orcamento);
+    // console.log('itensOrcamentos');
+    // console.log(itensOrcamentos);
+    getItensOrcamentos(orcamento.id)
 
-  // console.log('orcamento')
-  // console.log(route.params); //orcamento e salao
+    // {
+    //   ?  }
+  }, []);
+
   const voltar = () => {
     navigation.goBack();
   };
@@ -48,16 +60,15 @@ const Orcamento = ({ route, navigation }) => {
     setModalVisible(true);
   };
 
-  const renderItem = ({ orcamento }) => {
-    // console.log('item123');
-    // console.log(item);
-    console.log('orcamento1');
-    console.log(orcamento);
-    // console.log('item.uid:', item.uid);
-    const shouldInvertDirection = orcamento.id % 2 === 1;
+  const renderItem = ({ item }) => {
+    console.log('item123');
+    console.log(item.id);
+
+    contador++;
+    const shouldInvertDirection = contador % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <OrcamentoItens item={orcamento} onPress={() => modificarItem(orcamento)} direita={shouldInvertDirection} />
+      <ListaItensOrcamentos itemOrcamento={item} isModalVisible acao={acao} direita={shouldInvertDirection} onPress={(item) => handlePress(item)} />
     );
   };
 
@@ -82,10 +93,11 @@ const Orcamento = ({ route, navigation }) => {
               onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
             />
             <FlatList
-              data={orcamento}
+              data={itensOrcamentos}
               renderItem={renderItem}
-              keyExtractor={orcamento => orcamento.uid}
+              keyExtractor={(item) => item.id.toString()}
             />
+
           </View>
         </View>
       </View>
