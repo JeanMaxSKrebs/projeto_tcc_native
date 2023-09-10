@@ -11,7 +11,7 @@ import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
 
 
 const OrcamentoItens = ({ route, navigation }) => {
-  const { itensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
+  const { itensSaloes, getItensSaloes, setItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
   const acao = "adicionar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // console.log('itemteste')
   // console.log(route.params)
@@ -33,7 +33,7 @@ const OrcamentoItens = ({ route, navigation }) => {
     // console.log(route.params.orcamento);
     // console.log(itens);
     // console.log(itens);
-    getItensSaloes(salao.id)
+    setItensSaloes(getItensSaloes(salao.id))
   }, []);
 
   const abrirModal = (item) => {
@@ -54,7 +54,7 @@ const OrcamentoItens = ({ route, navigation }) => {
         // console.log('newItem123');
         // console.log(newItem);
         if (updateItemItensSaloes(newItem)) {
-          getItensSaloes(salao.id)
+          setItensSaloes(getItensSaloes(salao.id))
           fecharModal();
         }
         break;
@@ -87,8 +87,8 @@ const OrcamentoItens = ({ route, navigation }) => {
     if (!selectedItem) {
       return null;
     }
-    // console.log('selectedItem');
-    // console.log(selectedItem);
+    console.log('selectedItem');
+    console.log(selectedItem);
     return (
       <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />
@@ -102,7 +102,7 @@ const OrcamentoItens = ({ route, navigation }) => {
     const shouldInvertDirection = item.id % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <ItemButton item={item} icone={acao} onPress={() => abrirModal(item)} direita={shouldInvertDirection} />
+      <ItemButton isItensSaloes item={item} icone={acao} onPress={() => abrirModal(item)} direita={shouldInvertDirection} />
     );
   };
 

@@ -79,11 +79,11 @@ export const ItensOrcamentosProvider = ({ children }) => {
 
             const dataItensSaloes = await Promise.all(promises);
 
-            console.log('dataItensSaloes')
-            console.log(dataItensSaloes[0])
+            // console.log('dataItensSaloes')
+            // console.log(dataItensSaloes[0])
 
-            console.log('fetchedItens');
-            console.log(fetchedItens);
+            // console.log('fetchedItens');
+            // console.log(fetchedItens);
 
             // Relacionar os dados entre fetchedItens e dataItensSaloes
             const itensCompletos = dataItensSaloes.map((item) => {
@@ -95,7 +95,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 // console.log('resultado')
                 // console.log(resultado)
                 if (resultado) {
-                    console.log("encontrado");
+                    // console.log("encontrado");
 
                     return {
                         ...resultado,
@@ -112,12 +112,12 @@ export const ItensOrcamentosProvider = ({ children }) => {
                         // valorTotal: resultado.valorTotal,
                     };
                 } else {
-                    console.log("não encontrado");
+                    // console.log("não encontrado");
                 }
             });
 
-            console.log('itensCompletos');
-            console.log(itensCompletos);
+            // console.log('itensCompletos');
+            // console.log(itensCompletos);
 
             setItensOrcamentos(itensCompletos);
             return itensCompletos;
@@ -127,8 +127,8 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
 
     const updateItemItensOrcamentos = async ItemItensOrcamentosData => {
-        console.log('ItemItensOrcamentosData');
-        console.log(ItemItensOrcamentosData);
+        // console.log('ItemItensOrcamentosData');
+        // console.log(ItemItensOrcamentosData);
 
         try {
             const { error: updateError } = await supabase
@@ -160,6 +160,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 console.error('Erro ao atualizar o Itens do item do orcamento:', updateitensSaloesError);
                 return;
             }
+
             showToast('Item do orcamento atualizado com sucesso!');
             return true;
         } catch (error) {
@@ -167,7 +168,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
         }
     };
     return (
-        <ItensOrcamentosContext.Provider value={{ itensOrcamentos, getItensOrcamentos, updateItemItensOrcamentos }}>
+        <ItensOrcamentosContext.Provider value={{ itensOrcamentos, setItensOrcamentos, getItensOrcamentos, updateItemItensOrcamentos }}>
             {children}
         </ItensOrcamentosContext.Provider>
     );

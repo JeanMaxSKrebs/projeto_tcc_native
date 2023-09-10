@@ -14,7 +14,7 @@ import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrc
 import ItemModal from '../../components/Itens/modal';
 
 const Orcamento = ({ route, navigation }) => {
-  const { itensOrcamentos, getItensOrcamentos, updateItemItensSaloes } = useContext(ItensOrcamentosContext);
+  const { itensOrcamentos, getItensOrcamentos, setItensOrcamentos, updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
@@ -34,7 +34,7 @@ const Orcamento = ({ route, navigation }) => {
     // console.log(route.params.orcamento);
     // console.log('itensOrcamentos');
     // console.log(itensOrcamentos);
-    getItensOrcamentos(orcamento.id)
+    setItensOrcamentos(getItensOrcamentos(orcamento.id))
 
     // {
     //   ?  }
@@ -74,8 +74,8 @@ const Orcamento = ({ route, navigation }) => {
       case 'atualizar':
         // console.log('newItem123');
         // console.log(newItem);
-        if (updateItemItensSaloes(newItem)) {
-          getItensSaloes(salao.id)
+        if (updateItemItensOrcamentos(newItem)) {
+          setItensOrcamentos(getItensOrcamentos(orcamento.id))
           fecharModal();
         }
         break;
@@ -98,8 +98,8 @@ const Orcamento = ({ route, navigation }) => {
   };
 
   const handlePress = (newItem) => {
-    console.log('newItem')
-    console.log(newItem)
+    // console.log('newItem')
+    // console.log(newItem)
 
     opcao(newItem);
   };
@@ -139,11 +139,6 @@ const Orcamento = ({ route, navigation }) => {
           onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
         />
         <View>
-          <View>
-            {/* {console.log('item000')}
-            {console.log(item)} */}
-            {/* <Texto tamanho={40} texto={item.nome} tipo={'orcamento'}></Texto> */}
-          </View>
           <View>
             <AdicionarItemButton
               item={orcamento}

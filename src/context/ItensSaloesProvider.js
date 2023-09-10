@@ -82,7 +82,7 @@ export const ItensSaloesProvider = ({ children }) => {
           salao_id: ItemItensSaloesData.salaoId,
           item_id: ItemItensSaloesData.itemId,
           valor_unitario: ItemItensSaloesData.valorUitario,
-          quantidadeMaxima: ItemItensSaloesData.quantidade_maxima,
+          quantidade_maxima: ItemItensSaloesData.quantidadeMaxima,
           novo_nome: ItemItensSaloesData.novoNome,
           nova_descricao: ItemItensSaloesData.novaDescricao,
           nova_imagem: ItemItensSaloesData.novaImagem,
@@ -101,7 +101,7 @@ export const ItensSaloesProvider = ({ children }) => {
     }
   };
   return (
-    <ItensSaloesContext.Provider value={{ itensSaloes, getItensSaloes, updateItemItensSaloes }}>
+    <ItensSaloesContext.Provider value={{ itensSaloes, setItensSaloes, getItensSaloes, updateItemItensSaloes }}>
       {children}
     </ItensSaloesContext.Provider>
   );

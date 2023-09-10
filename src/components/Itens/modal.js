@@ -2,23 +2,27 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, Modal, Image, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
 } from 'react-native';
+import { ToastAndroid } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 
-const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
+const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
   // console.log('item1')
   // console.log(item)
   // console.log('isModalVisible1')
   // console.log(isModalVisible)
+  console.log('isItensSaloes')
+  console.log(isItensSaloes)
   // console.log('onPress')
   // console.log(onPress)
-  // console.log('acao')
-  // console.log(acao)
+  console.log('acao')
+  console.log(acao)
   // const [quantidade, setQuantidade] = useState(item.quantidadeMaxima);
   const [quantidade, setQuantidade] = useState(item.quantidade);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
+  const [quantidadeMaximaTemp, setQuantidadeMaximaTemp] = useState(item.quantidadeMaxima);
 
   const [nome, setNome] = useState(item.itens.nome);
   const [descricao, setDescricao] = useState(item.itens.descricao);
@@ -29,14 +33,80 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
   const [novaImagem, setNovaImagem] = useState(item.novaImagem);
 
   const [newItem, setNewItem] = useState(item);
-  const quantidadeValues = Array.from({ length: item.quantidade }, (_, index) => (index + 1).toString());
-  const quantidadeMaximaValues = Array.from({ length: item.quantidadeMaxima }, (_, index) => (index + 1).toString());
+  const quantidadeMaximaValues = Array.from({ length: item.quantidadeMaxima + 1 }, (_, index) => (index).toString());
+  const definicao = 1000
+  const valoresDe0aDefinicao = Array.from({ length: definicao + 1 }, (_, index) => index.toString());
 
-  const [selectedValue, setSelectedValue] = useState('option1');
-
+  const showToast = message => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
 
   useEffect(() => {
   }, []);
+
+  const renderQuantidade = () => {
+    if (isItensSaloes) {
+      return (<>
+        <TextInput
+          style={styles.TextInput}
+          placeholder={`Quantidade Antiga: ${quantidadeMaximaTemp}`}
+          value={quantidadeMaxima}
+          onChangeText={(text) => {
+            if (text > 1000) {
+              showToast(`Quantidade Máxima de Itens: ${definicao}`);
+              setQuantidadeMaxima(quantidadeMaxima);
+            } else {
+              setQuantidadeMaxima(text)
+            }
+            setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });
+          }}
+          keyboardType="numeric"
+        />
+        <Picker style={{ width: 120, height: 50 }}
+          selectedValue={quantidadeMaxima}
+          onValueChange={(item, index) => {
+            setQuantidadeMaxima(item);
+            setNewItem({ ...newItem, quantidadeMaxima: item, situacao: 'atualizar' });
+          }}
+        >
+          {valoresDe0aDefinicao.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+      </>
+      )
+    } else {
+      return (<>
+        <TextInput
+          style={styles.TextInput}
+          placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp}`}
+          value={quantidade}
+          onChangeText={(text) => {
+            if (text > quantidadeMaxima) {
+              showToast(`Quantidade Máxima desse Item: ${quantidadeMaxima}`);
+              setQuantidade(quantidade);
+            } else {
+              setQuantidade(text)
+            }
+            setNewItem({ ...newItem, quantida4de: text, situacao: 'atualizar' });
+          }}
+          keyboardType="numeric"
+        />
+        <Picker style={{ width: 100, height: 50 }}
+          selectedValue={quantidade}
+          onValueChange={(item, index) => {
+            setQuantidade(item);
+            setNewItem({ ...newItem, quantidade: item, situacao: 'atualizar' });
+          }}
+        >
+          {quantidadeMaximaValues.map((value) => (
+            <Picker.Item key={value} label={value} value={value} />
+          ))}
+        </Picker>
+      </>
+      )
+    }
+  };
 
   return (
     <Modal
@@ -45,9 +115,60 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
       animationType="slide"
     >
       <View onPress={() => onPress('fechar')} style={styles.background}>
-        <TouchableWithoutFeedback >
+        <TouchableWithoutFeedback>
           {acao === "atualizar" ? (
             <View style={styles.content}>
+              <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
+                <Text>X</Text>
+              </TouchableOpacity>
+              <>
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder="Nome"
+                  value={novoNome == null ? nome : novoNome}
+                  onChangeText={(text) => {
+                    novoNome == null
+                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
+                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
+                  }}
+                />
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder="Descricão"
+                  value={novaDescricao == null ? descricao : novaDescricao}
+                  onChangeText={(text) => {
+                    novaDescricao == null
+                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
+                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
+                  }}
+                />
+              </>
+
+              {renderQuantidade()}
+
+              <View>
+                {/* <TouchableOpacity onPress={pickImage}>
+                <Text>Selecionar Imagem</Text>
+                {/* </TouchableOpacity> */}
+                {novaImagem ? (
+                  <Image source={{ uri: novaImagem }} style={styles.imagem} />
+                ) : (
+                  imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
+                )}
+              </View>
+
+
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
+                  <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
+                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
+                </TouchableOpacity>
+              </View>
+            </View >
+          ) : acao === "adicionar"
+            ? (<View style={styles.content}>
               <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
                 <Text>X</Text>
               </TouchableOpacity>
@@ -71,101 +192,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
                     : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
                 }}
               />
-              <TextInput
-                style={styles.TextInput}
-                placeholder={`Quantidade: ${quantidadeMaxima}`}
-                value={quantidade}
-                onChangeText={(text) => {
-                  if (text > quantidadeMaxima) {
-                    setQuantidade(quantidadeMaxima);
-                  } else {
-                    setQuantidade(quantidade)
-                  }
-                  setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });
-                }}
-                keyboardType="numeric"
-              />
-              <Picker style={{ width: 100, height: 50 }}
-                selectedValue={quantidade}
-                onValueChange={(item, index) => {
-                  setQuantidade(item);
-                }}
-              >
-                {quantidadeValues.map((value) => (
-                  <Picker.Item key={value} label={value} value={value} />
-                ))}
-              </Picker>
-              <View>
-                {/* <TouchableOpacity onPress={pickImage}> */}
-                <Text>Selecionar Imagem</Text>
-                {/* </TouchableOpacity> */}
-                {novaImagem ? (
-                  <Image source={{ uri: novaImagem }} style={styles.imagem} />
-                ) : (
-                  imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
-                )}
-              </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
-                  <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
-                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : acao === "adicionar" ? (
-            <View style={styles.content}>
-              <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
-                <Text>X</Text>
-              </TouchableOpacity>
-              <TextInput
-                style={styles.TextInput}
-                placeholder={novoNome == null ? nome : novoNome}
-                onChangeText={(text) => {
-                  novoNome == null
-                    ? (setNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
-                    : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
-                }}
-                editable={false}
-              />
-              <TextInput
-                style={styles.TextInput}
-                placeholder={novaDescricao == null ? descricao : novaDescricao}
-                onChangeText={(text) => {
-                  novaDescricao == null
-                    ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
-                    : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
-                }}
-                editable={false}
-              />
-              <TextInput
-                style={styles.TextInput}
-                placeholder={`Quantidade Máxima: ${quantidadeMaxima}`}
-                value={quantidade}
-                onChangeText={(text) => {
-                  console.log(text);
-                  if (text > quantidadeMaxima) {
-                    console.log(quantidadeMaxima);
-                    setQuantidade(quantidadeMaxima);
-                  } else {
-                    setQuantidade(text)
-                  }
-                  setNewItem({ ...newItem, quantidade: text, situacao: 'atualizar' });
-                }}
-                keyboardType="numeric"
-              />
-              <Picker style={{ width: 100, height: 50 }}
-                selectedValue={quantidade}
-                onValueChange={(item, index) => {
-                  setQuantidade(item);
-                }}
-              >
-                {quantidadeMaximaValues.map((value) => (
-                  <Picker.Item key={value} label={value} value={value} />
-                ))}
-              </Picker>
+              {renderQuantidade()}
+
               <View>
                 {/* <TouchableOpacity onPress={pickImage}> */}
                 <Text>Selecionar Imagem</Text>
@@ -182,15 +211,15 @@ const ItemModal = ({ item, isModalVisible, onPress, acao }) => {
                 </TouchableOpacity>
               </View>
             </View>
-          ) : acao === "excluir" ? (
-            <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
-              <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
-            </TouchableOpacity>
-          ) : null
+            ) : acao === "excluir" ? (
+              <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
+                <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
+              </TouchableOpacity>
+            ) : null
           }
 
         </TouchableWithoutFeedback >
-      </View>
+      </View >
     </Modal >
   );
 };

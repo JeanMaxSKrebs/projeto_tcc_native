@@ -11,7 +11,8 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
+  const { itensSaloes, setItensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
+  const [itensSaloesTemp, setItensSaloesTemp] = useState([]);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // const [itens, setItens] = useState([]);
 
@@ -35,7 +36,7 @@ const Itens = ({ route, navigation }) => {
     // console.log(route.params.orcamento);
     // console.log(itens);
     // console.log(itens);
-    getItensSaloes(salao.id)
+    setItensSaloes(getItensSaloes(salao.id))
   }, []);
 
   const abrirModal = (item) => {
@@ -56,7 +57,11 @@ const Itens = ({ route, navigation }) => {
         // console.log('newItem123');
         // console.log(newItem);
         if(updateItemItensSaloes(newItem)) {
-          getItensSaloes(salao.id)
+          console.log("atualizar");
+          setItensSaloes(getItensSaloes(salao.id))
+          // console.log(getItensSaloes(salao.id))
+          // setItensSaloesTemp(getItensSaloes(salao.id))
+
           fecharModal();
         }
         break;
@@ -92,7 +97,7 @@ const Itens = ({ route, navigation }) => {
     // console.log('selectedItem itenssaloes');
     // console.log(selectedItem);
     return (
-      <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
+      <ItemModal item={selectedItem} salao={salao} isItensSaloes isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />
     );
   };
@@ -104,7 +109,8 @@ const Itens = ({ route, navigation }) => {
     const shouldInvertDirection = item.id % 2 === 1;
     // console.log(shouldInvertDirection)
     return (
-      <ItemButton item={item} icone={acao} onPress={() => abrirModal(item)} direita={shouldInvertDirection} />
+      <ItemButton isItensSaloes item={item} icone={acao} onPress={() => abrirModal(item)} direita={shouldInvertDirection} />
+      // <ItemButton item={item} tabela={'ItensSaloes'} icone={acao} onPress={() => abrirModal(item)} direita={shouldInvertDirection} />
     );
   };
 
@@ -117,10 +123,11 @@ const Itens = ({ route, navigation }) => {
         <Container>
 
           {/* Renderize os itens aqui */}
-          {/* {console.log('itens screen')}
-          {console.log(itens)} */}
+          {/* {console.log('itensSaloesTemp')}
+          {console.log(itensSaloesTemp[0])} */}
           <FlatList
-            data={itensSaloes}
+            data= {itensSaloes}
+            // data={itensSaloesTemp.length > 0  ? itensSaloesTemp : itensSaloes}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />

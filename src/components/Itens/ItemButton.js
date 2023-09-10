@@ -5,9 +5,11 @@ import { COLORS } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const ItemButton = ({ item, onPress, direita, icone }) => {
+const ItemButton = ({ item, onPress, direita, icone, isItensSaloes }) => {
     // console.log('item000');
     // console.log(item);
+    // console.log(isItensSaloes);
+    // console.log(item.quantidadeMaxima);
 
     const [quantidade, setQuantidade] = useState(item.quantidade);
     const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
@@ -22,7 +24,8 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
 
     return (
         <View>
-            {direita ?
+            {direita
+                ?
                 <View style={styles.container}>
                     {novaImagem !== undefined && novaImagem !== null
                         ? (<Image
@@ -38,14 +41,27 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
                     }
                     <View style={styles.descricao}>
                         {novoNome
-                            ? (<Texto tamanho={20} texto={novoNome} />)
-                            : (<Texto tamanho={20} texto={nome} />)
+                            ? (<Texto tamanho={18} texto={novoNome} />)
+                            : (<Texto tamanho={18} texto={nome} />)
                         }
                         {novaDescricao
                             ? (<Texto tamanho={14} texto={novaDescricao} />)
                             : (<Texto tamanho={14} texto={descricao} />)
                         }
-                        <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                        {/* {tabela === 'ItensSaloes'
+                            ? (<Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />)
+                            : (<Texto tamanho={14} texto={`Quantidade Máxima: ${quantidade}`} />)
+                        } */}
+                        {isItensSaloes
+                            ? <View>
+                                <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                            </View>
+                            :
+                            <View>
+                                <Texto tamanho={12} texto={`Quantidade Disponibilizada: ${quantidade}`} />
+                                <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                            </View>
+                        }
                     </View>
                     <View style={styles.quantidade}>
                         <TouchableOpacity style={styles.areaButton} onPress={() => onPress(icone)}>
@@ -80,14 +96,23 @@ const ItemButton = ({ item, onPress, direita, icone }) => {
                     </View>
                     <View style={styles.descricao}>
                         {novoNome
-                            ? (<Texto tamanho={20} texto={novoNome} />)
-                            : (<Texto tamanho={20} texto={nome} />)
+                            ? (<Texto tamanho={18} texto={novoNome} />)
+                            : (<Texto tamanho={18} texto={nome} />)
                         }
                         {novaDescricao
                             ? (<Texto tamanho={14} texto={novaDescricao} />)
                             : (<Texto tamanho={14} texto={descricao} />)
                         }
-                        <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                        {isItensSaloes
+                            ? <View>
+                                <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                            </View>
+                            :
+                            <View>
+                                <Texto tamanho={12} texto={`Quantidade Disponibilizada: ${quantidade}`} />
+                                <Texto tamanho={14} texto={`Quantidade Máxima: ${quantidadeMaxima}`} />
+                            </View>
+                        }
                     </View>
                     {novaImagem !== undefined && novaImagem !== null
                         ? (<Image
