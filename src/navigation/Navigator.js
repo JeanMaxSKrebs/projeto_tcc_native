@@ -6,7 +6,7 @@ import SignUp from '../screens/SignUp';
 import Saloes from '../screens/Saloes';
 import Gerenciador from '../screens/Gerenciador';
 import AlterarOrcamento from '../screens/Orcamento/alterar';
-import AdicionarItens from '../screens/Itens/adicionar';
+import AdicionarItens from '../screens/ItensSaloes/adicionar';
 import NovoOrcamento from '../screens/Orcamento/novo';
 import OrcamentoItens from '../screens/OrcamentoItens';
 // import Itens from '../screens/Itens';
