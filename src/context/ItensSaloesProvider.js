@@ -29,6 +29,7 @@ export const ItensSaloesProvider = ({ children }) => {
         itens ( nome, descricao, imagem )
       `)
         .eq('salao_id', salaoId)
+        .eq('status', 'ativo') // filtrar registros ativos
         .order('id', { ascending: true })
 
       // const { data, error } = await supabase
@@ -45,20 +46,20 @@ export const ItensSaloesProvider = ({ children }) => {
       // console.log(data.length)
 
       const fetchedItens = data.map(dado => ({
-          created_at: dado.created_at,
-          id: dado.id,
-          item_id: dado.itemId,
-          itens: {
-            descricao: dado.itens.descricao,
-            imagem: dado.itens.imagem,
-            nome: dado.itens.nome,
-          },
-          novaDescricao: dado.nova_descricao,
-          novaImagem: dado.nova_imagem,
-          novoNome: dado.novo_nome,
-          quantidadeMaxima: dado.quantidade_maxima,
-          salaoId: dado.salao_id,
-          valorUnitario: dado.valor_unitario,
+        created_at: dado.created_at,
+        id: dado.id,
+        item_id: dado.item_id,
+        itens: {
+          descricao: dado.itens.descricao,
+          imagem: dado.itens.imagem,
+          nome: dado.itens.nome,
+        },
+        novaDescricao: dado.nova_descricao,
+        novaImagem: dado.nova_imagem,
+        novoNome: dado.novo_nome,
+        quantidadeMaxima: dado.quantidade_maxima,
+        salaoId: dado.salao_id,
+        valorUnitario: dado.valor_unitario,
       }));
       // console.log('fetchedItens[0]');
       // console.log(fetchedItens[0]);
@@ -100,8 +101,47 @@ export const ItensSaloesProvider = ({ children }) => {
       console.error('Erro ao salvar o Item do Salão:', error);
     }
   };
+
+  const softDeleteItemSalao = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('itens_saloes')
+        .update({ status: 'inativo' }) // Marca o registro como inativo
+        .eq('id', id);
+
+      if (!error) {
+        console.log(`Registro com ID ${id} marcado como inativo (soft delete).`);
+      } else {
+        console.error('Erro ao realizar soft delete:', error);
+      }
+    } catch (error) {
+      console.error('Erro ao realizar soft delete:', error);
+    }
+  };
+
+  const hardDeleteItemSalao = async (id) => {
+    try {
+      const { error } = await supabase
+        .from('itens_saloes')
+        .delete() // Exclui permanentemente o registro
+        .eq('id', id);
+
+      if (!error) {
+        console.log(`Registro com ID ${id} excluído permanentemente (hard delete).`);
+      } else {
+        console.error('Erro ao realizar hard delete:', error);
+      }
+    } catch (error) {
+      console.error('Erro ao realizar hard delete:', error);
+    }
+  };
+
   return (
-    <ItensSaloesContext.Provider value={{ itensSaloes, setItensSaloes, getItensSaloes, updateItemItensSaloes }}>
+    <ItensSaloesContext.Provider value={{
+      itensSaloes, setItensSaloes, getItensSaloes,
+      updateItemItensSaloes,
+      softDeleteItemSalao, hardDeleteItemSalao
+    }}>
       {children}
     </ItensSaloesContext.Provider>
   );

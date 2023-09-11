@@ -11,7 +11,8 @@ import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 
 const Itens = ({ route, navigation }) => {
-  const { itensSaloes, setItensSaloes, getItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
+  const { itensSaloes, setItensSaloes, getItensSaloes,
+    updateItemItensSaloes, softDeleteItemSalao, hardDeleteItemSalao } = useContext(ItensSaloesContext);
   const [itensSaloesTemp, setItensSaloesTemp] = useState([]);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // const [itens, setItens] = useState([]);
@@ -50,14 +51,14 @@ const Itens = ({ route, navigation }) => {
   };
 
   const opcao = (newItem) => {
-    // console.log('newItem.situacao');
-    // console.log(newItem.situacao);
+    console.log('newItem.situacao');
+    console.log(newItem.situacao);
     switch (newItem.situacao) {
       case 'atualizar':
         // console.log('newItem123');
         // console.log(newItem);
-        if(updateItemItensSaloes(newItem)) {
-          console.log("atualizar");
+        if (updateItemItensSaloes(newItem)) {
+          // console.log("atualizar");
           setItensSaloes(getItensSaloes(salao.id))
           // console.log(getItensSaloes(salao.id))
           // setItensSaloesTemp(getItensSaloes(salao.id))
@@ -70,7 +71,13 @@ const Itens = ({ route, navigation }) => {
 
         break;
       case 'excluir':
+        {
+          newItem.tipoExclusao === 'hardDelete'
+          ? hardDeleteItemSalao(newItem.id)
+          : softDeleteItemSalao(newItem.id)
+        }
 
+        setItensSaloes(getItensSaloes(salao.id))
         fecharModal();
 
         break;
@@ -84,7 +91,7 @@ const Itens = ({ route, navigation }) => {
   };
 
   const handlePress = (newItem) => {
-    // console.log('newItem')
+    // console.log('newItem2')
     // console.log(newItem)
 
     opcao(newItem);
@@ -123,10 +130,12 @@ const Itens = ({ route, navigation }) => {
         <Container>
 
           {/* Renderize os itens aqui */}
+          {/* {console.log('itensSaloes')}
+          {console.log(itensSaloes)} */}
           {/* {console.log('itensSaloesTemp')}
           {console.log(itensSaloesTemp[0])} */}
           <FlatList
-            data= {itensSaloes}
+            data={itensSaloes}
             // data={itensSaloesTemp.length > 0  ? itensSaloesTemp : itensSaloes}
             renderItem={renderItem}
             keyExtractor={item => item.id}

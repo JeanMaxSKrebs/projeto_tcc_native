@@ -7,18 +7,18 @@ import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
-
+import ModalExclusao from './modalExclusao'
 const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
   // console.log('item1')
   // console.log(item)
   // console.log('isModalVisible1')
   // console.log(isModalVisible)
-  console.log('isItensSaloes')
-  console.log(isItensSaloes)
+  // console.log('isItensSaloes')
+  // console.log(isItensSaloes)
   // console.log('onPress')
   // console.log(onPress)
-  console.log('acao')
-  console.log(acao)
+  // console.log('acao')
+  // console.log(acao)
   // const [quantidade, setQuantidade] = useState(item.quantidadeMaxima);
   const [quantidade, setQuantidade] = useState(item.quantidade);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
@@ -37,12 +37,44 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
   const definicao = 1000
   const valoresDe0aDefinicao = Array.from({ length: definicao + 1 }, (_, index) => index.toString());
 
+  const [isModalExclusaoVisible, setModalExclusaoVisible] = useState(false);
+  const [tipoExclusao, setTipoExclusao] = useState(null);
+
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
   useEffect(() => {
   }, []);
+
+  const abrirModalExclusao = () => {
+    setModalExclusaoVisible(true);
+  };
+
+  const fecharModalExclusao = () => {
+    setModalExclusaoVisible(false);
+  };
+
+  const handleExclusao = (opcao) => {
+    console.log(`Exclusão escolhida: ${opcao}`);
+
+    if (opcao !== 'cancelar') {
+      setTipoExclusao(opcao)
+      onPress({ ...newItem, situacao: 'excluir', tipoExclusao: opcao });
+    }
+    fecharModalExclusao();
+  };
+
+  const renderModalExclusao = () => {
+    // console.log(isModalExclusaoVisible);
+
+    return (
+
+      <ModalExclusao
+        isModalExclusaoVisible
+        onConfirm={handleExclusao} />
+    );
+  };
 
   const renderQuantidade = () => {
     if (isItensSaloes) {
@@ -156,14 +188,20 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                   imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
                 )}
               </View>
-
+              {/* {console.log('isModalExclusaoVisible')}
+              {console.log(isModalExclusaoVisible)} */}
+              {isModalExclusaoVisible ? renderModalExclusao() : null}
 
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
                   <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
-                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />} />
+                {/* onPress({...newItem, situacao: 'excluir' }) */}
+                <TouchableOpacity style={styles.buttonExcluir}
+                  onPress={() => abrirModalExclusao()}
+                >
+
+                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />}></Texto>
                 </TouchableOpacity>
               </View>
             </View >
@@ -212,7 +250,10 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               </View>
             </View>
             ) : acao === "excluir" ? (
-              <TouchableOpacity style={styles.buttonExcluir} onPress={() => onPress('excluir')}>
+              <TouchableOpacity style={styles.buttonExcluir} onPress={() => {
+                setNewItem({ ...newItem, situacao: 'excluir' });
+              }}
+              >
                 <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
               </TouchableOpacity>
             ) : null
