@@ -155,6 +155,11 @@ export const OrcamentosProvider = ({children}) => {
     orcamentoData,
     novosItensData,
   ) => {
+    // console.log('orcamentoId');
+    // console.log(orcamentoId);
+    console.log('orcamentoData');
+    console.log(orcamentoData);
+    // console.log(novosItensData);
     try {
       // Atualize os dados do orçamento na tabela 'orcamentos'
       const {data: updatedOrcamento, error: updateError} = await supabase
@@ -164,10 +169,12 @@ export const OrcamentosProvider = ({children}) => {
           nome: orcamentoData.nome,
           descricao: orcamentoData.descricao,
           valor_base: orcamentoData.valorBase,
-          valor_total: orcamentoData.valorBase + orcamentoData.valorItens,
+          valor_total: parseFloat(orcamentoData.valorBase) + parseFloat(orcamentoData.valorItens),
         })
-        .match({id: orcamentoId});
+        .eq('id', orcamentoId)        
 
+        console.log('updatedOrcamento');
+        console.log(updatedOrcamento);
       if (updateError) {
         throw updateError;
       }
@@ -223,7 +230,6 @@ export const OrcamentosProvider = ({children}) => {
 
     } catch (error) {
       console.error('Erro ao atualizar orçamento:', error);
-      return {error: 'Erro ao atualizar orçamento.'};
     }
   };
 

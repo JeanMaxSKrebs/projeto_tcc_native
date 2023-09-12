@@ -180,8 +180,8 @@ export const ItensOrcamentosProvider = ({ children }) => {
             }));
 
 
-            console.log('formattedData');
-            console.log(formattedData);
+            // console.log('formattedData');
+            // console.log(formattedData);
 
 
             return formattedData[0];

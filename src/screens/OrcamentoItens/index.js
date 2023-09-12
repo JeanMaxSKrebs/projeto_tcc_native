@@ -45,8 +45,6 @@ const OrcamentoItens = ({ route, navigation }) => {
     // console.log(salao)
     // console.log(route)
     if (novoOrcamento) {
-      console.log('novoOrcamento')
-      console.log(novoOrcamento)
       navigation.dispatch(
         CommonActions.navigate({
           name: nextPage,
@@ -91,8 +89,6 @@ const OrcamentoItens = ({ route, navigation }) => {
         break;
       case 'adicionar':
         const novoOrcamento = await insertItemItensOrcamentos(newItem, orcamento);
-        console.log('novoOrcamento123');
-        console.log(novoOrcamento);
         setOrcamento(novoOrcamento);
         routeOrcamentoItens('Orcamento', novoOrcamento);
 

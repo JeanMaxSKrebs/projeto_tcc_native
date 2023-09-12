@@ -27,10 +27,10 @@ const AlterarOrcamento = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    console.log('orcamento123')
-    console.log(orcamento);
-    console.log('salao')
-    console.log(salao);
+    // console.log('orcamento123')
+    // console.log(orcamento);
+    // console.log('salao')
+    // console.log(salao);
     // console.log(salao.id);
     setSalaoId(salao.id);
     if(orcamento) {
@@ -47,19 +47,22 @@ const AlterarOrcamento = ({route, navigation}) => {
       nome: nome,
       descricao: descricao,
       valorBase: valorBase,
-      valorTotal: valorBase,
+      valorItens: orcamento.valorItens,
+      valorTotal: parseFloat(valorBase) + parseFloat(orcamento.valorItens),
     };
     try {
+      console.log('newOrcamento');
+      console.log(newOrcamento);
       await updateOrcamento(id, newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: id};
       console.log('newOrcamentoWithId')
       console.log(newOrcamentoWithId)
-      console.log(salao)
+      // console.log(salao)
       navigation.dispatch(
         CommonActions.navigate({
           // igual ta na tela orcamentos
           name: 'Orcamento',
-          params: {value: newOrcamentoWithId, salao: salao},
+          params: {orcamento: newOrcamentoWithId, salao: salao},
         }),
       );
     } catch (error) {
