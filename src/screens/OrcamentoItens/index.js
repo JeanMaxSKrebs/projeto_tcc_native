@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView, ScrollView, View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
+
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
 import { COLORS } from '../../assets/colors';
@@ -8,19 +10,21 @@ import ItemModal from '../../components/Itens/modal';
 // import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 import { Container, FlatList } from './styles';
 import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
+import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider';
 
 
 const OrcamentoItens = ({ route, navigation }) => {
-  const { itensSaloes, getItensSaloes, setItensSaloes, updateItemItensSaloes } = useContext(ItensSaloesContext);
+  const { itensSaloes, getItensSaloes, setItensSaloes } = useContext(ItensSaloesContext);
+  const { itensOrcamentos, insertItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const acao = "adicionar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   // console.log('itemteste')
   // console.log(route.params)
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [orcamento, setOrcamento] = useState(route.params.orcamento);
 
   const salao = route.params.salao;
-  const orcamento = route.params.orcamento;
 
   const voltar = () => {
     navigation.goBack();
@@ -34,7 +38,30 @@ const OrcamentoItens = ({ route, navigation }) => {
     // console.log(itens);
     // console.log(itens);
     setItensSaloes(getItensSaloes(salao.id))
-  }, []);
+  }, [route.params]);
+
+  const routeOrcamentoItens = (nextPage, novoOrcamento) => {
+    // console.log("TESTE")
+    // console.log(salao)
+    // console.log(route)
+    if (novoOrcamento) {
+      console.log(novoOrcamento)
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: nextPage,
+          params: { orcamento: novoOrcamento, salao: salao },
+        }),
+      );
+    } else {
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: nextPage,
+          params: { orcamento: orcamento, salao: salao },
+        }),
+      );
+    }
+  }
+
 
   const abrirModal = (item) => {
     setSelectedItem(item);
@@ -46,19 +73,28 @@ const OrcamentoItens = ({ route, navigation }) => {
     setModalVisible(false);
   };
 
-  const opcao = (newItem) => {
+  const opcao = async (newItem) => {
     // console.log('newItem.situacao');
     // console.log(newItem.situacao);
+    // console.log(newItem);
+    // console.log(orcamento);
     switch (newItem.situacao) {
       case 'atualizar':
-        // console.log('newItem123');
-        // console.log(newItem);
+        console.log('newItem123');
         if (updateItemItensSaloes(newItem)) {
           setItensSaloes(getItensSaloes(salao.id))
-          fecharModal();
+          routeOrcamentoItens('OrcamentoItens');
         }
+        fecharModal();
+
         break;
       case 'adicionar':
+        const novoOrcamento = await insertItemItensOrcamentos(newItem, orcamento);
+        console.log('novoOrcamento');
+        console.log(novoOrcamento);
+        setOrcamento(novoOrcamento);
+        routeOrcamentoItens('Orcamento', novoOrcamento);
+
         fecharModal();
 
         break;
@@ -77,8 +113,8 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   const handlePress = (newItem) => {
-    console.log('newItem')
-    console.log(newItem)
+    // console.log('newItem')
+    // console.log(newItem)
 
     opcao(newItem);
   };
@@ -87,8 +123,8 @@ const OrcamentoItens = ({ route, navigation }) => {
     if (!selectedItem) {
       return null;
     }
-    console.log('selectedItem');
-    console.log(selectedItem);
+    // console.log('selectedItem');
+    // console.log(selectedItem);
     return (
       <ItemModal item={selectedItem} salao={salao} isModalVisible acao={acao} onPress={(item) => handlePress(item)}
       />

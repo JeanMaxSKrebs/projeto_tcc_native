@@ -11,6 +11,7 @@ export const OrcamentosContext = createContext({});
 
 export const OrcamentosProvider = ({children}) => {
   const [orcamentos, setOrcamentos] = useState([]);
+  const [orcamento, setOrcamento] = useState([]);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -33,6 +34,7 @@ export const OrcamentosProvider = ({children}) => {
         descricao: orcamento.descricao,
         valorBase: orcamento.valor_base,
         valorTotal: orcamento.valor_total,
+        valorItens: orcamento.valor_itens,
       }));
 
       // console.log('orcamentosopcao')
@@ -43,15 +45,39 @@ export const OrcamentosProvider = ({children}) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (user !== null) {
-  //     console.log(user)
-  //     console.log(user.id)
-  //     getBudgetData(user.id);
-  //   } else {
-  //     getUser();
-  //   }
-  // }, []);
+  const getOrcamentoById = async id => {
+    // console.log(id);
+    try {
+      const {data, error} = await supabase
+        .from('orcamentos')
+        .select('*')
+        .eq('id', id);
+
+
+        const orcamento = data.map(orcamento => ({
+          id: orcamento.id,
+          nome: orcamento.nome,
+          descricao: orcamento.descricao,
+          valorBase: orcamento.valor_base,
+          valorTotal: orcamento.valor_total,
+          valorItens: orcamento.valor_itens,
+        }));
+        // console.log('data123');
+        // console.log(orcamento);
+
+      if (error) {
+        console.error('Erro ao buscar o orçamento:', error);
+        return;
+      }
+
+      // console.log('orcamentosopcao')
+      // console.log(orcamentos)
+      setOrcamento(orcamento[0]);
+      return orcamento[0];
+    } catch (error) {
+      console.error('Erro ao buscar os orçamentos:', error);
+    }
+  };
 
   const saveOrcamento = async (orcamentoData, itensData) => {
     try {
@@ -138,6 +164,7 @@ export const OrcamentosProvider = ({children}) => {
           nome: orcamentoData.nome,
           descricao: orcamentoData.descricao,
           valor_base: orcamentoData.valorBase,
+          valor_total: orcamentoData.valorBase + orcamentoData.valorItens,
         })
         .match({id: orcamentoId});
 
@@ -202,7 +229,7 @@ export const OrcamentosProvider = ({children}) => {
 
   return (
     <OrcamentosContext.Provider
-      value={{orcamentos, getBudgetData, saveOrcamento, updateOrcamento}}>
+      value={{orcamentos, getBudgetData, orcamento, setOrcamento, getOrcamentoById, saveOrcamento, updateOrcamento}}>
       {children}
     </OrcamentosContext.Provider>
   );

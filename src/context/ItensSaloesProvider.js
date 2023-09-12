@@ -71,8 +71,8 @@ export const ItensSaloesProvider = ({ children }) => {
   };
 
   const insertItemItensSaloes = async ItemItensSaloesData => {
-    console.log('ItemItensSaloesData');
-    console.log(ItemItensSaloesData);
+    // console.log('ItemItensSaloesData');
+    // console.log(ItemItensSaloesData);
 
     try {
       const { error: insertError } = await supabase
@@ -112,7 +112,7 @@ export const ItensSaloesProvider = ({ children }) => {
         .update({
           salao_id: ItemItensSaloesData.salaoId,
           item_id: ItemItensSaloesData.itemId,
-          valor_unitario: ItemItensSaloesData.valorUitario,
+          valor_unitario: ItemItensSaloesData.valorUnitario,
           quantidade_maxima: ItemItensSaloesData.quantidadeMaxima,
           novo_nome: ItemItensSaloesData.novoNome,
           nova_descricao: ItemItensSaloesData.novaDescricao,

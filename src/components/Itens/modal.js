@@ -32,6 +32,10 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
   const [novaDescricao, setNovaDescricao] = useState(item.novaDescricao);
   const [novaImagem, setNovaImagem] = useState(item.novaImagem);
 
+  const [valorUnitario, setValorUnitario] = useState(item.valorUnitario);
+  const [novoValorUnitario, setNovoValorUnitario] = useState(item.novoValorUnitario);
+  const [valorUnitarioTemp, setValorUnitarioTemp] = useState(item.valorUnitario);
+
   const [newItem, setNewItem] = useState(item);
   const quantidadeMaximaValues = Array.from({ length: item.quantidadeMaxima + 1 }, (_, index) => (index).toString());
   const definicao = 1000
@@ -90,7 +94,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
             } else {
               setQuantidadeMaxima(text)
             }
-            setNewItem({ ...newItem, quantidadeMaxima: text, situacao: 'atualizar' });
+            setNewItem({ ...newItem, quantidadeMaxima: text });
           }}
           keyboardType="numeric"
         />
@@ -98,7 +102,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
           selectedValue={quantidadeMaxima}
           onValueChange={(item, index) => {
             setQuantidadeMaxima(item);
-            setNewItem({ ...newItem, quantidadeMaxima: item, situacao: 'atualizar' });
+            setNewItem({ ...newItem, quantidadeMaxima: item });
           }}
         >
           {valoresDe0aDefinicao.map((value) => (
@@ -112,7 +116,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         <TextInput
           style={styles.TextInput}
           placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp}`}
-          value={quantidade.toString()}
+          value={quantidade !== null ? quantidade : quantidadeMaxima.toString()}
           onChangeText={(text) => {
             if (text > quantidadeMaxima) {
               showToast(`Quantidade Máxima desse Item: ${quantidadeMaxima}`);
@@ -120,7 +124,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
             } else {
               setQuantidade(text)
             }
-            setNewItem({ ...newItem, quantida4de: text, situacao: 'atualizar' });
+            setNewItem({ ...newItem, quantidade: text });
           }}
           keyboardType="numeric"
         />
@@ -128,7 +132,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
           selectedValue={quantidade}
           onValueChange={(item, index) => {
             setQuantidade(item);
-            setNewItem({ ...newItem, quantidade: item, situacao: 'atualizar' });
+            setNewItem({ ...newItem, quantidade: item });
           }}
         >
           {quantidadeMaximaValues.map((value) => (
@@ -160,8 +164,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                   value={novoNome == null ? nome : novoNome}
                   onChangeText={(text) => {
                     novoNome == null
-                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
-                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
+                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text }))
+                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text }))
                   }}
                 />
                 <TextInput
@@ -170,8 +174,19 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                   value={novaDescricao == null ? descricao : novaDescricao}
                   onChangeText={(text) => {
                     novaDescricao == null
-                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
-                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
+                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
+                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
+                  }}
+                />
+
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
+                  value={valorUnitario.toString()}
+                  onChangeText={(text) => {
+                    valorUnitario === null
+                      ? (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
+                      : (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
                   }}
                 />
               </>
@@ -193,10 +208,18 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               {isModalExclusaoVisible ? renderModalExclusao() : null}
 
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                  let newItemWithQuantidade = newItem;
+                  if (!quantidade) {
+                    newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
+                  }
+
+                  const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'atualizar' };
+                  setNewItem(newItemWithSituacao);
+                  onPress(newItemWithSituacao);
+                }}>
                   <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
                 </TouchableOpacity>
-                {/* onPress({...newItem, situacao: 'excluir' }) */}
                 <TouchableOpacity style={styles.buttonExcluir}
                   onPress={() => abrirModalExclusao()}
                 >
@@ -210,27 +233,38 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
                 <Text>X</Text>
               </TouchableOpacity>
-              <TextInput
-                style={styles.TextInput}
-                placeholder="Nome"
-                value={novoNome == null ? nome : novoNome}
-                onChangeText={(text) => {
-                  novoNome == null
-                    ? (setNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
-                    : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text, situacao: 'atualizar' }))
-                }}
-              />
-              <TextInput
-                style={styles.TextInput}
-                placeholder="Descricão"
-                value={novaDescricao == null ? descricao : novaDescricao}
-                onChangeText={(text) => {
-                  novaDescricao == null
-                    ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
-                    : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text, situacao: 'atualizar' }))
-                }}
-              />
-
+              <>
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder="Nome"
+                  value={novoNome == null ? nome : novoNome}
+                  onChangeText={(text) => {
+                    novoNome == null
+                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text }))
+                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text }))
+                  }}
+                />
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder="Descricão"
+                  value={novaDescricao == null ? descricao : novaDescricao}
+                  onChangeText={(text) => {
+                    novaDescricao == null
+                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
+                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
+                  }}
+                />
+                <TextInput
+                  style={styles.TextInput}
+                  placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
+                  value={valorUnitario.toString()}
+                  onChangeText={(text) => {
+                    valorUnitario === null
+                      ? (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
+                      : (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
+                  }}
+                />
+              </>
               {renderQuantidade()}
 
               <View>
@@ -244,16 +278,26 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                 )}
               </View>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => onPress(newItem)}>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                  let newItemWithQuantidade = newItem;
+
+                  if (!quantidade) {
+                    newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
+                  }
+                  const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'adicionar' };
+                  setNewItem(newItemWithSituacao);
+                  onPress(newItemWithSituacao);
+                }}>
                   <Texto tamanho={0} texto={<Icon name="add" color={COLORS.black} size={35} />}></Texto>
                 </TouchableOpacity>
               </View>
             </View>
             ) : acao === "excluir" ? (
-              <TouchableOpacity style={styles.buttonExcluir} onPress={() => {
-                setNewItem({ ...newItem, situacao: 'excluir' });
-              }}
-              >
+              <TouchableOpacity style={styles.button} onPress={() => {
+                const newItemWithSituacao = { ...newItem, situacao: 'adicionar' };
+                setNewItem(newItemWithSituacao);
+                onPress(newItemWithSituacao);
+              }}>
                 <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
               </TouchableOpacity>
             ) : null

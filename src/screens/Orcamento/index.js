@@ -12,33 +12,37 @@ import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider.js
 import ItemButton from '../../components/Itens/ItemButton';
 import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 import ItemModal from '../../components/Itens/modal';
+import { OrcamentosContext } from '../../context/OrcamentosProvider';
 
 const Orcamento = ({ route, navigation }) => {
+  const { getOrcamentoById } = useContext(OrcamentosContext);
   const { itensOrcamentos, getItensOrcamentos, setItensOrcamentos, updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
   const [valorTotal, setValorTotal] = useState('');
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
-  let contador = 0;
-
+  let contador = 0; 
+  
+  
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [orcamento, setOrcamento] = useState(route.params.orcamento);
 
   const salao = route.params.salao;
-  const orcamento = route.params.orcamento;
   useEffect(() => {
-    // console.log('entrou ItensOrcamentos');
+    console.log('entrou ItensOrcamentos');
     // console.log(route.params);
+    console.log(route.params.orcamento);
+    // console.log(orcamento);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
     // console.log('itensOrcamentos');
     // console.log(itensOrcamentos);
+    // orcamento = getOrcamentoById(orcamento.id);
+    getOrcamentoById(orcamento.id)
     setItensOrcamentos(getItensOrcamentos(orcamento.id))
-
-    // {
-    //   ?  }
-  }, []);
+  }, [route.params.orcamento]);
 
   const voltar = () => {
     navigation.goBack();
@@ -145,7 +149,7 @@ const Orcamento = ({ route, navigation }) => {
               onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
             />
 
-            <Content style={{height: 250}}>
+            <Content style={{ height: 250 }}>
               <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
               <FlatList
                 data={itensOrcamentos}

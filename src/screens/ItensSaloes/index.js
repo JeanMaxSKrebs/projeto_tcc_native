@@ -84,8 +84,8 @@ const ItensSaloes = ({ route, navigation }) => {
     console.log(newItem.situacao);
     switch (newItem.situacao) {
       case 'atualizar':
-        // console.log('newItem123');
-        // console.log(newItem);
+        console.log('newItem1234');
+        console.log(newItem);
         if (updateItemItensSaloes(newItem)) {
           // console.log("atualizar");
           setItensSaloes(getItensSaloes(salao.id))
