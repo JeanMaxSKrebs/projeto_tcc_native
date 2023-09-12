@@ -20,8 +20,8 @@ export const ItensSaloesProvider = ({ children }) => {
 
   const getItensSaloes = async salaoId => {
     try {
-      console.log('salaoId')
-      console.log(salaoId)
+      // console.log('salaoId')
+      // console.log(salaoId)
 
       const { data, error } = await supabase
         .from('itens_saloes')

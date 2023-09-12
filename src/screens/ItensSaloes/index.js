@@ -67,7 +67,7 @@ const ItensSaloes = ({ route, navigation }) => {
     // console.log(itens);
     // console.log(itens);
     setItensSaloes(getItensSaloes(salao.id))
-  }, []);
+  }, [route.params]);
 
   const abrirModal = (item) => {
     setSelectedItem(item);
