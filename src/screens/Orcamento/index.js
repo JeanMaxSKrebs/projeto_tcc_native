@@ -15,33 +15,35 @@ import ItemModal from '../../components/Itens/modal';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 
 const Orcamento = ({ route, navigation }) => {
-  const { getOrcamentoById } = useContext(OrcamentosContext);
+  const { setOrcamento, getOrcamentoById } = useContext(OrcamentosContext);
   const { itensOrcamentos, getItensOrcamentos, setItensOrcamentos, updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
   const [valorTotal, setValorTotal] = useState('');
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
-  let contador = 0; 
-  
-  
+  let contador = 0;
+
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [orcamento, setOrcamento] = useState(route.params.orcamento);
 
+  const orcamento = route.params.orcamento;
   const salao = route.params.salao;
   useEffect(() => {
     console.log('entrou ItensOrcamentos');
     // console.log(route.params);
-    console.log(route.params.orcamento);
-    // console.log(orcamento);
+    // console.log(route.params.orcamento);
+    console.log(orcamento);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
     // console.log('itensOrcamentos');
     // console.log(itensOrcamentos);
     // orcamento = getOrcamentoById(orcamento.id);
-    getOrcamentoById(orcamento.id)
+
+    setOrcamento(getOrcamentoById(orcamento.id))
     setItensOrcamentos(getItensOrcamentos(orcamento.id))
+
   }, [route.params.orcamento]);
 
   const voltar = () => {

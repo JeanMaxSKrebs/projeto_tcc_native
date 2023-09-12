@@ -103,8 +103,8 @@ export const ItensSaloesProvider = ({ children }) => {
   };
 
   const updateItemItensSaloes = async ItemItensSaloesData => {
-    console.log('ItemItensSaloesData');
-    console.log(ItemItensSaloesData);
+    // console.log('ItemItensSaloesData');
+    // console.log(ItemItensSaloesData);
 
     try {
       const { error: updateError } = await supabase
