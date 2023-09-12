@@ -20,7 +20,8 @@ export const ItensSaloesProvider = ({ children }) => {
 
   const getItensSaloes = async salaoId => {
     try {
-      // console.log(salaoId)
+      console.log('salaoId')
+      console.log(salaoId)
 
       const { data, error } = await supabase
         .from('itens_saloes')
@@ -32,10 +33,6 @@ export const ItensSaloesProvider = ({ children }) => {
         .eq('status', 'ativo') // filtrar registros ativos
         .order('id', { ascending: true })
 
-      // const { data, error } = await supabase
-      //   .from('itens_saloes')
-      //   .select('*')
-      //   .eq('salao_id', salaoId);
 
       if (error) {
         console.error('Erro ao buscar os itens:', error);
@@ -50,9 +47,10 @@ export const ItensSaloesProvider = ({ children }) => {
         id: dado.id,
         item_id: dado.item_id,
         itens: {
-          descricao: dado.itens.descricao,
-          imagem: dado.itens.imagem,
-          nome: dado.itens.nome,
+          descricao: dado.itens ? dado.itens.descricao : null,
+          imagem: dado.itens ? dado.itens.imagem : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/itens/item_default.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpdGVucy9pdGVtX2RlZmF1bHQucG5nIiwiaWF0IjoxNjkzNDU4OTM2LCJleHAiOjE3MjQ5OTQ5MzZ9.55QFlK88bSQ-4OaddGVewX096E0I_dqC2LEmyJXtnuw&t=2023-08-31T05%3A15%3A36.704Z',
+          //imagem padrao caso nao tenha
+          nome: dado.itens ? dado.itens.nome : null,
         },
         novaDescricao: dado.nova_descricao,
         novaImagem: dado.nova_imagem,
@@ -69,6 +67,38 @@ export const ItensSaloesProvider = ({ children }) => {
       return fetchedItens;
     } catch (error) {
       console.error('Erro ao buscar os itens do salão:', error);
+    }
+  };
+
+  const insertItemItensSaloes = async ItemItensSaloesData => {
+    console.log('ItemItensSaloesData');
+    console.log(ItemItensSaloesData);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('itens_saloes')
+        .insert([
+          {
+            salao_id: ItemItensSaloesData.salaoId,
+            item_id: ItemItensSaloesData.itemId,
+            valor_unitario: ItemItensSaloesData.valorUnitario,
+            status: 'ativo',
+            quantidade_maxima: ItemItensSaloesData.quantidadeMaxima,
+            novo_nome: ItemItensSaloesData.novoNome,
+            nova_descricao: ItemItensSaloesData.novaDescricao,
+            nova_imagem: ItemItensSaloesData.novaImagem,
+          }
+        ]);
+
+      if (insertError) {
+        console.error('Erro ao inserir o Item do Salão:', insertError);
+        return;
+      }
+
+      showToast('Item do Salão inserido com sucesso!');
+      return true;
+    } catch (error) {
+      console.error('Erro ao salvar o Item do Salão:', error);
     }
   };
 
@@ -139,7 +169,7 @@ export const ItensSaloesProvider = ({ children }) => {
   return (
     <ItensSaloesContext.Provider value={{
       itensSaloes, setItensSaloes, getItensSaloes,
-      updateItemItensSaloes,
+      insertItemItensSaloes, updateItemItensSaloes,
       softDeleteItemSalao, hardDeleteItemSalao
     }}>
       {children}

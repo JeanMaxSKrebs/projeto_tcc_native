@@ -82,9 +82,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         <TextInput
           style={styles.TextInput}
           placeholder={`Quantidade Antiga: ${quantidadeMaximaTemp}`}
-          value={quantidadeMaxima}
+          value={quantidadeMaxima.toString()}
           onChangeText={(text) => {
-            if (text > 1000) {
+            if (text > definicao) {
               showToast(`Quantidade Máxima de Itens: ${definicao}`);
               setQuantidadeMaxima(quantidadeMaxima);
             } else {
@@ -112,7 +112,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         <TextInput
           style={styles.TextInput}
           placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp}`}
-          value={quantidade}
+          value={quantidade.toString()}
           onChangeText={(text) => {
             if (text > quantidadeMaxima) {
               showToast(`Quantidade Máxima desse Item: ${quantidadeMaxima}`);

@@ -9,8 +9,9 @@ import { COLORS } from '../../assets/colors';
 import ItemButton from '../../components/Itens/ItemButton';
 import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
+import MeuButton from '../../components/MeuButton'
 
-const Itens = ({ route, navigation }) => {
+const ItensSaloes = ({ route, navigation }) => {
   const { itensSaloes, setItensSaloes, getItensSaloes,
     updateItemItensSaloes, softDeleteItemSalao, hardDeleteItemSalao } = useContext(ItensSaloesContext);
   const [itensSaloesTemp, setItensSaloesTemp] = useState([]);
@@ -20,15 +21,43 @@ const Itens = ({ route, navigation }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  // console.log(route);
+
+  const salao = route.params.salao;
+
+
   const voltar = () => {
     navigation.goBack();
+  };
+
+  
+  const routeItem = item => {
+    // console.log('calica');
+    // console.log(item);
+
+    switch (item) {
+      case 'AdicionarItem':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'AdicionarItemSalao',
+            params: { salao: salao },
+          }),
+        );
+        break;
+      default:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Orcamento',
+            params: { orcamento: item, salao: salao },
+          }),
+        );
+        break;
+    }
   };
 
   // console.log('Gerenciar itens')
   // console.log(route.params);
   // console.log(route.params.salao);
-
-  let salao = route.params.salao;
 
   useEffect(() => {
     // console.log('entrou itensSaloes');
@@ -142,6 +171,11 @@ const Itens = ({ route, navigation }) => {
           />
           {renderModal()}
 
+          <MeuButton
+              texto="Adicionar Item"
+              cor={COLORS.primary}
+              onClick={() => routeItem('AdicionarItem')}
+            />
         </Container>
         {/* </ScrollView> */}
       </View>
@@ -149,4 +183,4 @@ const Itens = ({ route, navigation }) => {
   );
 };
 
-export default Itens;
+export default ItensSaloes;
