@@ -16,7 +16,9 @@ import { OrcamentosContext } from '../../context/OrcamentosProvider';
 
 const Orcamento = ({ route, navigation }) => {
   const { setOrcamento, getOrcamentoById } = useContext(OrcamentosContext);
-  const { itensOrcamentos, getItensOrcamentos, setItensOrcamentos, updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
+  const { itensOrcamento, getItensOrcamentoById, setItensOrcamento,
+    itensOrcamentos, getItensOrcamentos, setItensOrcamentos,
+    updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState('');
@@ -31,10 +33,11 @@ const Orcamento = ({ route, navigation }) => {
   const orcamento = route.params.orcamento;
   const salao = route.params.salao;
   useEffect(() => {
-    console.log('entrou ItensOrcamentos');
+    // console.log('entrou ItensOrcamentos');
     // console.log(route.params);
     // console.log(route.params.orcamento);
-    console.log(orcamento);
+    // console.log('orcamento.id');
+    // console.log(orcamento.id);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
     // console.log('itensOrcamentos');
@@ -43,6 +46,7 @@ const Orcamento = ({ route, navigation }) => {
 
     setOrcamento(getOrcamentoById(orcamento.id))
     setItensOrcamentos(getItensOrcamentos(orcamento.id))
+    setItensOrcamento(getItensOrcamentoById(orcamento.id))
 
   }, [route.params.orcamento]);
 
@@ -50,15 +54,34 @@ const Orcamento = ({ route, navigation }) => {
     navigation.goBack();
   };
 
+  function pegarIds(itensOrcamentos) {
+    const ids = [];
+
+    itensOrcamentos.forEach((item) => {
+      if (item.hasOwnProperty("id")) {
+        ids.push(item.itensSaloesId);
+      }
+    });
+
+    const idsFormatados = `(${ids.join(',')})`;
+
+    // console.log(idsFormatados);
+    return idsFormatados;
+  }
+
   const routeOrcamento = (orcamento, nextView) => {
-    console.log("TESTE")
-    console.log(orcamento)
+    // console.log("TESTE")
+    // console.log(orcamento)
     // console.log(salao)
     // console.log(route)
+    // console.log('itensOrcamentos');
+    // console.log(itensOrcamento);
+    let itensSaloesId = pegarIds(itensOrcamento)
+
     navigation.dispatch(
       CommonActions.navigate({
         name: nextView,
-        params: { orcamento: orcamento, salao: salao },
+        params: { orcamento: orcamento, itensSaloesId: itensSaloesId, salao: salao },
       }),
     );
   }
@@ -154,9 +177,9 @@ const Orcamento = ({ route, navigation }) => {
             <Content style={{ height: 250 }}>
               <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
               <FlatList
-                data={itensOrcamentos}
+                data={itensOrcamento}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id}
               />
             </Content>
             {renderModal()}

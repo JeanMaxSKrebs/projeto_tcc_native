@@ -11,11 +11,85 @@ import { AuthUserContext } from './AuthUserProvider';
 export const ItensOrcamentosContext = createContext({});
 
 export const ItensOrcamentosProvider = ({ children }) => {
+    const [itensOrcamento, setItensOrcamento] = useState([]);
     const [itensOrcamentos, setItensOrcamentos] = useState([]);
     let itensSaloesIds = [];
 
     const showToast = message => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
+    };
+
+    const getItensOrcamentoById = async (orcamentoId) => {
+        try {
+            const { data: dataItensOrcamentos, error } = await supabase
+                .from('itens_orcamentos')
+                .select(`
+              *,
+              itens_saloes(*)
+            `)
+                .eq('orcamento_id', orcamentoId)
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error('Erro ao buscar os itens do orcamento:', error);
+                return null;
+            }
+
+            const fetchedItens = dataItensOrcamentos.map((dado) => ({
+                id: dado.id,
+                orcamentoId: dado.orcamento_id,
+                itensSaloesId: dado.itens_saloes_id,
+                novoValorUnitario: dado.novo_valor_unitario,
+                valorTotal: dado.valor_total,
+                quantidade: dado.quantidade,
+                novaDescricao: dado.itens_saloes.nova_descricao,
+                novaImagem: dado.itens_saloes.nova_imagem,
+                novoNome: dado.itens_saloes.novo_nome,
+                quantidadeMaxima: dado.itens_saloes.quantidade_maxima,
+                valorUnitario: dado.itens_saloes.valor_unitario,
+            }));
+
+            const itensSaloesIds = fetchedItens.map((item) => item.itensSaloesId);
+
+            const promises = itensSaloesIds.map(async (id) => {
+                const { data: itemSaloesData, error: itemSaloesError } = await supabase
+                    .from('itens_saloes')
+                    .select(`
+                *,
+                itens (nome, descricao, imagem)
+              `)
+                    .eq('id', id);
+
+                if (itemSaloesError) {
+                    console.error('Erro ao buscar item_saloes:', itemSaloesError);
+                    return null;
+                }
+
+                return itemSaloesData[0];
+            });
+
+            const dataItensSaloes = await Promise.all(promises);
+
+            const itensCompletos = dataItensSaloes.map((item) => {
+                const resultado = fetchedItens.find((campos) => campos.itensSaloesId === item.id);
+
+                if (resultado) {
+                    return {
+                        ...resultado,
+                        itens: {
+                            nome: item.itens.nome,
+                            descricao: item.itens.descricao,
+                            imagem: item.itens.imagem,
+                        },
+                    };
+                }
+            });
+            setItensOrcamento(itensCompletos)
+            return itensCompletos;
+        } catch (error) {
+            console.error('Erro ao buscar os itens do orcamento:', error);
+            return null;
+        }
     };
 
     const getItensOrcamentos = async orcamentoId => {
@@ -235,7 +309,9 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
     return (
         <ItensOrcamentosContext.Provider value={{
+            itensOrcamento, setItensOrcamento,
             itensOrcamentos, setItensOrcamentos, getItensOrcamentos,
+            getItensOrcamentoById,
             insertItemItensOrcamentos, updateItemItensOrcamentos
         }}>
             {children}

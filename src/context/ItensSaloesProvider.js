@@ -18,10 +18,12 @@ export const ItensSaloesProvider = ({ children }) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
-  const getItensSaloes = async salaoId => {
+  const getItensSaloes = async (salaoId, idsNegados) => {
     try {
       // console.log('salaoId')
       // console.log(salaoId)
+      // console.log('idsNegados')
+      // console.log(idsNegados)
 
       const { data, error } = await supabase
         .from('itens_saloes')
@@ -32,6 +34,7 @@ export const ItensSaloesProvider = ({ children }) => {
         .eq('salao_id', salaoId)
         .eq('status', 'ativo') // filtrar registros ativos
         .order('id', { ascending: true })
+        .not('id', 'in', idsNegados);
 
 
       if (error) {
@@ -40,7 +43,8 @@ export const ItensSaloesProvider = ({ children }) => {
       }
       // console.log('data[0]');
       // console.log(data[0]);
-      // console.log(data.length)
+      console.log('data.length')
+      console.log(data.length)
 
       const fetchedItens = data.map(dado => ({
         created_at: dado.created_at,

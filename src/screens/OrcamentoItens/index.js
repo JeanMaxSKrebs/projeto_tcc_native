@@ -25,19 +25,21 @@ const OrcamentoItens = ({ route, navigation }) => {
   const [orcamento, setOrcamento] = useState(route.params.orcamento);
 
   const salao = route.params.salao;
-
+  const idsNegados = route.params.itensSaloesId
   const voltar = () => {
     navigation.goBack();
   };
 
   useEffect(() => {
-    console.log('entrou OrcamnetoItens');
+    // console.log('entrou OrcamnetoItens');
     // console.log(route.params);
     // console.log(route.params.salao);
     // console.log(route.params.orcamento);
     // console.log(itens);
     // console.log(itens);
-    setItensSaloes(getItensSaloes(salao.id))
+    // console.log('idsNegados');
+    // console.log(idsNegados);
+    setItensSaloes(getItensSaloes(salao.id, idsNegados))
   }, [route.params]);
 
   const routeOrcamentoItens = (nextPage, novoOrcamento) => {

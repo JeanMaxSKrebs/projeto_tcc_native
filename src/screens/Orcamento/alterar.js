@@ -10,7 +10,8 @@ import {OrcamentosContext} from '../../context/OrcamentosProvider';
 import {CommonActions} from '@react-navigation/native';
 
 const AlterarOrcamento = ({route, navigation}) => {
-  // console.log(route)
+  console.log('route')
+  console.log(route)
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState(0);
@@ -51,12 +52,12 @@ const AlterarOrcamento = ({route, navigation}) => {
       valorTotal: parseFloat(valorBase) + parseFloat(orcamento.valorItens),
     };
     try {
-      console.log('newOrcamento');
-      console.log(newOrcamento);
+      // console.log('newOrcamento');
+      // console.log(newOrcamento);
       await updateOrcamento(id, newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: id};
-      console.log('newOrcamentoWithId')
-      console.log(newOrcamentoWithId)
+      // console.log('newOrcamentoWithId')
+      // console.log(newOrcamentoWithId)
       // console.log(salao)
       navigation.dispatch(
         CommonActions.navigate({
