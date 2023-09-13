@@ -75,13 +75,13 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   const opcao = async (newItem) => {
-    // console.log('newItem.situacao');
+    console.log('newItem.situacao');
     // console.log(newItem.situacao);
-    // console.log(newItem);
+    console.log(newItem);
     // console.log(orcamento);
     switch (newItem.situacao) {
       case 'atualizar':
-        console.log('newItem123');
+        // console.log('newItem123');
         if (updateItemItensSaloes(newItem)) {
           setItensSaloes(getItensSaloes(salao.id))
           routeOrcamentoItens('OrcamentoItens');

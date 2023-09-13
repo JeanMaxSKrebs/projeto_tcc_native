@@ -81,8 +81,8 @@ export const OrcamentosProvider = ({children}) => {
 
   const saveOrcamento = async (orcamentoData, itensData) => {
     try {
-      console.log('orcamentoData');
-      console.log(orcamentoData);
+      // console.log('orcamentoData');
+      // console.log(orcamentoData);
       // console.log(itensData);
       // Primeiro, insira o orçamento na tabela 'orcamentos'
       const {data: orcamento, error: orcamentoError} = await supabase
@@ -157,8 +157,8 @@ export const OrcamentosProvider = ({children}) => {
   ) => {
     // console.log('orcamentoId');
     // console.log(orcamentoId);
-    console.log('orcamentoData');
-    console.log(orcamentoData);
+    // console.log('orcamentoData');
+    // console.log(orcamentoData);
     // console.log(novosItensData);
     try {
       // Atualize os dados do orçamento na tabela 'orcamentos'
@@ -173,8 +173,8 @@ export const OrcamentosProvider = ({children}) => {
         })
         .eq('id', orcamentoId)        
 
-        console.log('updatedOrcamento');
-        console.log(updatedOrcamento);
+        // console.log('updatedOrcamento');
+        // console.log(updatedOrcamento);
       if (updateError) {
         throw updateError;
       }

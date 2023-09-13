@@ -31,7 +31,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 .order('id', { ascending: true });
 
             if (error) {
-                console.error('Erro ao buscar os itens do orcamento:', error);
+                console.error('Erro ao buscar os itens do orcamento:(123)', error);
                 return null;
             }
 
@@ -73,21 +73,24 @@ export const ItensOrcamentosProvider = ({ children }) => {
             const itensCompletos = dataItensSaloes.map((item) => {
                 const resultado = fetchedItens.find((campos) => campos.itensSaloesId === item.id);
 
+                // console.log('resultado');
+                // console.log(resultado);
                 if (resultado) {
+                    const itens = {
+                        nome: item.itens && item.itens.nome !== null ? item.itens.nome : null,
+                        descricao: item.itens && item.itens.descricao !== null ? item.itens.descricao : null,
+                        imagem: item.itens && item.itens.imagem !== null ? item.itens.imagem : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/itens/item_default.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpdGVucy9pdGVtX2RlZmF1bHQucG5nIiwiaWF0IjoxNjkzNDU4OTM2LCJleHAiOjE3MjQ5OTQ5MzZ9.55QFlK88bSQ-4OaddGVewX096E0I_dqC2LEmyJXtnuw&t=2023-08-31T05%3A15%3A36.704Z'
+                    };
                     return {
                         ...resultado,
-                        itens: {
-                            nome: item.itens.nome,
-                            descricao: item.itens.descricao,
-                            imagem: item.itens.imagem,
-                        },
+                        itens: itens,
                     };
                 }
             });
             setItensOrcamento(itensCompletos)
             return itensCompletos;
         } catch (error) {
-            console.error('Erro ao buscar os itens do orcamento:', error);
+            console.error('Erro ao buscar os itens do orcamento:(456)', error);
             return null;
         }
     };
@@ -106,7 +109,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 .order('id', { ascending: true })
 
             if (error) {
-                console.error('Erro ao buscar os itens do orcamento:', error);
+                console.error('Erro ao buscar os itens do orcamento(789):', error);
                 return;
             }
             // console.log('dataItensOrcamentos');
@@ -171,20 +174,14 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 // console.log(resultado)
                 if (resultado) {
                     // console.log("encontrado");
-
+                    const itens = {
+                        nome: item.itens && item.itens.nome !== null ? item.itens.nome : null,
+                        descricao: item.itens && item.itens.descricao !== null ? item.itens.descricao : null,
+                        imagem: item.itens && item.itens.imagem !== null ? item.itens.imagem : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/itens/item_default.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpdGVucy9pdGVtX2RlZmF1bHQucG5nIiwiaWF0IjoxNjkzNDU4OTM2LCJleHAiOjE3MjQ5OTQ5MzZ9.55QFlK88bSQ-4OaddGVewX096E0I_dqC2LEmyJXtnuw&t=2023-08-31T05%3A15%3A36.704Z'
+                    };
                     return {
                         ...resultado,
-                        itens: {
-                            nome: item.itens.nome,
-                            descricao: item.itens.descricao,
-                            imagem: item.itens.imagem,
-                        },
-                        // novaDescricao: resultado.novaDescricao,
-                        // novaImagem: resultado.novaImagem,
-                        // novoNome: resultado.novoNome,
-                        // quantidadeMaxima: resultado.quantidadeMaxima,
-                        // quantidade: resultado.quantidade,
-                        // valorTotal: resultado.valorTotal,
+                        itens: itens,
                     };
                 } else {
                     // console.log("não encontrado");
@@ -202,12 +199,15 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
 
     const insertItemItensOrcamentos = async (ItemItensOrcamentosData, orcamento) => {
-        // console.log('ItemItensOrcamentosData');
-        // console.log(ItemItensOrcamentosData);
+        console.log('ItemItensOrcamentosData');
+        console.log(ItemItensOrcamentosData);
         // console.log('orcamento');
         // console.log(orcamento);
-        let valorTotalItem = ItemItensOrcamentosData.quantidade * ItemItensOrcamentosData.valorUnitario;
-        let valorItens = orcamento.valorItens + valorTotalItem
+        const valorUnitario = ItemItensOrcamentosData.novoValorUnitario || ItemItensOrcamentosData.valorUnitario;
+        const quantidade = ItemItensOrcamentosData.quantidade || 0;
+        
+        const valorTotalItem = parseFloat(quantidade) * parseFloat(valorUnitario);
+        let valorItens = orcamento.valorItens + parseFloat(valorTotalItem)
         try {
             const { error } = await supabase
                 .from('itens_orcamentos')
@@ -216,7 +216,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                         orcamento_id: orcamento.id,
                         itens_saloes_id: ItemItensOrcamentosData.id,
                         quantidade: ItemItensOrcamentosData.quantidade,
-                        novo_valor_unitario: ItemItensOrcamentosData.valorUnitario,
+                        novo_valor_unitario: ItemItensOrcamentosData.novo,
                         valor_total: valorTotalItem,
                     }
                 ]);

@@ -9,18 +9,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import ModalExclusao from './modalExclusao'
 const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
-  // console.log('item1')
-  // console.log(item)
+  console.log('item1')
+  console.log(item)
   // console.log('isModalVisible1')
   // console.log(isModalVisible)
-  // console.log('isItensSaloes')
-  // console.log(isItensSaloes)
+  console.log('isItensSaloes')
+  console.log(isItensSaloes)
   // console.log('onPress')
   // console.log(onPress)
-  // console.log('acao')
-  // console.log(acao)
+  console.log('acao')
+  console.log(acao)
   // const [quantidade, setQuantidade] = useState(item.quantidadeMaxima);
-  const [quantidade, setQuantidade] = useState(item.quantidade);
+  const [quantidade, setQuantidade] = useState(0);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(item.quantidadeMaxima);
   const [quantidadeMaximaTemp, setQuantidadeMaximaTemp] = useState(item.quantidadeMaxima);
 
@@ -34,7 +34,11 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
 
   const [valorUnitario, setValorUnitario] = useState(item.valorUnitario);
   const [novoValorUnitario, setNovoValorUnitario] = useState(item.novoValorUnitario);
-  const [valorUnitarioTemp, setValorUnitarioTemp] = useState(item.valorUnitario);
+  const [valorUnitarioTemp, setValorUnitarioTemp] = useState(
+    item.novoValorUnitario
+      ? item.novoValorUnitario
+      : item.valorUnitario
+  );
 
   const [newItem, setNewItem] = useState(item);
   const quantidadeMaximaValues = Array.from({ length: item.quantidadeMaxima + 1 }, (_, index) => (index).toString());
@@ -43,6 +47,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
 
   const [isModalExclusaoVisible, setModalExclusaoVisible] = useState(false);
   const [tipoExclusao, setTipoExclusao] = useState(null);
+
+
+  const [usarPicker, setUsarPicker] = useState(true);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -80,69 +87,136 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
     );
   };
 
-  const renderQuantidade = () => {
+
+  const toggleInputMethod = () => {
+    setUsarPicker(!usarPicker);
+  };
+
+  const handleChange = (text) => {
+    if (text > quantidadeMaxima) {
+      showToast(`Quantidade Máxima desse Item: ${quantidadeMaxima}`);
+      setQuantidade(quantidade);
+    } else {
+      setQuantidade(text);
+    }
+  };
+
+  const handlePickerChange = (itemValue) => {
+    setQuantidade(itemValue);
+  };
+
+  const renderValorUnitario = () => {
     if (isItensSaloes) {
       return (<>
         <TextInput
           style={styles.TextInput}
-          placeholder={`Quantidade Antiga: ${quantidadeMaximaTemp}`}
-          value={quantidadeMaxima.toString()}
+          placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
+          value={novoValorUnitario === null ? valorUnitario : novoValorUnitario}
           onChangeText={(text) => {
-            if (text > definicao) {
-              showToast(`Quantidade Máxima de Itens: ${definicao}`);
-              setQuantidadeMaxima(quantidadeMaxima);
-            } else {
-              setQuantidadeMaxima(text)
-            }
-            setNewItem({ ...newItem, quantidadeMaxima: text });
+            setNovoValorUnitario(text)
+            setNewItem({ ...newItem, novoValorUnitario: text })
           }}
-          keyboardType="numeric"
         />
-        <Picker style={{ width: 120, height: 50 }}
-          selectedValue={quantidadeMaxima}
-          onValueChange={(item, index) => {
-            setQuantidadeMaxima(item);
-            setNewItem({ ...newItem, quantidadeMaxima: item });
-          }}
-        >
-          {valoresDe0aDefinicao.map((value) => (
-            <Picker.Item key={value} label={value} value={value} />
-          ))}
-        </Picker>
-      </>
-      )
+      </>)
     } else {
       return (<>
         <TextInput
           style={styles.TextInput}
-          placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp}`}
-          value={quantidade !== null ? quantidade : quantidadeMaxima.toString()}
+          placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
+          value={novoValorUnitario === null ? valorUnitario : novoValorUnitario}
           onChangeText={(text) => {
-            if (text > quantidadeMaxima) {
-              showToast(`Quantidade Máxima desse Item: ${quantidadeMaxima}`);
-              setQuantidade(quantidade);
-            } else {
-              setQuantidade(text)
-            }
-            setNewItem({ ...newItem, quantidade: text });
+            setNovoValorUnitario(text)
+            setNewItem({ ...newItem, novoValorUnitario: text })
           }}
-          keyboardType="numeric"
         />
-        <Picker style={{ width: 100, height: 50 }}
-          selectedValue={quantidade}
-          onValueChange={(item, index) => {
-            setQuantidade(item);
-            setNewItem({ ...newItem, quantidade: item });
-          }}
-        >
-          {quantidadeMaximaValues.map((value) => (
-            <Picker.Item key={value} label={value} value={value} />
-          ))}
-        </Picker>
+      </>)
+    }
+  }
+  const renderQuantidade = () => {
+    if (isItensSaloes) {
+      return (<>
+        {usarPicker ? (
+          <Picker
+            style={{ width: 120, height: 50 }}
+            selectedValue={quantidadeMaxima}
+            onValueChange={(item, index) => {
+              setQuantidadeMaxima(item);
+              setNewItem({ ...newItem, quantidadeMaxima: item });
+            }}
+          >
+            {valoresDe0aDefinicao.map((value) => (
+              <Picker.Item key={value} label={value.toString()} value={value} />
+            ))}
+          </Picker>
+        ) : (
+          <TextInput
+            style={styles.TextInput}
+            placeholder={`Quantidade Antiga: ${quantidadeMaximaTemp}`}
+            value={quantidadeMaxima.toString()}
+            onChangeText={(text) => {
+              if (text > definicao) {
+                showToast(`Quantidade Máxima de Itens: ${definicao}`);
+                setQuantidadeMaxima(quantidadeMaxima);
+              } else {
+                setQuantidadeMaxima(text);
+              }
+              setNewItem({ ...newItem, quantidadeMaxima: text });
+            }}
+            keyboardType="numeric"
+          />
+        )}
+        <TouchableOpacity onPress={toggleInputMethod}>
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
+          }}>
+            <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
+          </View>
+        </TouchableOpacity>
+      </>
+      )
+    } else {
+      return (<>
+        {usarPicker ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ marginRight: 15 }}>{`Quantidade Máxima: ${quantidadeMaxima.toString()}`}</Text>
+            <Picker
+              style={{ width: 100, height: 50 }}
+              selectedValue={quantidade}
+              onValueChange={(item, index) => {
+                setQuantidadeMaxima(item);
+                setNewItem({ ...newItem, quantidadeMaxima: item });
+              }}            >
+              {quantidadeMaximaValues.map((value) => (
+                <Picker.Item key={value} label={value} value={value} />
+              ))}
+            </Picker>
+          </View>
+        ) : (
+          <TextInput
+            style={styles.TextInput}
+            placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp}`}
+            value={quantidade !== null ? quantidade : quantidadeMaxima.toString()}
+            onValueChange={(item, index) => {
+              setQuantidadeMaxima(item);
+              setNewItem({ ...newItem, quantidadeMaxima: item });
+            }}
+            keyboardType="numeric"
+          />
+        )}
+        <TouchableOpacity onPress={toggleInputMethod}>
+          <View style={{
+            flexDirection: 'row', alignItems: 'center',
+            backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
+          }}>
+            <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
+          </View>
+        </TouchableOpacity>
       </>
       )
     }
   };
+  //  ○  ✓
 
   return (
     <Modal
@@ -158,40 +232,47 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                 <Text>X</Text>
               </TouchableOpacity>
               <>
-                <TextInput
-                  style={styles.TextInput}
-                  placeholder="Nome"
-                  value={novoNome == null ? nome : novoNome}
-                  onChangeText={(text) => {
-                    novoNome == null
-                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text }))
-                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text }))
-                  }}
-                />
-                <TextInput
-                  style={styles.TextInput}
-                  placeholder="Descricão"
-                  value={novaDescricao == null ? descricao : novaDescricao}
-                  onChangeText={(text) => {
-                    novaDescricao == null
-                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
-                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
-                  }}
-                />
-
-                <TextInput
-                  style={styles.TextInput}
-                  placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
-                  value={valorUnitario.toString()}
-                  onChangeText={(text) => {
-                    valorUnitario === null
-                      ? (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
-                      : (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
-                  }}
-                />
+                <>
+                  <TouchableOpacity>
+                    <Text>Nome</Text>
+                  </TouchableOpacity>
+                  <TextInput
+                    style={styles.TextInput}
+                    placeholder="Nome"
+                    value={novoNome === null ? nome : novoNome}
+                    onChangeText={(text) => {
+                      setNovoNome(text)
+                      setNewItem({ ...newItem, novoNome: text })
+                    }}
+                  />
+                </>
+                <>
+                  <TouchableOpacity>
+                    <Text>Descricão</Text>
+                  </TouchableOpacity>
+                  <TextInput
+                    style={styles.TextInput}
+                    placeholder="Descricão"
+                    value={novaDescricao === null ? descricao : novaDescricao}
+                    onChangeText={(text) => {
+                      setNovaDescricao(text)
+                      setNewItem({ ...newItem, novaDescricao: text })
+                    }}
+                  />
+                </>
+                <>
+                  <TouchableOpacity>
+                    <Text>Valor Unitário</Text>
+                  </TouchableOpacity>
+                  {renderValorUnitario()}
+                </>
+                <>
+                  <TouchableOpacity>
+                    <Text>Quantidade</Text>
+                  </TouchableOpacity>
+                  {renderQuantidade()}
+                </>
               </>
-
-              {renderQuantidade()}
 
               <View>
                 {/* <TouchableOpacity onPress={pickImage}>
@@ -237,31 +318,28 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                 <TextInput
                   style={styles.TextInput}
                   placeholder="Nome"
-                  value={novoNome == null ? nome : novoNome}
+                  value={novoNome === null ? nome : novoNome}
                   onChangeText={(text) => {
-                    novoNome == null
-                      ? (setNome(text), setNewItem({ ...newItem, novoNome: text }))
-                      : (setNovoNome(text), setNewItem({ ...newItem, novoNome: text }))
+                    setNovoNome(text)
+                    setNewItem({ ...newItem, novoNome: text })
                   }}
                 />
                 <TextInput
                   style={styles.TextInput}
                   placeholder="Descricão"
-                  value={novaDescricao == null ? descricao : novaDescricao}
+                  value={novaDescricao === null ? descricao : novaDescricao}
                   onChangeText={(text) => {
-                    novaDescricao == null
-                      ? (setDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
-                      : (setNovaDescricao(text), setNewItem({ ...newItem, novaDescricao: text }))
+                    setNovaDescricao(text)
+                    setNewItem({ ...newItem, novaDescricao: text })
                   }}
                 />
                 <TextInput
                   style={styles.TextInput}
                   placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
-                  value={valorUnitario.toString()}
+                  value={novoValorUnitario === null ? valorUnitario : novoValorUnitario}
                   onChangeText={(text) => {
-                    valorUnitario === null
-                      ? (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
-                      : (setValorUnitario(text), setNewItem({ ...newItem, valorUnitario: text }))
+                    setNovoValorUnitario(text)
+                    setNewItem({ ...newItem, novoValorUnitario: text })
                   }}
                 />
               </>
@@ -285,6 +363,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                     newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
                   }
                   const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'adicionar' };
+                  console.log('123123');
+                  console.log(newItemWithSituacao);
                   setNewItem(newItemWithSituacao);
                   onPress(newItemWithSituacao);
                 }}>

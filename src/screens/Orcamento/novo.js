@@ -30,13 +30,17 @@ const NovoOrcamento = ({route, navigation}) => {
       valorTotal: valorBase,
     };
     try {
+      console.log('newOrcamento');
+      console.log(newOrcamento);
       const newOrcamentoId = await saveOrcamento(newOrcamento);
       const newOrcamentoWithId = {...newOrcamento, id: newOrcamentoId};
+      console.log('newOrcamentoWithId');
+      console.log(newOrcamentoWithId);
     
       navigation.dispatch(
         CommonActions.navigate({
           name: 'Orcamento',
-          params: {value: newOrcamentoWithId, salao: salao},
+          params: {orcamento: newOrcamentoWithId, salao: salao},
         }),
       );
     } catch (error) {

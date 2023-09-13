@@ -24,29 +24,45 @@ export const ItensSaloesProvider = ({ children }) => {
       // console.log(salaoId)
       // console.log('idsNegados')
       // console.log(idsNegados)
+      let dados = [];
+      if (idsNegados) {
+        const { data, error } = await supabase
+          .from('itens_saloes')
+          .select(`*,
+              itens ( nome, descricao, imagem )`)
+          .eq('salao_id', salaoId)
+          .eq('status', 'ativo') // filtrar registros ativos
+          .order('id', { ascending: true })
+          .not('id', 'in', idsNegados);
 
-      const { data, error } = await supabase
-        .from('itens_saloes')
-        .select(`
-        *,
-        itens ( nome, descricao, imagem )
-      `)
-        .eq('salao_id', salaoId)
-        .eq('status', 'ativo') // filtrar registros ativos
-        .order('id', { ascending: true })
-        .not('id', 'in', idsNegados);
+        if (error) {
+          console.error('Erro ao buscar os itens:', error);
+          return;
+        }
 
+        dados = data;
 
-      if (error) {
-        console.error('Erro ao buscar os itens:', error);
-        return;
+      } else {
+        const { data, error } = await supabase
+          .from('itens_saloes')
+          .select(`*,
+              itens ( nome, descricao, imagem )`)
+          .eq('salao_id', salaoId)
+          .eq('status', 'ativo') // filtrar registros ativos
+          .order('id', { ascending: true });
+
+        if (error) {
+          console.error('Erro ao buscar os itens:', error);
+          return;
+        }
+        
+        dados = data;
+
       }
-      // console.log('data[0]');
-      // console.log(data[0]);
-      console.log('data.length')
-      console.log(data.length)
+      // console.log('dados.length')
+      // console.log(dados.length)
 
-      const fetchedItens = data.map(dado => ({
+      const fetchedItens = dados.map(dado => ({
         created_at: dado.created_at,
         id: dado.id,
         item_id: dado.item_id,

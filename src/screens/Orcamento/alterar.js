@@ -10,8 +10,8 @@ import {OrcamentosContext} from '../../context/OrcamentosProvider';
 import {CommonActions} from '@react-navigation/native';
 
 const AlterarOrcamento = ({route, navigation}) => {
-  console.log('route')
-  console.log(route)
+  // console.log('route')
+  // console.log(route)
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState(0);
