@@ -199,15 +199,15 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
 
     const insertItemItensOrcamentos = async (ItemItensOrcamentosData, orcamento) => {
-        console.log('ItemItensOrcamentosData');
-        console.log(ItemItensOrcamentosData);
-        // console.log('orcamento');
-        // console.log(orcamento);
-        const valorUnitario = ItemItensOrcamentosData.novoValorUnitario || ItemItensOrcamentosData.valorUnitario;
-        const quantidade = ItemItensOrcamentosData.quantidade || 0;
-        
-        const valorTotalItem = parseFloat(quantidade) * parseFloat(valorUnitario);
-        let valorItens = orcamento.valorItens + parseFloat(valorTotalItem)
+        // console.log('ItemItensOrcamentosData');
+        // console.log(ItemItensOrcamentosData);
+        console.log('orcamento');
+        console.log(orcamento);
+        const valorUnitario = ItemItensOrcamentosData.novoValorUnitario
+            ? ItemItensOrcamentosData.novoValorUnitario
+            : ItemItensOrcamentosData.valorUnitario;
+        const valorTotal = parseFloat(ItemItensOrcamentosData.quantidade) * valorUnitario;
+        let valorItens = orcamento.valorItens + parseFloat(valorTotal)
         try {
             const { error } = await supabase
                 .from('itens_orcamentos')
@@ -216,8 +216,8 @@ export const ItensOrcamentosProvider = ({ children }) => {
                         orcamento_id: orcamento.id,
                         itens_saloes_id: ItemItensOrcamentosData.id,
                         quantidade: ItemItensOrcamentosData.quantidade,
-                        novo_valor_unitario: ItemItensOrcamentosData.novo,
-                        valor_total: valorTotalItem,
+                        novo_valor_unitario: valorUnitario,
+                        valor_total: valorTotal,
                     }
                 ]);
 
@@ -256,7 +256,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
 
             // console.log('formattedData');
             // console.log(formattedData);
-
+            setItensOrcamento(formattedData[0])
 
             return formattedData[0];
             return true;
@@ -266,18 +266,32 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
 
 
-    const updateItemItensOrcamentos = async ItemItensOrcamentosData => {
-        // console.log('ItemItensOrcamentosData');
-        // console.log(ItemItensOrcamentosData);
+    const updateItemItensOrcamentos = async (ItemItensOrcamentosData, orcamento) => {
+        console.log('updateItemItensOrcamentosData');
+        console.log(ItemItensOrcamentosData);
+        console.log('orcamento');
+        console.log(orcamento);
+        let valorUnitario = ItemItensOrcamentosData.novoValorUnitario
+            ? parseInt(ItemItensOrcamentosData.novoValorUnitario)
+            : parseInt(ItemItensOrcamentosData.valorUnitario);
+
+        let valorTotalAntigo = parseInt(ItemItensOrcamentosData.quantidadeAntiga) * parseInt(ItemItensOrcamentosData.valorAntigo) 
+        console.log('valorTotalAntigo');
+        console.log(valorTotalAntigo);
+
+        let valorTotal = parseInt(ItemItensOrcamentosData.quantidade) * valorUnitario
+        console.log('valorTotal');
+        console.log(valorTotal);
 
         try {
             const { error: updateError } = await supabase
                 .from('itens_orcamentos')
                 .update({
                     orcamento_id: ItemItensOrcamentosData.orcamentoId,
-                    item_id: ItemItensOrcamentosData.itemId,
-                    valor_unitario: ItemItensOrcamentosData.valorUitario,
-                    quantidade: ItemItensOrcamentosData.quantidade,
+                    itens_saloes_id: ItemItensOrcamentosData.itensSaloesId,
+                    novo_valor_unitario: valorUnitario,
+                    quantidade: parseInt(ItemItensOrcamentosData.quantidade),
+                    valor_total: valorTotal,
                 },)
                 .match({ id: ItemItensOrcamentosData.id });
 
@@ -285,7 +299,6 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 console.error('Erro ao atualizar o Item do orcamento:', updateError);
                 return;
             }
-
 
             const { error: updateitensSaloesError } = await supabase
                 .from('itens_saloes')
@@ -300,9 +313,37 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 console.error('Erro ao atualizar o Itens do item do orcamento:', updateitensSaloesError);
                 return;
             }
+            const valorItensTotal = (orcamento.valorItens - valorTotalAntigo) + valorTotal;
+            const { data: novoOrcamento, error: updateOrcamentosError } = await supabase
+                .from('orcamentos')
+                .update({
+                    valor_base: orcamento.valorBase,
+                    valor_itens: valorItensTotal,
+                    valor_total: (orcamento.valorBase) + valorItensTotal,
+                },)
+                .match({ id: ItemItensOrcamentosData.orcamentoId })
+                .select('*')
+
+            if (updateOrcamentosError) {
+                console.error('Erro ao atualizar o Itens do item do orcamento:', updateOrcamentosError);
+                return;
+            }
+
+            // console.log('novoOrcamento');
+            // console.log(novoOrcamento);
+
+            const novoOrcamentoFormatted = novoOrcamento.map(orcamento => ({
+                id: orcamento.id,
+                nome: orcamento.nome,
+                descricao: orcamento.descricao,
+                salaoId: orcamento.salao_id,
+                valorBase: orcamento.valor_base,
+                valorTotal: orcamento.valor_total,
+                valorItens: orcamento.valor_itens,
+              }));
 
             showToast('Item do orcamento atualizado com sucesso!');
-            return true;
+            return novoOrcamentoFormatted[0];
         } catch (error) {
             console.error('Erro ao salvar o Item do orcamento:', error);
         }

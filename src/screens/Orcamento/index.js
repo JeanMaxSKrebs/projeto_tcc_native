@@ -21,8 +21,8 @@ const Orcamento = ({ route, navigation }) => {
     updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [valorBase, setValorBase] = useState('');
-  const [valorTotal, setValorTotal] = useState('');
+  const [valorBase, setValorBase] = useState(0);
+  const [valorTotal, setValorTotal] = useState(0);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   let contador = 0;
 
@@ -36,9 +36,9 @@ const Orcamento = ({ route, navigation }) => {
     // console.log('entrou ItensOrcamentos');
     // console.log(route.params);
     // console.log(route.params.orcamento);
-    // console.log('orcamento.id');
     // console.log(orcamento.id);
     // console.log(route.params.salao);
+    // console.log('orcamento.id');
     // console.log(route.params.orcamento);
     // console.log('itensOrcamentos');
     // console.log(itensOrcamentos);
@@ -47,6 +47,7 @@ const Orcamento = ({ route, navigation }) => {
     setOrcamento(getOrcamentoById(orcamento.id))
     setItensOrcamentos(getItensOrcamentos(orcamento.id))
     setItensOrcamento(getItensOrcamentoById(orcamento.id))
+    // console.log('teste');
 
   }, [route.params.orcamento]);
 
@@ -96,19 +97,28 @@ const Orcamento = ({ route, navigation }) => {
     setModalVisible(false);
   };
 
-  const opcao = (newItem) => {
+  const opcao = async (newItem) => {
     // console.log('newItem.situacao');
     // console.log(newItem.situacao);
+    // console.log(newItem);
     switch (newItem.situacao) {
       case 'atualizar':
         // console.log('newItem123');
         // console.log(newItem);
-        if (updateItemItensOrcamentos(newItem)) {
-          setItensOrcamentos(getItensOrcamentos(orcamento.id))
+        let novoOrcamento = await updateItemItensOrcamentos(newItem, orcamento);
+
+        if (novoOrcamento) {
+          // await setOrcamento(getOrcamentoById(orcamento.id))
+          // console.log('orcamentoNOVO');
+          // console.log(novoOrcamento);
+          routeOrcamento(novoOrcamento, 'Orcamento');
           fecharModal();
         }
         break;
       case 'adicionar':
+        // const novoOrcamento = await insertItemItensOrcamentos(newItem, orcamento);
+        // setOrcamento(novoOrcamento);
+        // routeOrcamento(novoOrcamento, 'Orcamento');
         fecharModal();
 
         break;

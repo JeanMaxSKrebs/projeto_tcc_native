@@ -57,6 +57,7 @@ export const OrcamentosProvider = ({children}) => {
         const orcamento = data.map(orcamento => ({
           id: orcamento.id,
           nome: orcamento.nome,
+          salaoId: orcamento.salao_id,
           descricao: orcamento.descricao,
           valorBase: orcamento.valor_base,
           valorTotal: orcamento.valor_total,

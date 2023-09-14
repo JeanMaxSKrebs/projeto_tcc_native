@@ -75,9 +75,9 @@ const OrcamentoItens = ({ route, navigation }) => {
   };
 
   const opcao = async (newItem) => {
-    console.log('newItem.situacao');
+    // console.log('newItem.situacao');
     // console.log(newItem.situacao);
-    console.log(newItem);
+    // console.log(newItem);
     // console.log(orcamento);
     switch (newItem.situacao) {
       case 'atualizar':
