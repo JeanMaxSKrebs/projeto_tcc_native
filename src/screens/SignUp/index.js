@@ -1,16 +1,16 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {Alert, TouchableOpacity, Text, View } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { Alert, TouchableOpacity, Text, View } from 'react-native';
 import MeuButton from '../../components/MeuButton';
-import {Body, TextInput} from './styles';
+import { Body, TextInput } from './styles';
 import auth from '@react-native-firebase/auth';
-import {CommonActions} from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import Loading from '../../components/Loading';
 
 import { SalaoContext } from '../../context/SalaoProvider';
 import { ClienteContext } from '../../context/ClienteProvider.js';
 
-  const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -43,12 +43,12 @@ import { ClienteContext } from '../../context/ClienteProvider.js';
   };
 
   const cadastrar = async () => {
-    if (nome !== '' && email !== '' && senha !== '' && confirmaSenha !== '' && (cpf !== '' || cnpj !=='')) {
+    if (nome !== '' && email !== '' && senha !== '' && confirmaSenha !== '' && (cpf !== '' || cnpj !== '')) {
       if (senha === confirmaSenha) {
         try {
           setLoading(true);
           console.log(isChecked);
-          if(isChecked) {
+          if (isChecked) {
             const clienteData = {
               nome: nome,
               email: email,
@@ -91,7 +91,7 @@ import { ClienteContext } from '../../context/ClienteProvider.js';
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{name: 'SignIn'}],
+              routes: [{ name: 'SignIn' }],
             }),
           );
         } catch (e) {
@@ -153,8 +153,8 @@ import { ClienteContext } from '../../context/ClienteProvider.js';
       />
       <TouchableOpacity onPress={handleCheck} >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text>Cadastrar como Cliente: </Text>
-          <Text>{isChecked ? '✓' : '○'}</Text>
+          {isChecked ? <Text>Cadastrar como Salão: ○</Text>
+            : <Text>Cadastrar como Cliente: ○</Text>}
         </View>
       </TouchableOpacity>
       {isChecked ? <TextInput
@@ -164,12 +164,12 @@ import { ClienteContext } from '../../context/ClienteProvider.js';
         // defaultValue="04516635078" 
         onChangeText={t => setCpf(t)}
       /> : <TextInput
-          placeholder="Cnpj"
-          keyboardType="numeric"
-          returnKeyType="next"
-          // defaultValue="01855743000106" 
-          onChangeText={t => setCnpj(t)}
-        />
+        placeholder="Cnpj"
+        keyboardType="numeric"
+        returnKeyType="next"
+        // defaultValue="01855743000106" 
+        onChangeText={t => setCnpj(t)}
+      />
       }
       <MeuButton texto={'Cadastrar'} onClick={cadastrar} />
       {loading && <Loading />}
