@@ -17,12 +17,19 @@ import theme from './styles/index';
 
 import { useColorScheme } from "react-native";
 // import { NavigationContainer } from '@react-navigation/native';
+import themes from "./styles/";
+
 
 export default function Providers() {
-
+  // dark, light, null, undefined
   const deviceTheme = useColorScheme();
-  console.log('deviceTheme');
-  console.log(deviceTheme);
+  // console.log('deviceTheme');
+  // console.log(deviceTheme);
+
+  // console.log(themes);
+  //define o tema, o segundo parametro é o padrão
+  const theme = themes[deviceTheme] || theme.dark;
+  // console.log(theme);
   return (
     <AuthUserProvider>
       <ApiProvider>
@@ -32,7 +39,7 @@ export default function Providers() {
               <OrcamentosProvider>
                 <ItensSaloesProvider>
                   <ItensOrcamentosProvider>
-                    <ThemeProvider theme={{ background: `${COLORS.background}`, color: `${COLORS.secundary}` }}>
+                    <ThemeProvider theme={theme}>
                       <Navigator />
                     </ThemeProvider>
                   </ItensOrcamentosProvider>
