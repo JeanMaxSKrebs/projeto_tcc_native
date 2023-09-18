@@ -7,35 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:114412616388:android:a6e4c581154b1b014aa791",
-        "android_client_info": {
-          "package_name": "com.gerenciadordesaloes"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "114412616388-ag2gqljghror2ilmrvmksk1n34ltctbu.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAf-WdZOP_Px4CTv5gLNkKgNL6cyq6O-OY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "114412616388-ag2gqljghror2ilmrvmksk1n34ltctbu.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:114412616388:android:50979d2f7aad15f94aa791",
         "android_client_info": {
           "package_name": "com.projetoexemplo"

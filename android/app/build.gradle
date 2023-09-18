@@ -100,10 +100,10 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.projetoexemplo"
+    namespace "com.gerenciadordesaloes"
     defaultConfig {
         multiDexEnabled true
-        applicationId "com.projetoexemplo"
+        applicationId "com.gerenciadordesaloes"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
