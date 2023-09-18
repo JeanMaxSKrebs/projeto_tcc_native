@@ -7,12 +7,22 @@ import { OrcamentosProvider } from '../context/OrcamentosProvider';
 import { AuthUserProvider } from '../context/AuthUserProvider';
 import { ProfileProvider } from '../context/ProfileProvider';
 import { ApiProvider } from '../context/ApiProvider';
+import { ItensOrcamentosProvider } from '../context/ItensOrcamentosProvider';
+
+import { ThemeProvider } from "styled-components";
 
 import Navigator from './Navigator';
-import { ItensOrcamentosProvider } from '../context/ItensOrcamentosProvider';
+import { COLORS } from "../assets/colors";
+import theme from './styles/index';
+
+import { useColorScheme } from "react-native";
 // import { NavigationContainer } from '@react-navigation/native';
 
 export default function Providers() {
+
+  const deviceTheme = useColorScheme();
+  console.log('deviceTheme');
+  console.log(deviceTheme);
   return (
     <AuthUserProvider>
       <ApiProvider>
@@ -22,7 +32,9 @@ export default function Providers() {
               <OrcamentosProvider>
                 <ItensSaloesProvider>
                   <ItensOrcamentosProvider>
-                    <Navigator />
+                    <ThemeProvider theme={{ background: `${COLORS.background}`, color: `${COLORS.secundary}` }}>
+                      <Navigator />
+                    </ThemeProvider>
                   </ItensOrcamentosProvider>
                 </ItensSaloesProvider>
               </OrcamentosProvider>
