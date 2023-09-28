@@ -9,12 +9,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import ModalExclusao from './modalExclusao'
 const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
-  console.log('item1')
-  console.log(item)
+  // console.log('item1')
+  // console.log(item)
   // console.log('isModalVisible1')
   // console.log(isModalVisible)
-  console.log('isItensSaloes')
-  console.log(isItensSaloes)
+  // console.log('isItensSaloes')
+  // console.log(isItensSaloes)
   // console.log('onPress')
   // console.log(onPress)
   // console.log('acao')
@@ -73,7 +73,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
 
     if (opcao !== 'cancelar') {
       setTipoExclusao(opcao)
-      onPress({ ...newItem, situacao: 'excluir', tipoExclusao: opcao });
+      let newItemWithStatus = { ...newItem, status: 'inativo' };
+
+      onPress({ ...newItemWithStatus, situacao: 'excluir', tipoExclusao: opcao });
     }
     fecharModalExclusao();
   };
@@ -185,7 +187,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
           <TextInput
             style={styles.TextInput}
             placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp.toString()}`}
-            value={quantidade ? quantidade.toString() : quantidade.toString()}
+            value={quantidade ? quantidade.toString() : null}
              onChangeText={(text) => {
                if (text > quantidadeMaxima) {
                 showToast(`Quantidade Máxima de Itens: ${quantidadeMaxima}`);
@@ -377,7 +379,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
             </View>
             ) : acao === "excluir" ? (
               <TouchableOpacity style={styles.button} onPress={() => {
-                const newItemWithSituacao = { ...newItem, situacao: 'adicionar' };
+                const newItemWithSituacao = { ...newItem, situacao: 'excluir' };
                 setNewItem(newItemWithSituacao);
                 onPress(newItemWithSituacao);
               }}>

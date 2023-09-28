@@ -153,14 +153,13 @@ export const OrcamentosProvider = ({children}) => {
 
   const updateOrcamento = async (
     orcamentoId,
-    orcamentoData,
-    novosItensData,
+    orcamentoData
   ) => {
     // console.log('orcamentoId');
     // console.log(orcamentoId);
     // console.log('orcamentoData');
     // console.log(orcamentoData);
-    // console.log(novosItensData);
+
     try {
       // Atualize os dados do orçamento na tabela 'orcamentos'
       const {data: updatedOrcamento, error: updateError} = await supabase
@@ -172,60 +171,14 @@ export const OrcamentosProvider = ({children}) => {
           valor_base: orcamentoData.valorBase,
           valor_total: parseFloat(orcamentoData.valorBase) + parseFloat(orcamentoData.valorItens),
         })
-        .eq('id', orcamentoId)        
+        .eq('id', orcamentoId)      
+        .select('*')
 
-        // console.log('updatedOrcamento');
-        // console.log(updatedOrcamento);
+        console.log('updatedOrcamento');
+        console.log(updatedOrcamento);
       if (updateError) {
         throw updateError;
       }
-      if (novosItensData) {
-
-      // Atualize os itens de orçamento
-      // Primeiro, delete os itens antigos
-      const {data: deleteResult, error: deleteError} = await supabase
-        .from('itens_orcamentos')
-        .delete()
-        .match({orcamento_id: orcamentoId});
-
-      if (deleteError) {
-        throw deleteError;
-      }
-
-      // Agora, insira os novos itens
-      const itensToInsert = novosItensData.map(item => ({
-        orcamento_id: orcamentoId,
-        nome: item.nome,
-        valor_unitario: item.valor_unitario,
-        quantidade: item.quantidade,
-      }));
-
-      const {data: novosItens, error: insertError} = await supabase
-        .from('itens_orcamentos')
-        .insert(itensToInsert);
-
-      if (insertError) {
-        throw insertError;
-      }
-
-      // Atualize o valor total do orçamento com base nos novos itens
-      const totalValue = novosItens.reduce(
-        (total, item) => total + item.valor_unitario * item.quantidade,
-        0,
-      );
-
-      const {data: updatedOrcamentoTotal, error: updateTotalError} =
-        await supabase
-          .from('orcamentos')
-          .update({valor_total: totalValue})
-          .match({id: orcamentoId});
-
-      if (updateTotalError) {
-        throw updateTotalError;
-      }
-
-      return {orcamento: updatedOrcamento, novosItens};
-    }
 
     return true;
 
@@ -234,9 +187,13 @@ export const OrcamentosProvider = ({children}) => {
     }
   };
 
+
+
   return (
     <OrcamentosContext.Provider
-      value={{orcamentos, getBudgetData, orcamento, setOrcamento, getOrcamentoById, saveOrcamento, updateOrcamento}}>
+      value={{orcamentos, getBudgetData, 
+      orcamento, setOrcamento, getOrcamentoById,
+      saveOrcamento, updateOrcamento }}>
       {children}
     </OrcamentosContext.Provider>
   );

@@ -28,6 +28,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
               itens_saloes(*)
             `)
                 .eq('orcamento_id', orcamentoId)
+                .eq('status', 'ativo')
                 .order('id', { ascending: true });
 
             if (error) {
@@ -122,9 +123,11 @@ export const ItensOrcamentosProvider = ({ children }) => {
                     id: dado.id,
                     orcamentoId: dado.orcamento_id,
                     itensSaloesId: dado.itens_saloes_id,
+                    status: dado.status,
                     novoValorUnitario: dado.novo_valor_unitario, //+ (dado.itens_saloes.valor_unitario *  dado.itens_saloes.quantidade)
                     valorTotal: dado.valor_total, //+ (dado.itens_saloes.valor_unitario *  dado.itens_saloes.quantidade)
                     quantidade: dado.quantidade,
+                    statusItensSaloes: dado.itens_saloes.status,
                     novaDescricao: dado.itens_saloes.nova_descricao,
                     novaImagem: dado.itens_saloes.nova_imagem,
                     novoNome: dado.itens_saloes.novo_nome,
@@ -145,7 +148,8 @@ export const ItensOrcamentosProvider = ({ children }) => {
                     .select(`*,
                     itens (nome, descricao, imagem)
                     `)
-                    .eq('id', id);
+                    .eq('id', id)
+                    .eq('status', 'ativo');
 
                 if (itemSaloesError) {
                     console.error('Erro ao buscar item_saloes:', itemSaloesError);
@@ -199,8 +203,8 @@ export const ItensOrcamentosProvider = ({ children }) => {
     };
 
     const insertItemItensOrcamentos = async (ItemItensOrcamentosData, orcamento) => {
-        // console.log('ItemItensOrcamentosData');
-        // console.log(ItemItensOrcamentosData);
+        console.log('ItemItensOrcamentosData');
+        console.log(ItemItensOrcamentosData);
         console.log('orcamento');
         console.log(orcamento);
         const valorUnitario = ItemItensOrcamentosData.novoValorUnitario
@@ -275,7 +279,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
             ? parseInt(ItemItensOrcamentosData.novoValorUnitario)
             : parseInt(ItemItensOrcamentosData.valorUnitario);
 
-        let valorTotalAntigo = parseInt(ItemItensOrcamentosData.quantidadeAntiga) * parseInt(ItemItensOrcamentosData.valorAntigo) 
+        let valorTotalAntigo = parseInt(ItemItensOrcamentosData.quantidadeAntiga) * parseInt(ItemItensOrcamentosData.valorAntigo)
         console.log('valorTotalAntigo');
         console.log(valorTotalAntigo);
 
@@ -340,7 +344,7 @@ export const ItensOrcamentosProvider = ({ children }) => {
                 valorBase: orcamento.valor_base,
                 valorTotal: orcamento.valor_total,
                 valorItens: orcamento.valor_itens,
-              }));
+            }));
 
             showToast('Item do orcamento atualizado com sucesso!');
             return novoOrcamentoFormatted[0];
@@ -348,12 +352,50 @@ export const ItensOrcamentosProvider = ({ children }) => {
             console.error('Erro ao salvar o Item do orcamento:', error);
         }
     };
+
+    const softDeleteItemOrcamento = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('itens_orcamentos')
+                .update({ status: 'inativo' }) // Marca o registro como inativo
+                .eq('id', id);
+
+            if (!error) {
+                console.log(`Registro com ID ${id} marcado como inativo (soft delete).`);
+            } else {
+                console.error('Erro ao realizar soft delete:', error);
+            }
+        } catch (error) {
+            console.error('Erro ao realizar soft delete:', error);
+        }
+    };
+
+    const hardDeleteItemOrcamento = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('itens_orcamentos')
+                .delete() // Exclui permanentemente o registro
+                .eq('id', id);
+
+            if (!error) {
+                console.log(`Registro com ID ${id} excluído permanentemente (hard delete).`);
+            } else {
+                console.error('Erro ao realizar hard delete:', error);
+            }
+        } catch (error) {
+            console.error('Erro ao realizar hard delete:', error);
+        }
+    };
+
+
+
     return (
         <ItensOrcamentosContext.Provider value={{
             itensOrcamento, setItensOrcamento,
             itensOrcamentos, setItensOrcamentos, getItensOrcamentos,
             getItensOrcamentoById,
-            insertItemItensOrcamentos, updateItemItensOrcamentos
+            insertItemItensOrcamentos, updateItemItensOrcamentos,
+            softDeleteItemOrcamento, hardDeleteItemOrcamento
         }}>
             {children}
         </ItensOrcamentosContext.Provider>

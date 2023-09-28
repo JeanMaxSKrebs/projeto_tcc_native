@@ -15,10 +15,11 @@ import ItemModal from '../../components/Itens/modal';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 
 const Orcamento = ({ route, navigation }) => {
-  const { setOrcamento, getOrcamentoById } = useContext(OrcamentosContext);
+  const { setOrcamento, getOrcamentoById, updateOrcamento } = useContext(OrcamentosContext);
   const { itensOrcamento, getItensOrcamentoById, setItensOrcamento,
     itensOrcamentos, getItensOrcamentos, setItensOrcamentos,
-    updateItemItensOrcamentos } = useContext(ItensOrcamentosContext);
+    updateItemItensOrcamentos,
+    hardDeleteItemOrcamento, softDeleteItemOrcamento} = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState(0);
@@ -123,8 +124,26 @@ const Orcamento = ({ route, navigation }) => {
 
         break;
       case 'excluir':
-
-        fecharModal();
+        try {
+          // console.log('entrei');
+          // console.log(newItem);
+          let novoValorItens = orcamento.valorItens - newItem.valorTotal
+          let novoValorTotal = orcamento.valorTotal - newItem.valorTotal
+          let novoOrcamento = {...orcamento, valorItens: novoValorItens, valorTotal: novoValorTotal} 
+          updateOrcamento(orcamento.id, novoOrcamento);
+          {
+            newItem.tipoExclusao === 'hardDelete'
+              ? hardDeleteItemOrcamento(newItem.id)
+              : softDeleteItemOrcamento(newItem.id)
+          }
+          console.log('Operações de atualização e exclusão concluídas com sucesso.');
+          
+          fecharModal();
+          routeOrcamento(novoOrcamento, 'Orcamento');
+        } catch (error) {
+          // Se ocorrer um erro em qualquer uma das operações, trate o erro aqui
+          console.error('Ocorreu um erro ao atualizar/excluir:', error);
+        }
 
         break;
 
@@ -173,6 +192,8 @@ const Orcamento = ({ route, navigation }) => {
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
+        {/* {console.log('orcamento teste')}
+        {console.log(orcamento)} */}
         <AlterarOrcamentoButton
           item={orcamento}
           onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
