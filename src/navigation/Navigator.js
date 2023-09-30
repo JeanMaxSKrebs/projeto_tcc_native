@@ -11,6 +11,8 @@ import AdicionarItemSalao from '../screens/ItensSaloes/AdicionarItemSalao'
 import OrcamentoItens from '../screens/OrcamentoItens';
 // import Itens from '../screens/Itens';
 import ItensSaloes from '../screens/ItensSaloes';
+import Chat from '../screens/Chat';
+import Chats from '../screens/Chats';
 import Orcamento from '../screens/Orcamento';
 import Orcamentos from '../screens/Orcamentos';
 import Salao from '../screens/Salao';
@@ -144,6 +146,8 @@ const Navigator = () => (
       {/* <Stack.Screen component={Itens} name="Itens" /> */}
       <Stack.Screen component={ItensSaloes} name="ItensSaloes" />
       <Stack.Screen component={OrcamentoItens} name="OrcamentoItens" />
+      <Stack.Screen component={Chats} name="Chats" />
+      <Stack.Screen component={Chat} name="Chat" />
       <Stack.Screen component={Orcamento} name="Orcamento" />
       <Stack.Screen component={Orcamentos} name="Orcamentos" />
       <Stack.Screen component={AtualizarDados} name="AtualizarDados" />

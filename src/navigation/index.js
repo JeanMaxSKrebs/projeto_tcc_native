@@ -6,6 +6,7 @@ import { ItensSaloesProvider } from '../context/ItensSaloesProvider';
 import { OrcamentosProvider } from '../context/OrcamentosProvider';
 import { AuthUserProvider } from '../context/AuthUserProvider';
 import { ProfileProvider } from '../context/ProfileProvider';
+import { ChatProvider } from '../context/ChatProvider';
 import { ApiProvider } from '../context/ApiProvider';
 import { ItensOrcamentosProvider } from '../context/ItensOrcamentosProvider';
 
@@ -34,21 +35,23 @@ export default function Providers() {
     <AuthUserProvider>
       <ApiProvider>
         <ProfileProvider>
-          <SaloesProvider>
-            <SalaoProvider>
-              <OrcamentosProvider>
-                <ItensSaloesProvider>
-                  <ItensOrcamentosProvider>
-                    <ThemeProvider theme={theme}>
-                      <Navigator />
-                    </ThemeProvider>
-                  </ItensOrcamentosProvider>
-                </ItensSaloesProvider>
-              </OrcamentosProvider>
-            </SalaoProvider>
-          </SaloesProvider>
-          <ClienteProvider>
-          </ClienteProvider>
+          <ChatProvider>
+            <ClienteProvider>
+              <SaloesProvider>
+                <SalaoProvider>
+                  <OrcamentosProvider>
+                    <ItensSaloesProvider>
+                      <ItensOrcamentosProvider>
+                        <ThemeProvider theme={theme}>
+                          <Navigator />
+                        </ThemeProvider>
+                      </ItensOrcamentosProvider>
+                    </ItensSaloesProvider>
+                  </OrcamentosProvider>
+                </SalaoProvider>
+              </SaloesProvider>
+            </ClienteProvider>
+          </ChatProvider>
         </ProfileProvider>
       </ApiProvider>
     </AuthUserProvider>

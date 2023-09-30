@@ -72,7 +72,7 @@ const Saloes = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar search={filterSalao} name={' Salões '} />
+      <SearchBar search={filterSalao} name={'Salões'} />
       <Text style={styles.texto}> Coleções dos Salões </Text>
       <Container>
         {/* {console.log('saloes')}

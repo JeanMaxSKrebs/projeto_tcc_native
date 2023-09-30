@@ -69,6 +69,14 @@ const Gerenciador = ({ navigation }) => {
           }),
         );
         break;
+      case 'Conversar':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Chats',
+            params: { salao: salao }
+          }),
+        );
+        break;
       // case 'TelaReservas':
       // case 'VerAgenda':
       // case 'Conversar':
@@ -134,7 +142,7 @@ const Gerenciador = ({ navigation }) => {
           <MeuButtonMetade texto="Atualizar Dados" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
         </Container>
         {/* {loading && <Loading />} */}
-        </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -163,12 +171,15 @@ const styles = StyleSheet.create({
   },
   endereco: {
     fontSize: 14,
+    color: COLORS.terciary,
   },
   cidade: {
     fontSize: 14,
+    color: COLORS.terciary,
   },
   capacidade: {
     fontSize: 14,
+    color: COLORS.terciary,
   },
   texto: {
     fontSize: 18,
