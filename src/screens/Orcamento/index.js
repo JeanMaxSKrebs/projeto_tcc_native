@@ -10,16 +10,19 @@ import { Container, FlatList, Content, TextInput, View } from './styles';
 import { CommonActions } from '@react-navigation/native';
 import { ItensOrcamentosContext } from '../../context/ItensOrcamentosProvider.js';
 import ItemButton from '../../components/Itens/ItemButton';
+import ItemButtonCliente from '../../components/Itens/ItemButtonCliente';
 import ListaItensOrcamentos from '../../components/ItensOrcamentos/ListaItensOrcamentos';
 import ItemModal from '../../components/Itens/modal';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
+import AlterarOrcamento from '../../components/Orcamento/AlterarOrcamento';
+import MeuButton from '../../components/MeuButton';
 
 const Orcamento = ({ route, navigation }) => {
   const { setOrcamento, getOrcamentoById, updateOrcamento } = useContext(OrcamentosContext);
   const { itensOrcamento, getItensOrcamentoById, setItensOrcamento,
     itensOrcamentos, getItensOrcamentos, setItensOrcamentos,
     updateItemItensOrcamentos,
-    hardDeleteItemOrcamento, softDeleteItemOrcamento} = useContext(ItensOrcamentosContext);
+    hardDeleteItemOrcamento, softDeleteItemOrcamento } = useContext(ItensOrcamentosContext);
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valorBase, setValorBase] = useState(0);
@@ -30,9 +33,16 @@ const Orcamento = ({ route, navigation }) => {
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalClienteVisible, setModalClienteVisible] = useState(false);
 
   const orcamento = route.params.orcamento;
   const salao = route.params.salao;
+  const cliente = route.params.cliente;
+
+  let imprimirContent = false;
+
+  { cliente ? tamanhoContainer = '95%' : imprimirContent = true }
+
   useEffect(() => {
     // console.log('entrou ItensOrcamentos');
     // console.log(route.params);
@@ -83,10 +93,20 @@ const Orcamento = ({ route, navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: nextView,
-        params: { orcamento: orcamento, itensSaloesId: itensSaloesId, salao: salao },
+        params: { orcamento: orcamento, itensSaloesId: itensSaloesId, salao: salao, cliente: cliente },
       }),
     );
   }
+
+  const abrirModalCliente = (item) => {
+    setSelectedItem(item);
+    setModalClienteVisible(true);
+  };
+
+  const fecharModalCliente = () => {
+    setSelectedItem(null);
+    setModalClienteVisible(false);
+  };
 
   const abrirModal = (item) => {
     setSelectedItem(item);
@@ -129,7 +149,7 @@ const Orcamento = ({ route, navigation }) => {
           // console.log(newItem);
           let novoValorItens = orcamento.valorItens - newItem.valorTotal
           let novoValorTotal = orcamento.valorTotal - newItem.valorTotal
-          let novoOrcamento = {...orcamento, valorItens: novoValorItens, valorTotal: novoValorTotal} 
+          let novoOrcamento = { ...orcamento, valorItens: novoValorItens, valorTotal: novoValorTotal }
           updateOrcamento(orcamento.id, novoOrcamento);
           {
             newItem.tipoExclusao === 'hardDelete'
@@ -137,7 +157,7 @@ const Orcamento = ({ route, navigation }) => {
               : softDeleteItemOrcamento(newItem.id)
           }
           console.log('Operações de atualização e exclusão concluídas com sucesso.');
-          
+
           fecharModal();
           routeOrcamento(novoOrcamento, 'Orcamento');
         } catch (error) {
@@ -187,38 +207,73 @@ const Orcamento = ({ route, navigation }) => {
     );
   };
 
+  const renderItemCliente = ({ item }) => {
+    // console.log('item123');
+    // console.log(item);
+
+    contador++;
+    const shouldInvertDirection = contador % 2 === 1;
+    // console.log(shouldInvertDirection)
+    return (
+      <ItemButtonCliente item={item} onPress={() => abrirModalCliente(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
+      // <ListaItensOrcamentos itemOrcamento={item} onPress={() => abrirModal(item)} isModalVisible icone={acao} direita={shouldInvertDirection} />
+    );
+  };
+
 
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
-      <View>
-        {/* {console.log('orcamento teste')}
-        {console.log(orcamento)} */}
-        <AlterarOrcamentoButton
-          item={orcamento}
-          onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
-        />
-        <View>
+      {cliente
+        ? <View>
+          <AlterarOrcamento
+            item={orcamento}
+          />
           <View>
-            <AdicionarItemButton
-              item={orcamento}
-              onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
-            />
-
-            <Content style={{ height: 250 }}>
+            <Content style={{ height: 350 }}>
               <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
               <FlatList
                 data={itensOrcamento}
-                renderItem={renderItem}
+                renderItem={renderItemCliente}
                 keyExtractor={(item) => item.id}
               />
             </Content>
-            {renderModal()}
 
           </View>
+          <View>
+            <MeuButton texto={'Reservar'} onClick={() => routeOrcamento(orcamento, 'Reservar')}
+            />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+        : <View>
+          {/* {console.log('orcamento teste')}
+        {console.log(orcamento)} */}
+          <AlterarOrcamentoButton
+            item={orcamento}
+            onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
+          />
+          <View>
+            <View>
+              <AdicionarItemButton
+                item={orcamento}
+                onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
+              />
+
+              <Content style={{ height: 250 }}>
+                <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
+                <FlatList
+                  data={itensOrcamento}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                />
+              </Content>
+              {renderModal()}
+
+            </View>
+          </View>
+        </View>
+      }
+    </SafeAreaView >
   );
 };
 

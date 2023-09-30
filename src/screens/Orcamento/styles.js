@@ -18,8 +18,8 @@ export const Container = styled.SafeAreaView`
     `;
 export const Content = styled.View`
   align-items: center; 
-  /* background-color: ${COLORS.primaryDark}; */
-  padding: 5%;
+  background-color: ${COLORS.primaryShadow};
+  padding: 5px;
   border-radius: 15px;
   border-width: 2px;
   border-color: ${COLORS.gray};

@@ -11,7 +11,6 @@ export const View = styled.SafeAreaView`
 export const Container = styled.SafeAreaView`
     color: ${COLORS.primary};
     width: 80%;
-    height: 90%;
     background-color: ${COLORS.secundary};
     justify-items: center;
     border-radius: 15px;

@@ -25,6 +25,14 @@ const Orcamentos = ({ route, navigation }) => {
 
   let itensSaloes = route.params.itensSaloes;
   let salao = route.params.salao;
+  let cliente = route.params.cliente;
+  let tamanhoContainer = '90%';
+  let imprimirContent = false;
+
+  {cliente ?  tamanhoContainer = '95%' : imprimirContent = true}
+
+  console.log('cliente');
+  console.log(cliente);
 
   const routeOrcamento = item => {
     // console.log('calica');
@@ -53,7 +61,7 @@ const Orcamentos = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamento',
-            params: { orcamento: item, salao: salao },
+            params: { orcamento: item, salao: salao, cliente: cliente},
           }),
         );
         break;
@@ -98,28 +106,31 @@ const Orcamentos = ({ route, navigation }) => {
         {/* {console.log(orcamentos[0].nome)} */}
         {/* <Text>{orcamentos[0].nome}</Text> */}
 
-        <Container>
+        <Container style={{ height: tamanhoContainer }}>
           <Content style={{ padding: 20 }}>
             <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary} />
           </Content>
           {/* {console.log(orcamentos.length)} */}
+
           <FlatList
             data={orcamentosTemp.length > 0 ? orcamentosTemp : orcamentos}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
-          <Content>
-            <MeuButton
-              texto="Novo Orçamento"
-              cor={COLORS.primary}
-              onClick={() => routeOrcamento('NovoOrcamento')}
-            />
-            <MeuButton
-              texto="Gerenciar Itens"
-              cor={COLORS.primary}
-              onClick={() => routeOrcamento('GerenciarItens')}
-            />
-          </Content>
+          {imprimirContent
+            ? <Content>
+              <MeuButton
+                texto="Novo Orçamento"
+                cor={COLORS.primary}
+                onClick={() => routeOrcamento('NovoOrcamento')}
+              />
+              <MeuButton
+                texto="Gerenciar Itens"
+                cor={COLORS.primary}
+                onClick={() => routeOrcamento('GerenciarItens')}
+              />
+            </Content>
+            : <Content></Content>}
         </Container>
       </View>
     </SafeAreaView>
