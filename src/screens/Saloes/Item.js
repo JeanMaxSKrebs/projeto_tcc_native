@@ -150,11 +150,11 @@ const Item = ({item, onPress}) => {
               nextButton={<CustomNextButton />}>
               {/* {images.map((image, index) => ( */}
               {item.imagens.map((image, index) => {
-                console.log('Image:', image);
+                // console.log('Image:', image);
                 // console.log('index:', index);
                 // console.log('item.uid:', item.uid); 
                 const uniqueKey = `${item.uid}_${index}`;
-                console.log('uniqueKey:', uniqueKey);
+                // console.log('uniqueKey:', uniqueKey);
 
                 return (
                   <>

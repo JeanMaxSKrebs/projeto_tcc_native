@@ -1,17 +1,18 @@
-import React, {createContext, useEffect, useState, useContext} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {ToastAndroid} from 'react-native';
+import React, { createContext, useEffect, useState, useContext } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { ToastAndroid } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 // import supabase from '../services/supabase';
 import { supabase } from "../../supabase/supabase";
 
-import {AuthUserContext} from './AuthUserProvider';
+import { AuthUserContext } from './AuthUserProvider';
 
 export const SaloesContext = createContext({});
 
-export const SaloesProvider = ({children}) => {
+export const SaloesProvider = ({ children }) => {
   const [saloes, setSaloes] = useState([]);
-  const {user, getUser, signOut} = useContext(AuthUserContext);
+  const [cidades, setCidades] = useState([]);
+  const { user, getUser, signOut } = useContext(AuthUserContext);
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -25,7 +26,7 @@ export const SaloesProvider = ({children}) => {
       // let { data: saloes, error } = await supabase
       // .from('saloes')
       // .select('*')
-      const {data, error} = await supabase.from('saloes').select('*');
+      const { data, error } = await supabase.from('saloes').select('*');
 
       if (error) {
         console.error('Erro ao buscar os salões: (001)', error);
@@ -34,7 +35,7 @@ export const SaloesProvider = ({children}) => {
       // console.log('data');
       // console.log(data);
       const saloes = data.map(salao => ({
-        uid: salao.id,
+        id: salao.id,
         nome: salao.nome,
         descricao: salao.descricao,
         cnpj: salao.cnpj,
@@ -80,7 +81,7 @@ export const SaloesProvider = ({children}) => {
           logo: hall.logo,
           imagens: hall.imagens,
         },
-        {merge: true},
+        { merge: true },
       );
       return true;
     } catch (error) {
@@ -102,8 +103,58 @@ export const SaloesProvider = ({children}) => {
       });
   };
 
+  const fetchCities = async () => {
+    const { data, error } = await supabase.from('saloes').select('cidade');
+
+    if (error) {
+      console.error('Erro ao buscar as cidades:', error);
+      return;
+    }
+
+
+    console.log('datao');
+    console.log(data);
+    // Filtrar cidades únicas, incluindo tratamento para valores nulos (null)
+    const uniqueCityNames = [];
+
+    data.forEach((row) => {
+      const city = row.cidade;
+      if (city !== null && !uniqueCityNames.includes(city.trim())) {
+        uniqueCityNames.push(city.trim());
+      }
+    });
+
+    setCidades(uniqueCityNames);
+    return uniqueCityNames;
+  }
+
+  const selectSaloesByCity = async (cidadeDesejada) => {
+    const { data, error } = await supabase
+      .from('saloes')
+      .select('*')
+
+    if (error) {
+      console.error('Erro ao buscar a saloes:', error);
+      return null;
+    }
+
+    console.log('data');
+    console.log(data);
+    
+    // e agora filtre as cidadeDesejadas
+    const saloesNaCidadeDesejada = data.filter((salao) => salao.cidade === cidadeDesejada);
+    console.log('saloesNaCidadeDesejada');
+    console.log(saloesNaCidadeDesejada);
+
+    return saloesNaCidadeDesejada;
+  }
+
+
   return (
-    <SaloesContext.Provider value={{saloes, getHallsData, saveHall, deleteHall}}>
+    <SaloesContext.Provider value={{
+      saloes, getHallsData, saveHall, deleteHall,
+      cidades, fetchCities, selectSaloesByCity
+    }}>
       {children}
     </SaloesContext.Provider>
   );

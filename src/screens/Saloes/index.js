@@ -1,31 +1,37 @@
-import React, {useEffect, useContext, useState} from 'react';
-import {SafeAreaView, ScrollView, View, Text, StyleSheet} from 'react-native';
-import {COLORS} from '../../assets/colors';
+import React, { useEffect, useContext, useState } from 'react';
+import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
+import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
-import {SaloesContext} from '../../context/SaloesProvider';
-import {Image} from '../Preload/styles';
+import { SaloesContext } from '../../context/SaloesProvider';
+import { Image } from '../Preload/styles';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
-import {Container, FlatList} from './styles';
+import { Container, FlatList } from './styles';
 
-import {CommonActions} from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
+import { AuthUserContext } from '../../context/AuthUserProvider';
+import Texto from '../../components/Texto';
+import ListaCidadesButtons from '../../components/saloes/ListaCidadesButtons';
 
-const Saloes = ({navigation}) => {
-  const {saloes, getHallsData} = useContext(SaloesContext);
+const Saloes = ({ navigation }) => {
+  const { user } = useContext(AuthUserContext)
+
+  const { saloes, getHallsData, cidades, fetchCities, selectSaloesByCity } = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
-
+  console.log('user');
+  console.log(user);
   useEffect(() => {
     getHallsData();
+    fetchCities();
     navigation.setOptions({
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
       headerTitleAlign: 'center',
-      // name: 'GERENCIA LIVROS',
-      title: 'SALÕES', // deixei a name pq senao muda o nome da tab
-      headerStyle: {backgroundColor: COLORS.primaryDark},
-      headerTintColor: {color: COLORS.black},
+      title: 'Bem Vindo ' + user.nome.toUpperCase(), // deixei a name pq senao muda o nome da tab
+      headerStyle: { backgroundColor: COLORS.primaryDark },
+      headerTintColor: { color: COLORS.black },
       // eslint-disable-next-line react/no-unstable-nested-components
       headerRight: () => <LogoutButton />,
     });
@@ -37,7 +43,7 @@ const Saloes = ({navigation}) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Salao',
-        params: {value: item},
+        params: { value: item },
       }),
     );
   };
@@ -62,28 +68,37 @@ const Saloes = ({navigation}) => {
 
   const renderItem = ({ item }) => {
     // console.log('item:', item);
-    // console.log('item.uid:', item.uid);
-    
+    // console.log('item.id:', item.id);
+
     return (
       <Item item={item} onPress={() => routeSalao(item)} />
     );
   };
-  
+
+  const handleCityButtonClick = async (cidade) => {
+    // Lógica a ser executada quando um botão de cidade for clicado
+    console.log(`Clicou em ${cidade}`);
+    setSaloesTemp(await selectSaloesByCity(cidade))
+
+    // Você pode atualizar a lista de salões com base na cidade selecionada
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar search={filterSalao} name={'Salões'} />
-      <Text style={styles.texto}> Coleções dos Salões </Text>
+      <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
+      <Texto style={styles.texto} cor={COLORS.secundary} tamanho={30} texto={'Salões nas Proximidades'} />
       <Container>
-        {/* {console.log('saloes')}
-          {console.log(saloes)} */}
-        {/* {console.log('saloesTemp')}
-          {console.log(saloesTemp.length)} */}
+        {console.log('saloes')}
+          {console.log(saloes)}
+        {console.log('saloesTemp')}
+        {console.log(saloesTemp.length)}
 
         <FlatList
           data={saloesTemp.length > 0 ? saloesTemp : saloes}
           renderItem={renderItem}
-          keyExtractor={item => item.uid}
+          keyExtractor={item => item.id}
         />
       </Container>
       {/* {loading && <Loading />} */}

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, {useState, useEffect, useContext} from 'react';
-import {Alert, Button, ToastAndroid} from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { Alert, Button, ToastAndroid } from 'react-native';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,18 +9,20 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import {Container, FlatList, ContainerImage} from './styles';
+import { Container, FlatList, ContainerImage } from './styles';
 import MeuButton from '../../components/MeuButton';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
 import AnotherButtonMetade from '../../components/AnotherButtonMetade';
 import Loading from '../../components/Loading';
-import {SaloesContext} from '../../context/SaloesProvider';
+import { SaloesContext } from '../../context/SaloesProvider';
 import DeleteButton from '../../components/DeleteButton';
 import Swiper from 'react-native-swiper';
+import { CommonActions } from '@react-navigation/native';
 
-import {COLORS} from '../../assets/colors';
+import { COLORS } from '../../assets/colors';
+import Voltar from '../../components/Voltar';
 
-const Salao = ({route, navigation}) => {
+const Salao = ({ route, navigation }) => {
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -28,7 +30,7 @@ const Salao = ({route, navigation}) => {
   const [capacidade, setCapacidade] = useState('');
   const [festasRealizadas, setfestasRealizadas] = useState('0');
   const [festasAgendadas, setfestasAgendadas] = useState('0');
-  const [uid, setUid] = useState('');
+  const [id, setId] = useState('');
   const [imagens, setImagens] = useState([]);
   const [logo, setLogo] = useState('');
 
@@ -36,9 +38,15 @@ const Salao = ({route, navigation}) => {
   const [activeButton, setActiveButton] = React.useState(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
-  console.log('route');
-  console.log(route);
-  console.log(route.params);
+  // console.log('route');
+  // console.log(route);
+  console.log(route.params.value);
+
+  const salao = route.params.value
+
+  const voltar = () => {
+    navigation.goBack();
+  };
 
   useEffect(() => {
     if (route.params.value === null) {
@@ -48,20 +56,17 @@ const Salao = ({route, navigation}) => {
       setImagens([]);
       setLogo('');
     } else {
-      console.log(route.params.value);
+      // console.log(route.params.value);
       setNome(route.params.value.nome);
       setDescricao(route.params.value.descricao);
       setEndereco(route.params.value.endereco)
       setCidade(route.params.value.cidade)
       setCapacidade(route.params.value.capacidade)
-      setUid(route.params.value.uid);
+      setId(route.params.value.uid);
       setImagens(route.params.value.imagens);
       setLogo(route.params.value.logo);
     }
 
-    return () => {
-      console.log('desmontou Salao');
-    };
   }, [route]);
 
   const handleSlideChange = index => {
@@ -76,43 +81,90 @@ const Salao = ({route, navigation}) => {
   const CustomNextButton = () => {
     return <Text style={styles.nextButton}>›</Text>;
   };
+
+
+  const routeGerenciador = item => {
+    // console.log('gerenciador');
+    // console.log(item);
+    switch (item) {
+
+      case 'Orcar':
+        console.log(salao);
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Orcamentos',
+            params: { salao: salao, cliente: true }
+          }),
+        );
+        break;
+      case 'Conversar':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Chats',
+            params: { salao: salao }
+          }),
+        );
+        break;
+
+      case 'Reservar':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Reservar',
+            params: { salao: salao, cliente: true }
+          }),
+        );
+        break;
+      default:
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Manutencao',
+            params: { value: item }
+          }),
+        );
+        break;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <Voltar texto="Voltar" onClick={() => voltar()} />
+      </View>
       <ScrollView>
-      <Container>
+        <Container>
           <View style={styles.slide}>
-          {logo && (
-          <Image
-            source={{ uri: logo }}
-            key={logo}
-            style={{ width: 280, height: 250, borderRadius: 15 }}
-          />
-        )}
+            {logo && (
+              <Image
+                source={{ uri: logo }}
+                key={logo}
+                style={{ width: 280, height: 250, borderRadius: 15 }}
+              />
+            )}
           </View>
           <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={styles.nome} >{nome}</Text>
-              <Text style={styles.descricao} >{descricao}</Text>
-              <Text style={styles.endereco}>{endereco}</Text>
-              <Text style={styles.cidade}>{cidade}</Text>
-              <Text style={styles.capacidade}>Capacidade: {capacidade}</Text>
+            <Text style={styles.nome} >{nome}</Text>
+            <Text style={styles.descricao} >{descricao}</Text>
+            <Text style={styles.endereco}>{endereco}</Text>
+            <Text style={styles.cidade}>{cidade}</Text>
+            <Text style={styles.capacidade}>Capacidade: {capacidade}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <MeuButtonMetade texto="Orçar" onClick={() => routeGerenciador('VisaoCliente')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Reservar" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
+            <MeuButtonMetade texto="Orçar" onClick={() => routeGerenciador('Orcar')} style={{ width: '45%' }} />
+            <MeuButtonMetade texto="Reservar" onClick={() => routeGerenciador('Reservar')} style={{ width: '45%' }} />
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <MeuButtonMetade texto="Ver Agenda" onClick={() => routeGerenciador('VerAgenda')} style={{ width: '45%' }} />
             <MeuButtonMetade texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
           </View>
-          
+
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <AnotherButtonMetade prefixo={festasRealizadas} texto="Festas Realizadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
             <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
           </View>
           <ContainerImage>
-          <Swiper
+            <Swiper
               index={0}
               style={styles.wrapper}
               onIndexChanged={handleSlideChange}
@@ -123,13 +175,13 @@ const Salao = ({route, navigation}) => {
               {imagens.map((image, index) => (
                 <>
                   <View style={styles.slide} key={index}>
-                  {logo && (
+                    {logo && (
 
-                    <Image
-                      source={{uri: image}}
-                      key={image}
-                      style={{width: 280, height: 250, borderRadius: 15}}
-                    />
+                      <Image
+                        source={{ uri: image }}
+                        key={image}
+                        style={{ width: 280, height: 250, borderRadius: 15 }}
+                      />
                     )}
                   </View>
                 </>
