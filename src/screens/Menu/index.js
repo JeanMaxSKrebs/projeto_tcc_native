@@ -13,8 +13,7 @@ const Menu = ({navigation}) => {
     navigation.setOptions({
       // headerLeft: false,
       headerTitleAlign: 'center',
-      // name: 'GERENCIA LIVROS',
-      title: 'BIBLIOTECA // MENU', // deixei a name pq senao muda o nome da tab
+      title: 'MENU', // deixei a name pq senao muda o nome da tab
       headerStyle: {backgroundColor: COLORS.primaryDark},
       headerTintColor: {color: COLORS.black},
       // eslint-disable-next-line react/no-unstable-nested-components

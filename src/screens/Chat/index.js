@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, TextInput, Button, FlatList, TouchableHighlight } from 'react-native';
 import VoltarWithoutColor from '../../components/VoltarWithoutColor';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Texto from '../../components/Texto';
 import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
-
+import { ChatContext } from "../../context/ChatProvider";
 
 const MessageItem = ({ message, myId }) => {
     const isSentByMe = message.sentBy === myId;
@@ -25,23 +25,34 @@ const MessageItem = ({ message, myId }) => {
 };
 
 const Chat = ({ route, navigation }) => {
+    const { messages, sendMessage  } = useContext(ChatContext);
+
     const chat = route.params.chat;
+    const chatId = chat.messages[0].id
     const myId = chat.users[0].id
     const youId = chat.users[1].id
     const flatListRef = useRef(null);
 
-    const [messages, setMessages] = useState([]);
+    const [mensagem, setMensagem] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
         // Carregue as mensagens iniciais do chat quando o componente for montado
-        setMessages(chat.messages);
+        setMensagem(chat.messages);
     }, [chat]);
 
-    const sendMessage = () => {
+    const enviarMensagem = () => {
         if (newMessage.trim() !== '') {
-            const updatedMessages = [...messages, { text: newMessage, user: 'Me' }];
-            setMessages(updatedMessages);
+            const newMessageObject = {
+                content: newMessage,
+                id: chatId,
+                sent: new Date().toISOString(), // Obtenha a data e hora atual no formato ISO
+                sentBy: myId,
+            };
+            const updatedMessages = [...messages, newMessageObject];
+
+            sendMessage()
+            setMensagem(updatedMessages);
             setNewMessage('');
 
             // Após adicionar a nova mensagem, role para o final
@@ -64,11 +75,13 @@ const Chat = ({ route, navigation }) => {
             </View>
             <View style={styles.messageList}>
                 {console.log('messages')}
-                {console.log(messages.length)}
+                {console.log(messages)}
+                {console.log('mensagem')}
+                {console.log(mensagem)}
                 <AutoScrollFlatList
                     ref={flatListRef}
                     style={{ marginBottom: 100 }}
-                    data={messages}
+                    data={mensagem}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => <MessageItem message={item} myId={myId} />}
                 />
@@ -80,7 +93,7 @@ const Chat = ({ route, navigation }) => {
                     value={newMessage}
                     onChangeText={(text) => setNewMessage(text)}
                 />
-                <TouchableHighlight style={styles.button} onPress={sendMessage}>
+                <TouchableHighlight style={styles.button} onPress={enviarMensagem}>
                     <Icon name="send" size={30} color="black" />
                 </TouchableHighlight>
             </View>

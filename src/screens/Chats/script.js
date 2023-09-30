@@ -13,84 +13,84 @@ export const chats = [
     ],
     messages: [
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Oi, tudo bem?',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Oi, tudo bem',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Tudo sim',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Tudo Certo',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Ok',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Qual o endereço ',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Campina, avenida campina 696',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Ok',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Qual o endereço ',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Campina, avenida campina 696',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,
       },
-            {
-        id: '8rF06WinxD6KG8oA8aMs',
+      {
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Ok',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Qual o endereço ',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 16,
       },
       {
-        id: '8rF06WinxD6KG8oA8aMs',
+        id: 'Uc3LyBnOR1aDh38AycXS',
         content: 'Campina, avenida campina 696',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,
       },
-      
+
     ],
   },
   {
@@ -107,7 +107,7 @@ export const chats = [
     ],
     messages: [
       {
-        id: 'II4ALLIn2cTcGNjsQFmo',
+        id: '7Jg6zmtL8zeEGKwnuJtR',
         content: 'E aquele conteúdo sobre como criar um chat?',
         sent: '2020-11-09T22:16:40-04:00',
         sentBy: 50,

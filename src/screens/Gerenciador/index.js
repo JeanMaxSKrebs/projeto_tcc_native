@@ -32,7 +32,6 @@ const Gerenciador = ({ navigation }) => {
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
       headerTitleAlign: 'center',
-      // name: 'GERENCIA LIVROS',
       title: 'GERENCIADOR DE SALÕES', // deixei a name pq senao muda o nome da tab
       headerStyle: { backgroundColor: COLORS.primaryDark },
       headerTintColor: { color: COLORS.black },
@@ -54,6 +53,7 @@ const Gerenciador = ({ navigation }) => {
         );
         break;
       case 'GerenciarItens':
+        console.log(salao);
         navigation.dispatch(
           CommonActions.navigate({
             name: 'ItensSaloes',

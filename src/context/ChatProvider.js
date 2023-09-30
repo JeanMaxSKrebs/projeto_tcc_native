@@ -28,21 +28,14 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
-
-  // Function to send a new message to Firestore
-  const sendMessage = async (newMessage) => {
-    try {
-      await db.collection('chats').add({
-        remetente_id: 1, // Replace with the sender's ID
-        destinatario_id: 2, // Replace with the recipient's ID
-        mensagem: newMessage,
-        data_hora: new Date(),
-      });
-
-      // Since Firestore provides real-time updates, there's no need to update the state here.
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+  const sendMessage = (newMessage) => {
+    console.log('newMessage');
+    console.log(newMessage);
+    db.collection('chatMessages').add({
+      content: newMessage.content,
+      sent: newMessage.sent,
+      sentBy: newMessage.sentBy,
+    });
   };
 
   return (

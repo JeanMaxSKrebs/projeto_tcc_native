@@ -6,9 +6,11 @@ import Texto from '../../components/Texto';
 import { chats } from './script';
 import Item from './Item'
 import {CommonActions} from '@react-navigation/native';
+import { ChatContext } from "../../context/ChatProvider";
 
 
 const Chats = ({ route, navigation }) => {
+    const { messages, fetchMessages  } = useContext(ChatContext);
     const [chatTemp, setChatTemp] = useState([]);
 
     const salao = route.params.salao;
@@ -43,7 +45,7 @@ const Chats = ({ route, navigation }) => {
     };
 
     const routeChat = (item) => {
-        console.log(item);
+        // console.log(item);
         navigation.dispatch(
             CommonActions.navigate({
                 name: 'Chat',
