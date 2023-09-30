@@ -1,57 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
-import { ChatContext } from '../../context/ChatProvider';
-import Voltar from '../../components/Voltar';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, Button, FlatList, TouchableHighlight } from 'react-native';
+import VoltarWithoutColor from '../../components/VoltarWithoutColor';
+import styles from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Texto from '../../components/Texto';
+import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
+
+
+const MessageItem = ({ message, myId }) => {
+    const isSentByMe = message.sentBy === myId;
+    // console.log('message'),
+    // console.log(message),
+    // console.log('message.sent');
+    // console.log(message.sentBy);
+
+    return (
+        <View style={[
+            styles.messageContainer,
+            isSentByMe ? styles.sentByMe : styles.sentByOther
+        ]}>
+            <Text style={styles.messageText}>{message.content}</Text>
+        </View>
+    )
+};
 
 const Chat = ({ route, navigation }) => {
-    const [messages] = useState(ChatContext);
-    const [mensagem, setMensagem] = useState('');
+    const chat = route.params.chat;
+    const myId = chat.users[0].id
+    const youId = chat.users[1].id
+    const flatListRef = useRef(null);
+
+    const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
-    const salao = route.params.salao;
-
     useEffect(() => {
-        // Use o valor de "salao" conforme necessário
-        console.log('Salão:', salao);
-    }, [salao]);
+        // Carregue as mensagens iniciais do chat quando o componente for montado
+        setMessages(chat.messages);
+    }, [chat]);
 
-    const voltar = () => {
-        navigation.goBack();
-    };
-
-    // Função para adicionar uma nova mensagem à lista de mensagens
     const sendMessage = () => {
         if (newMessage.trim() !== '') {
-            const updatedMessages = [...mensagem, { text: newMessage, user: 'Me' }];
-            setMensagem(updatedMessages);
+            const updatedMessages = [...messages, { text: newMessage, user: 'Me' }];
+            setMessages(updatedMessages);
             setNewMessage('');
+
+            // Após adicionar a nova mensagem, role para o final
+            flatListRef.current.scrollToEnd();
         }
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container}>
             <View>
-                <Voltar texto="Voltar" onClick={() => voltar()} />
+                <VoltarWithoutColor texto="Voltar" onClick={() => navigation.goBack()} />
             </View>
-            <View>
-                <FlatList
-                    data={mensagem}
+            <View style={{ flexDirection: 'row', margin: 20 }}>
+                <View style={{}} >
+                    <Icon name="person-circle-outline" size={60} color="black" />
+                </View>
+                <View style={{ padding: 20 }} >
+                    <Texto tamanho={18} texto={chat.users[1].nome} />
+                </View>
+            </View>
+            <View style={styles.messageList}>
+                {console.log('messages')}
+                {console.log(messages.length)}
+                <AutoScrollFlatList
+                    ref={flatListRef}
+                    style={{ marginBottom: 100 }}
+                    data={messages}
                     keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <View style={{ padding: 10 }}>
-                            <Text>{item.user}: {item.text}</Text>
-                        </View>
-                    )}
+                    renderItem={({ item }) => <MessageItem message={item} myId={myId} />}
                 />
             </View>
-            <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.inputContainer}>
                 <TextInput
-                    style={{ flex: 1, borderWidth: 1, borderColor: 'gray', margin: 10, padding: 10 }}
+                    style={styles.input}
                     placeholder="Digite sua mensagem"
                     value={newMessage}
                     onChangeText={(text) => setNewMessage(text)}
                 />
-                <Button title="Enviar" onPress={sendMessage} />
+                <TouchableHighlight style={styles.button} onPress={sendMessage}>
+                    <Icon name="send" size={30} color="black" />
+                </TouchableHighlight>
             </View>
         </View>
     );

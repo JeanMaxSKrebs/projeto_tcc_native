@@ -5,6 +5,8 @@ import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
 import { chats } from './script';
 import Item from './Item'
+import {CommonActions} from '@react-navigation/native';
+
 
 const Chats = ({ route, navigation }) => {
     const [chatTemp, setChatTemp] = useState([]);
@@ -41,6 +43,7 @@ const Chats = ({ route, navigation }) => {
     };
 
     const routeChat = (item) => {
+        console.log(item);
         navigation.dispatch(
             CommonActions.navigate({
                 name: 'Chat',

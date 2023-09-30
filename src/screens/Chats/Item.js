@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const Item = ({ item, onPress }) => {
     return (
         <Container>
-            {console.log('item')}
-            {console.log(item)}
+            {/* {console.log('item')}
+            {console.log(item)} */}
             <ChatItem onPress={onPress}>
                 <ChatImage>
                     <Icon name="person-circle-outline" size={60} color="black" />
