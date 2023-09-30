@@ -13,6 +13,7 @@ import OrcamentoItens from '../screens/OrcamentoItens';
 import ItensSaloes from '../screens/ItensSaloes';
 import Chat from '../screens/Chat';
 import Chats from '../screens/Chats';
+import Reservar from '../screens/Reservar';
 import Orcamento from '../screens/Orcamento';
 import Orcamentos from '../screens/Orcamentos';
 import Salao from '../screens/Salao';
@@ -148,6 +149,7 @@ const Navigator = () => (
       <Stack.Screen component={OrcamentoItens} name="OrcamentoItens" />
       <Stack.Screen component={Chats} name="Chats" />
       <Stack.Screen component={Chat} name="Chat" />
+      <Stack.Screen component={Reservar} name="Reservar" />
       <Stack.Screen component={Orcamento} name="Orcamento" />
       <Stack.Screen component={Orcamentos} name="Orcamentos" />
       <Stack.Screen component={AtualizarDados} name="AtualizarDados" />
