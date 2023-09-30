@@ -11,8 +11,13 @@ const ListaCidadesButtons = ({ cidades, onCityButtonClick }) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{ width: '100%' }}
-
             >
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onCityButtonClick('HOME')}
+                >
+                    <Texto tamanho={16} texto="HOME" />
+                </TouchableOpacity>
                 {cidades.map((cidade, index) => (
                     cidade ? <TouchableOpacity
                         key={index}
