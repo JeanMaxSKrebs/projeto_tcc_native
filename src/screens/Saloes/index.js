@@ -66,12 +66,24 @@ const Saloes = ({ navigation }) => {
     }
   };
 
+  const routeAgenda = (item) => {
+    // Ação específica quando o botão "Ver Agenda" for clicado
+    console.log('Botão "Ver Agenda" foi clicado com argumento:');
+    console.log(item);
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'Agenda',
+        params: { value: item },
+      }),
+    );
+  };
+
   const renderItem = ({ item }) => {
     // console.log('item:', item);
     // console.log('item.id:', item.id);
 
     return (
-      <Item item={item} onPress={() => routeSalao(item)} />
+      <Item item={item} onPress={() => routeSalao(item)} onPressAgenda={() => routeAgenda(item)} />
     );
   };
 

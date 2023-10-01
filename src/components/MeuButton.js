@@ -19,13 +19,11 @@ const styles = StyleSheet.create({
     color: COLORS.secundary,
   },
   button: {
-    top: 10,
     width: '70%',
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.primary,
-    padding: 10,
     margin: 10,
     borderRadius: 5,
   },

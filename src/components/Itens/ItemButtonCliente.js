@@ -5,7 +5,7 @@ import { COLORS } from '../../assets/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const ItemButton = ({ item, onPress, direita, icone, isItensSaloes }) => {
+const ItemButtonCliente = ({ item, onPress, direita, icone, isItensSaloes }) => {
     // console.log('item000');
     // console.log(item);
     console.log('isItensSaloes');
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ItemButton;
+export default ItemButtonCliente;

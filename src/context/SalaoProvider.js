@@ -12,6 +12,7 @@ export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({ children }) => {
   const [salao, setSalao] = useState([]);
+  const [reservas, setReservas] = useState([]);
   const { user, getUser, signOut } = useContext(AuthUserContext);
 
   const showToast = message => {
@@ -178,8 +179,48 @@ export const SalaoProvider = ({ children }) => {
     }
   };
 
+  const getReservasPorSalao = async (id) => {
+    try {
+      console.log('id');
+      console.log(id);
+        const { data, error } = await supabase
+          .from('reservas')
+          .select('*')
+          .eq('salao_id', id);
+
+        if (error) {
+          console.error('Erro ao buscar reservas:', error);
+          return;
+        }
+
+        // setReservas(data);
+
+        const reservasOrdenadas = data.sort((a, b) => {
+          const dataHoraA = new Date(a.data_hora).getTime();
+          const dataHoraB = new Date(b.data_hora).getTime();
+          return dataHoraA - dataHoraB;
+        });
+    
+        setReservas(reservasOrdenadas);
+    } catch (error) {
+      console.error('Erro ao buscar reservas:', error);
+    }
+  };
+
+  const createReserva = async (data) => {
+    try {
+      // Realize a lógica para criar uma reserva aqui.
+      // Use os dados passados para criar a reserva no banco de dados.
+
+      showToast('Reserva criada com sucesso!');
+    } catch (error) {
+      console.error('Erro ao criar reserva:', error);
+    }
+  };
+
   return (
-    <SalaoContext.Provider value={{ salao, saveSalao, updateSalao, getHallData }}>
+    <SalaoContext.Provider value={{ salao, saveSalao, updateSalao, getHallData,
+      reservas, createReserva, getReservasPorSalao}}>
       {children}
     </SalaoContext.Provider>
   );
