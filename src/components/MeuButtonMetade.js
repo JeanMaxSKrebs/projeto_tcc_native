@@ -4,8 +4,9 @@ import { COLORS } from '../assets/colors';
 
 const MeuButtonMetade = props => {
   // console.log(props);
+  const width = props.width || '45%';
   return (
-    <TouchableHighlight style={[styles.button, , { width: props.width }]} onPress={() => props.onClick()}>
+    <TouchableHighlight style={[styles.button, { width }]} onPress={() => props.onClick()}>
       <Text style={styles.texto}>{props.texto}</Text>
     </TouchableHighlight>
   );
