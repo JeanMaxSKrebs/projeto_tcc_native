@@ -50,7 +50,14 @@ const Agenda = ({ route, navigation }) => {
                     <Texto texto={'Calendário'} tamanho={25} />
                     <Calendario reservas={reservas} />
                 </View>
-
+                <View style={styles.horario}>
+                    <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
+                    <FlatList
+                        data={reservas}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id.toString()}
+                    />
+                </View>
             </View>
         </SafeAreaView>
     );
