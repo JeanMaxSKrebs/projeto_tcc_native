@@ -37,6 +37,7 @@ const Agenda = ({ route, navigation }) => {
             <View style={styles.item}>
                 <Dia data={data} tamanho={16} />
             </View>
+
         )
     }
 
@@ -66,13 +67,28 @@ const Agenda = ({ route, navigation }) => {
                         setModalVisible(false);
                     }}
                 >
-                    <View style={styles.horario}>
-                        <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
-                        <FlatList
-                            data={reservas}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id.toString()}
-                        />
+                    <View style={styles.modal}>
+                        <View style={styles.horario}>
+                            <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
+                            <FlatList
+                                data={reservas}
+                                renderItem={renderItem}
+                                keyExtractor={(item) => item.id.toString()}
+                            />
+
+                        </View>
+                        <View style={styles.bottomButton}>
+                            <View style={{
+                                backgroundColor: COLORS.background, alignItems: 'center',
+                                justifyContent: 'center',
+                            }}>
+                                <MeuButtonMetade
+                                    tamanho={25}
+                                    texto={'Voltar'}
+                                    onClick={() => setModalVisible(false)}
+                                />
+                            </View>
+                        </View>
                     </View>
                 </Modal>
             </View>
@@ -83,6 +99,10 @@ const Agenda = ({ route, navigation }) => {
 export default Agenda;
 
 const styles = StyleSheet.create({
+    modal: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     calendario: {
         // backgroundColor: COLORS.background,
         borderRadius: 15,
@@ -90,6 +110,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     horario: {
+        alignItems: 'center',
         backgroundColor: COLORS.background,
         borderRadius: 15,
         margin: 10,
@@ -98,12 +119,19 @@ const styles = StyleSheet.create({
     container: {
         margin: 10,
         alignItems: 'center',
+        justifyContent: 'center'
     },
     item: {
         backgroundColor: COLORS.primaryShadow,
         padding: 10,
         marginVertical: 8,
         marginHorizontal: 16,
+    },
+    bottomButton: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: '10%'
     },
 
 });
