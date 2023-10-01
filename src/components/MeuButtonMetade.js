@@ -1,11 +1,11 @@
 import React from 'react';
-import {Text, TouchableHighlight, StyleSheet} from 'react-native';
-import {COLORS} from '../assets/colors';
+import { Text, TouchableHighlight, StyleSheet } from 'react-native';
+import { COLORS } from '../assets/colors';
 
 const MeuButtonMetade = props => {
   // console.log(props);
   return (
-    <TouchableHighlight style={styles.button} onPress={() => props.onClick()}>
+    <TouchableHighlight style={[styles.button, , { width: props.width }]} onPress={() => props.onClick()}>
       <Text style={styles.texto}>{props.texto}</Text>
     </TouchableHighlight>
   );
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 18,
     color: COLORS.secundary,
+    textAlign: 'center',
   },
   button: {
     width: '45%',

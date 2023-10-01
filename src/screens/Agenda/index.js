@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, Button, FlatList, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, Modal, FlatList, ScrollView } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
 import { SalaoContext } from '../../context/SalaoProvider';
@@ -8,10 +8,12 @@ import Calendario from '../../components/Calendario';
 import Dia from '../../components/Calendario/Dia';
 import Voltar from '../../components/Voltar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import MeuButtonMetade from '../../components/MeuButtonMetade';
 
 const Agenda = ({ route, navigation }) => {
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
     const salao = route.params.value;
+    const [modalVisible, setModalVisible] = useState(false);
 
     // Função para voltar à tela anterior (Agenda)
     const voltar = () => {
@@ -50,16 +52,31 @@ const Agenda = ({ route, navigation }) => {
                     <Texto texto={'Calendário'} tamanho={25} />
                     <Calendario reservas={reservas} />
                 </View>
-                <View style={styles.horario}>
-                    <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
-                    <FlatList
-                        data={reservas}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id.toString()}
-                    />
-                </View>
+                <MeuButtonMetade
+                    width={'auto'}
+                    tamanho={25}
+                    texto={'Horários Reservados do Salão'}
+                    onClick={() => setModalVisible(true)}
+                />
+                <Modal
+                    animationType="slide" // Você pode ajustar a animação conforme desejado
+                    transparent={false}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(false);
+                    }}
+                >
+                    <View style={styles.horario}>
+                        <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
+                        <FlatList
+                            data={reservas}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id.toString()}
+                        />
+                    </View>
+                </Modal>
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 };
 
