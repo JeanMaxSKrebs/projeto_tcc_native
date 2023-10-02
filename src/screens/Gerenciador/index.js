@@ -73,7 +73,7 @@ const Gerenciador = ({ navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Chats',
-            params: { salao: salao }
+            params: { user: salao }
           }),
         );
         break;

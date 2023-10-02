@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 export const ChatContext = createContext({});
@@ -7,22 +7,49 @@ export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState({});
 
   // Initialize Firebase Firestore
-  const db = firestore();
 
   // Function to fetch messages from Firestore
   const fetchMessages = async (id) => {
     try {
-      const querySnapshot = await db
-        .collection('chats')
-        .eq('id', id)
-        .orderBy('data_hora')
-        .get();
+      // console.log('id');
+      // console.log(id);
 
-      const messages = querySnapshot.docs.map((doc) => doc.data());
+      const docRef = firestore().doc(`chats/${id}`).collection('chat');
+      const docSnapshot = await docRef.get();
+      // console.log('docSnapshot');
+      // console.log(docSnapshot);
+      const chats = [];
 
-      setMessages({ remetente: messages, destinatario: [] });
+      docSnapshot.forEach((chatDoc) => {
+        const chatId = chatDoc.id;
+        const chatData = chatDoc.data();
+        // console.log('Chat ID:', chatId);
+        // console.log('Dados da Chat:', chatData);
 
-      return { remetente: messages, destinatario: [] };
+        // Adicione os dados do chat a um objeto e inclua o ID
+        const chat = {
+          id: chatId,
+          nome: chatData.nome,
+          mensagens: chatData.messages.map((message) => {
+            // Converter o campo "sent" para uma string no formato ISO 8601
+            const sentISO = message.sent ? message.sent.toDate().toISOString() : null;
+            // console.log('sentISO');
+            // console.log(sentISO);
+            return {
+              ...message,
+              sent: sentISO,
+            };
+          }),
+        };
+
+        // Adicione o objeto chat ao array de chats
+        chats.push(chat);
+
+      });
+      // console.log('chats');
+      // console.log(chats);
+      setMessages(chats);
+      return chats;
     } catch (error) {
       console.error('Error fetching messages:', error);
     }

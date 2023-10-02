@@ -14,14 +14,14 @@ const Item = ({ item, onPress }) => {
                 </ChatImage>
                 <ChatTexto>
                     <ChatNome>
-                        <Texto tamanho={18} texto={item.users[1].nome} />
+                        <Texto tamanho={18} texto={item.nome} />
                     </ChatNome>
                     <ChatMensagem>
-                        <Texto tamanho={16} texto={item.messages[0].content} />
+                        <Texto tamanho={16} texto={item.mensagens[0].content} />
                     </ChatMensagem>
                 </ChatTexto>
                 <ChatHora>
-                    <Texto tamanho={10} texto={item.messages[0].sent} />
+                    <Texto tamanho={10} texto={item.mensagens[0].sentISO} />
                 </ChatHora>
             </ChatItem>
         </Container>

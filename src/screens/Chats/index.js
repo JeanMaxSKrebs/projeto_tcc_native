@@ -13,11 +13,18 @@ const Chats = ({ route, navigation }) => {
     const { messages, fetchMessages  } = useContext(ChatContext);
     const [chatTemp, setChatTemp] = useState([]);
 
-    const salao = route.params.salao;
+    const user = route.params.user;
 
     const voltar = () => {
         navigation.goBack();
     };
+
+    useEffect(() => {
+        // console.log('user');
+        // console.log(user.id);
+        fetchMessages(user.id)
+
+      }, []);
 
     const filterCliente = text => {
         // console.log(text);
@@ -49,7 +56,7 @@ const Chats = ({ route, navigation }) => {
         navigation.dispatch(
             CommonActions.navigate({
                 name: 'Chat',
-                params: { chat: item },
+                params: { chat: item, user: user },
             })
         );
     };
@@ -61,8 +68,8 @@ const Chats = ({ route, navigation }) => {
             </View>
             <Texto tamanho={35} texto={'Chats'}></Texto>
             <SearchBar search={filterCliente} name={'Cliente'} />
-            {/* {console.log('chats')}
-            {console.log(chats)} */}
+            {console.log('messages')}
+            {console.log(messages)}
             {/* {console.log(chats[0].users)}
             {console.log(chats[0].messages)}
             {console.log(chats[1].users)} */}
@@ -70,7 +77,7 @@ const Chats = ({ route, navigation }) => {
             {console.log(chatTemp)}
             {console.log(chatTemp.length)} */}
             <FlatList
-                data={chatTemp.length > 0 ? chatTemp : chats}
+                data={chatTemp.length > 0 ? chatTemp : messages}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />

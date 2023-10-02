@@ -15,7 +15,7 @@ export const ApiProvider = ({children}) => {
           if (idToken) {
             const apiLocal = create({
               baseURL:
-                'https://firestore.googleapis.com/v1/projects/pdm-aulas/databases/(default)/documents/',
+                'https://firestore.googleapis.com/v1/projects/projeto-tcc/databases/(default)/documents/',
               headers: {Authorization: 'Bearer ' + idToken},
             });
 

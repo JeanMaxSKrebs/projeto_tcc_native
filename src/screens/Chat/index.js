@@ -8,11 +8,11 @@ import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
 import { ChatContext } from "../../context/ChatProvider";
 
 const MessageItem = ({ message, myId }) => {
-    const isSentByMe = message.sentBy === myId;
-    // console.log('message'),
-    // console.log(message),
+    const isSentByMe = message.sendBy === myId;
+    // console.log('message');
+    // console.log(message);
     // console.log('message.sent');
-    // console.log(message.sentBy);
+    // console.log(message.sendBy);
 
     return (
         <View style={[
@@ -28,9 +28,14 @@ const Chat = ({ route, navigation }) => {
     const { messages, sendMessage  } = useContext(ChatContext);
 
     const chat = route.params.chat;
-    const chatId = chat.messages[0].id
-    const myId = chat.users[0].id
-    const youId = chat.users[1].id
+    const user = route.params.user;
+
+    // console.log('chat');
+    // console.log(chat);
+    // console.log('user');
+    // console.log(user);
+    const myId = user.id
+    const youId = chat.id
     const flatListRef = useRef(null);
 
     const [mensagem, setMensagem] = useState([]);
@@ -38,14 +43,15 @@ const Chat = ({ route, navigation }) => {
 
     useEffect(() => {
         // Carregue as mensagens iniciais do chat quando o componente for montado
-        setMensagem(chat.messages);
+        // console.log('chat.mensagens');
+        // console.log(chat.mensagens);
+        setMensagem(chat.mensagens);
     }, [chat]);
 
     const enviarMensagem = () => {
         if (newMessage.trim() !== '') {
             const newMessageObject = {
                 content: newMessage,
-                id: chatId,
                 sent: new Date().toISOString(), // Obtenha a data e hora atual no formato ISO
                 sentBy: myId,
             };
@@ -70,14 +76,14 @@ const Chat = ({ route, navigation }) => {
                     <Icon name="person-circle-outline" size={60} color="black" />
                 </View>
                 <View style={{ padding: 20 }} >
-                    <Texto tamanho={18} texto={chat.users[1].nome} />
+                    <Texto tamanho={18} texto={chat.nome} />
                 </View>
             </View>
             <View style={styles.messageList}>
-                {console.log('messages')}
+                {/* {console.log('messages')}
                 {console.log(messages)}
                 {console.log('mensagem')}
-                {console.log(mensagem)}
+                {console.log(mensagem)} */}
                 <AutoScrollFlatList
                     ref={flatListRef}
                     style={{ marginBottom: 100 }}
