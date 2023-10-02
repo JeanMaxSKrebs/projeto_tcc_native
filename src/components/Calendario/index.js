@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Dia from './Dia';
 import { COLORS } from '../../assets/colors';
 import MeuButton from '../MeuButton';
 import Texto from '../Texto';
 import MeuButtonMetade from '../MeuButtonMetade';
+import { CommonActions } from '@react-navigation/native';
 
-const Calendario = ({ reservas }) => {
+const Calendario = ({ reservas, onPress, reservarButton }) => {
   const [selected, setSelected] = useState('');
   const [selectedInfo, setSelectedInfo] = useState('');
+
+  const [selectedTime, setSelectedTime] = useState('');
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   console.log('entrou calendario');
   console.log(reservas);
@@ -53,7 +58,17 @@ const Calendario = ({ reservas }) => {
 
   const buscarInformacoesDoDia = (data) => {
 
-    return <Dia data={data} tamanho={20}/>
+    return <Dia data={data} tamanho={20} />
+  };
+
+  const handleDateConfirm = (date) => {
+    setSelectedTime(date.toLocaleTimeString());
+    setDatePickerVisibility(false);
+  };
+
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
   return (
@@ -64,27 +79,45 @@ const Calendario = ({ reservas }) => {
         onDayPress={handleDayPress}
         markedDates={markedDates}
       />
-
       {selected !== '' && (
-        <View style={styles.infoContainer}>
+        <View>
           <Text style={styles.infoText}>{selectedInfo}</Text>
-          <MeuButtonMetade texto={'Reservar'} onClick={() => { }} />
+          {selectedTime !== '' && (
+            <View>
+              <View style={styles.infoContainer}>
+                <Text style={styles.infoText}>Horário: {selectedTime}</Text>
+              </View>
+
+            </View>
+          )}
+          <View style={styles.infoContainer}>
+            <MeuButtonMetade width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
+            {reservarButton && selectedTime && (
+              console.log('reservarButton'),
+              console.log(reservarButton),
+              <MeuButtonMetade texto={'Reservar'} onClick={() => onPress(['Reservar', selected])} />
+            )}
+          </View>
         </View>
       )}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="time"
+        onConfirm={handleDateConfirm}
+        onCancel={() => setDatePickerVisibility(false)}
+      />
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center', // Centraliza verticalmente
     alignItems: 'center', // Centraliza horizontalmente
   },
   infoContainer: {
     alignItems: 'center',
-    marginTop: 10,
   },
   infoText: {
-    fontSize: 18,
+    textAlign: 'center',
     marginBottom: 10,
   },
 });

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
-import { CommonActions } from '@react-navigation/native';
 
 const Agendar = ({ route, navigation }) => {
     // Defina os estados necessários para a agenda

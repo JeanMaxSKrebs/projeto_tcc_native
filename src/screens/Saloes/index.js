@@ -73,7 +73,7 @@ const Saloes = ({ navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Agenda',
-        params: { value: item },
+        params: { value: item, cliente: true},
       }),
     );
   };

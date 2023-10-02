@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Button, SafeAreaView, ScrollView } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
 import { CommonActions } from '@react-navigation/native';
+import Dia from '../../components/Calendario/Dia';
+import Calendario from '../../components/Calendario';
+import { SalaoContext } from '../../context/SalaoProvider';
+import Voltar from '../../components/Voltar';
+import MeuButtonMetade from '../../components/MeuButtonMetade';
 
 const Reservar = ({ route, navigation }) => {
     const [orcamento, setOrcamento] = useState(route.params.orcamento);
+    const { reservas, getReservasPorSalao } = useContext(SalaoContext);
 
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
@@ -13,16 +19,27 @@ const Reservar = ({ route, navigation }) => {
 
     const salao = route.params.salao;
     const cliente = route.params.cliente;
+    const reserva = route.params.reserva;
+
+    const voltar = () => {
+        navigation.goBack();
+    };
 
     const selecionarOrcamento = () => {
         console.log(salao);
         navigation.dispatch(
             CommonActions.navigate({
                 name: 'Orcamentos',
-                params: { salao: salao, cliente: cliente }
+                params: { salao: salao, cliente: cliente, reserva: reserva }
             }),
         );
     };
+
+    useEffect(() => {
+        console.log('salao');
+        console.log(salao);
+        getReservasPorSalao(salao.id);
+    }, []);
 
     const reservar = () => {
         // Perform reservation logic here
@@ -30,43 +47,36 @@ const Reservar = ({ route, navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Solicitação de Reserva'} />
-            <Text style={styles.textoMenor}>Preencha os detalhes:</Text>
+        <SafeAreaView>
+            <ScrollView>
+                <Voltar texto="Voltar" onClick={() => voltar()} />
+                <View style={styles.container}>
+                    <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Solicitação de Reserva'} />
+                    <Text style={styles.textoMenor}>Preencha os detalhes:</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Name"
-                value={name}
-                onChangeText={(text) => setName(text)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Date"
-                value={date}
-                onChangeText={(text) => setDate(text)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Time"
-                value={time}
-                onChangeText={(text) => setTime(text)}
-            />
-            {orcamento ? (
-                <View>
-                    <View>
-                        <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} />
-                    </View>
-                    <Button title="Trocar Orçamento" onPress={selecionarOrcamento} />
+                    <Calendario reservas={reservas} selected={reserva} />
+
+                    {orcamento ? (
+                        <View>
+                            <View>
+                                <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} />
+                            </View>
+                            <MeuButtonMetade width={'auto'} tamanho={25}
+                                texto={'Trocar Orçamento'} onClick={selecionarOrcamento}
+                            />
+                        </View>
+                    ) : (
+                        <MeuButtonMetade width={'auto'} tamanho={25}
+                            texto={'Selecionar Orçamento'} onClick={selecionarOrcamento}
+                        />
+                    )}
+
+                    <MeuButtonMetade width={'auto'} tamanho={25}
+                        texto={'Reservar'} onClick={reservar}
+                    />
                 </View>
-            ) : (
-                <Button title="Selecionar Orçamento" onPress={selecionarOrcamento} />
-            )}
-
-            <Button title="Reservar" onPress={reservar} />
-
-            <Button title="Voltar" onPress={() => navigation.goBack()} />
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
