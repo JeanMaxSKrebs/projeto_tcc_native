@@ -38,6 +38,8 @@ const Orcamento = ({ route, navigation }) => {
   const orcamento = route.params.orcamento;
   const salao = route.params.salao;
   const cliente = route.params.cliente;
+  const dataReserva = route.params.dataReserva;
+  const horarioReserva = route.params.horarioReserva;
 
   let imprimirContent = false;
 
@@ -93,7 +95,11 @@ const Orcamento = ({ route, navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: nextView,
-        params: { orcamento: orcamento, itensSaloesId: itensSaloesId, salao: salao, cliente: cliente },
+        params: {
+          orcamento: orcamento, itensSaloesId: itensSaloesId,
+          salao: salao, cliente: cliente,
+          dataReserva: dataReserva, horarioReserva: horarioReserva
+        },
       }),
     );
   }
@@ -241,7 +247,7 @@ const Orcamento = ({ route, navigation }) => {
 
           </View>
           <View>
-            <MeuButton texto={'Reservar'} onClick={() => routeOrcamento(orcamento, 'Reservar')}
+            <MeuButton texto={dataReserva || horarioReserva ? 'Selecionar' : 'Reservar'} onClick={() => routeOrcamento(orcamento, 'Reservar')}
             />
           </View>
         </View>

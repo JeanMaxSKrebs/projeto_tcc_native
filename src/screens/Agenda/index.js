@@ -49,7 +49,7 @@ const Agenda = ({ route, navigation }) => {
         navigation.dispatch(
             CommonActions.navigate({
                 name: dados[0],
-                params: { reserva: dados[1], salao: salao, cliente: cliente },
+                params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
             }),
         );
     };

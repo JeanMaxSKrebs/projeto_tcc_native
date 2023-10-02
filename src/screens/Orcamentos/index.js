@@ -24,12 +24,15 @@ const Orcamentos = ({ route, navigation }) => {
   // console.log(route.params.itensSaloes);
 
   let itensSaloes = route.params.itensSaloes;
-  let salao = route.params.salao;
-  let cliente = route.params.cliente;
+
+  const dataReserva = route.params.dataReserva;
+  const horarioReserva = route.params.horarioReserva;
+  const salao = route.params.salao;
+  const cliente = route.params.cliente;
   let tamanhoContainer = '90%';
   let imprimirContent = false;
 
-  {cliente ?  tamanhoContainer = '95%' : imprimirContent = true}
+  { cliente ? tamanhoContainer = '95%' : imprimirContent = true }
 
   console.log('cliente');
   console.log(cliente);
@@ -61,7 +64,10 @@ const Orcamentos = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamento',
-            params: { orcamento: item, salao: salao, cliente: cliente},
+            params: {
+              orcamento: item, salao: salao, cliente: cliente,
+              dataReserva: dataReserva, horarioReserva: horarioReserva
+            },
           }),
         );
         break;

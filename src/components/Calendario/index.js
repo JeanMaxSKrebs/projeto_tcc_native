@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -9,15 +9,27 @@ import Texto from '../Texto';
 import MeuButtonMetade from '../MeuButtonMetade';
 import { CommonActions } from '@react-navigation/native';
 
-const Calendario = ({ reservas, onPress, reservarButton }) => {
-  const [selected, setSelected] = useState('');
+const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioReserva }) => {
+  const [selected, setSelected] = useState(dataReserva || '');
   const [selectedInfo, setSelectedInfo] = useState('');
 
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(horarioReserva || '');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   console.log('entrou calendario');
   console.log(reservas);
+  console.log(dataReserva);
+  console.log(horarioReserva);
+
+
+  useEffect(() => {
+    console.log('entrou mesmo');
+
+    if (dataReserva) {
+      let info = buscarInformacoesDoDia(dataReserva);
+      setSelectedInfo(info);
+    }
+  }, []);
 
   const markedDates = {};
 
@@ -47,11 +59,10 @@ const Calendario = ({ reservas, onPress, reservarButton }) => {
 
 
   const handleDayPress = (day) => {
+    // console.log('day');
+    // console.log(day);
     setSelected(day.dateString);
 
-    // Aqui você pode buscar informações adicionais com base na data selecionada
-    // e atualizar o estado selectedInfo com essas informações.
-    // Por exemplo, você pode consultar informações de reserva para a data selecionada.
     const info = buscarInformacoesDoDia(day.dateString);
     setSelectedInfo(info);
   };
@@ -93,20 +104,19 @@ const Calendario = ({ reservas, onPress, reservarButton }) => {
           <View style={styles.infoContainer}>
             <MeuButtonMetade width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
             {reservarButton && selectedTime && (
-              console.log('reservarButton'),
-              console.log(reservarButton),
-              <MeuButtonMetade texto={'Reservar'} onClick={() => onPress(['Reservar', selected])} />
+              <MeuButtonMetade texto={'Reservar'} onClick={() => onPress(['Reservar', selected, selectedTime])} />
             )}
           </View>
         </View>
-      )}
+      )
+      }
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="time"
         onConfirm={handleDateConfirm}
         onCancel={() => setDatePickerVisibility(false)}
       />
-    </View>
+    </View >
   );
 };
 const styles = StyleSheet.create({

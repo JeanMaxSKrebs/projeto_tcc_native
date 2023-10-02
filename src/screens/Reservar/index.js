@@ -19,7 +19,9 @@ const Reservar = ({ route, navigation }) => {
 
     const salao = route.params.salao;
     const cliente = route.params.cliente;
-    const reserva = route.params.reserva;
+    // const dataReserva = route.params.dataReserva;
+    const [dataReserva, setDataReserva] = useState(route.params.dataReserva);
+    const [horarioReserva, setHorarioReserva] = useState(route.params.horarioReserva);
 
     const voltar = () => {
         navigation.goBack();
@@ -30,7 +32,10 @@ const Reservar = ({ route, navigation }) => {
         navigation.dispatch(
             CommonActions.navigate({
                 name: 'Orcamentos',
-                params: { salao: salao, cliente: cliente, reserva: reserva }
+                params: {
+                    salao: salao, cliente: cliente,
+                    dataReserva: dataReserva, horarioReserva: horarioReserva
+                }
             }),
         );
     };
@@ -53,9 +58,6 @@ const Reservar = ({ route, navigation }) => {
                 <View style={styles.container}>
                     <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Solicitação de Reserva'} />
                     <Text style={styles.textoMenor}>Preencha os detalhes:</Text>
-
-                    <Calendario reservas={reservas} selected={reserva} />
-
                     {orcamento ? (
                         <View>
                             <View>
@@ -70,6 +72,10 @@ const Reservar = ({ route, navigation }) => {
                             texto={'Selecionar Orçamento'} onClick={selecionarOrcamento}
                         />
                     )}
+                    <Calendario reservas={reservas} dataReserva={dataReserva} horarioReserva={horarioReserva} onPress={setDataReserva} />
+                    {/* {console.log('dataReserva t')}
+                    {console.log(dataReserva)} */}
+
 
                     <MeuButtonMetade width={'auto'} tamanho={25}
                         texto={'Reservar'} onClick={reservar}
