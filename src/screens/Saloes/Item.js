@@ -42,7 +42,6 @@ const Botao = styled.TouchableHighlight`
 `;
 const BotaoOpcao = styled.TouchableHighlight`
   width: auto;
-  margin: 10px 0px;
   padding: 0 40px 0 40px;
   background-color: ${({ active }) =>
     active ? COLORS.primary : COLORS.terciary};
