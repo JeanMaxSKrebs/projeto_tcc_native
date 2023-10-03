@@ -79,6 +79,13 @@ export const ChatProvider = ({ children }) => {
 
       const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
 
+      if (!chatDoc.exists) {
+        // O documento não existe, então vamos criar um novo
+        console.log('entrou aqui');
+        await chatRef.set({
+          messages: [] // Inicialmente, a coleção de mensagens está vazia
+        });
+      }
       // console.log('newMessage');
       // console.log(newMessage);
       const newMessagewithsent = {
