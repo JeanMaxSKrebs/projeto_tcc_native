@@ -15,33 +15,23 @@ export const ClienteProvider = ({children}) => {
   const [cliente, setCliente] = useState([]);
   const {user, getUser, signOut} = useContext(AuthUserContext);
 
-  const getClientData = async () => {
+  const getClientData = async (email) => {
     try {
-      const { data, error } = await supabase.from('clientes').select('*');
+      const { data, error } = await supabase.from('clientes').select('*').eq('email', email);
       if (error) {
         console.error('An error occurred while fetching client data:', error);
         // Handle the error appropriately
       } else {
-        setCliente(data);
+        console.log('data cliete');
+        console.log(data);
+        setCliente(data[0]);
       }
     } catch (error) {
       console.error('An error occurred while fetching client data:', error);
       // Handle the error appropriately
     }
   };
-  
-  
-  useEffect(() => {
-    
-    if (user !== null) {
-      console.log("entrou cliente")
-      // console.log(user)
-      // fetchData();
-      getClientData();
-    } else {
-      getUser();
-    }
-  }, []);
+
 
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);

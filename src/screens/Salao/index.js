@@ -40,31 +40,35 @@ const Salao = ({ route, navigation }) => {
 
   // console.log('route');
   // console.log(route);
-  console.log(route.params.value);
-
-  const salao = route.params.value
-
+  
+  const salao = route.params.salao
+  const user = route.params.user
+  // console.log('salao.id');
+  // console.log(salao.id);
+  // console.log('user.id');
+  // console.log(user.id);
+  
   const voltar = () => {
     navigation.goBack();
   };
 
   useEffect(() => {
-    if (route.params.value === null) {
+    if (route.params.salao === null) {
       setNome('');
       setDescricao('');
-      setUid('');
+      setId('');
       setImagens([]);
       setLogo('');
     } else {
       // console.log(route.params.value);
-      setNome(route.params.value.nome);
-      setDescricao(route.params.value.descricao);
-      setEndereco(route.params.value.endereco)
-      setCidade(route.params.value.cidade)
-      setCapacidade(route.params.value.capacidade)
-      setId(route.params.value.uid);
-      setImagens(route.params.value.imagens);
-      setLogo(route.params.value.logo);
+      setNome(route.params.salao.nome);
+      setDescricao(route.params.salao.descricao);
+      setEndereco(route.params.salao.endereco)
+      setCidade(route.params.salao.cidade)
+      setCapacidade(route.params.salao.capacidade)
+      setId(route.params.salao.uid);
+      setImagens(route.params.salao.imagens);
+      setLogo(route.params.salao.logo);
     }
 
   }, [route]);
@@ -100,8 +104,8 @@ const Salao = ({ route, navigation }) => {
       case 'Conversar':
         navigation.dispatch(
           CommonActions.navigate({
-            name: 'Chats',
-            params: { salao: salao }
+            name: 'Chat',
+            params: { user: user, cliente: true, salao: salao }
           }),
         );
         break;

@@ -79,14 +79,14 @@ export const ChatProvider = ({ children }) => {
 
       const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
 
-      console.log('newMessage');
-      console.log(newMessage);
+      // console.log('newMessage');
+      // console.log(newMessage);
       const newMessagewithsent = {
         ...newMessage,
         sent: firestore.Timestamp.now()
       };
-      console.log('newMessagewithsent');
-      console.log(newMessagewithsent);
+      // console.log('newMessagewithsent');
+      // console.log(newMessagewithsent);
       // Adicione a nova mensagem à coleção de mensagens do chat
       await chatRef.update({
         messages: firestore.FieldValue.arrayUnion(newMessagewithsent)

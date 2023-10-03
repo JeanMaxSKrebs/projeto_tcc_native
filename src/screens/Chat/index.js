@@ -8,12 +8,16 @@ import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
 import { ChatContext } from "../../context/ChatProvider";
 import firestore from '@react-native-firebase/firestore';
 
-const MessageItem = ({ message, myId }) => {
+const MessageItem = ({ message, myId, salao }) => {
     const isSentByMe = message.sendBy === myId;
+
     // console.log('message');
     // console.log(message.content);
     // console.log('message.sent');
+    // console.log('message.sendBy');
     // console.log(message.sendBy);
+    // console.log('myId');
+    // console.log(myId);
 
     return (
         <View style={[
@@ -30,13 +34,16 @@ const Chat = ({ route, navigation }) => {
 
     const chat = route.params.chat;
     const user = route.params.user;
+    const salao = route.params.salao;
 
     // console.log('chat');
     // console.log(chat);
     // console.log('user');
     // console.log(user);
-    const myId = user.id
-    const youId = chat.id
+
+    const myId = user.id;
+    const youId = salao ? salao.id : chat.id
+
     const flatListRef = useRef(null);
 
     const [mensagens, setMensagens] = useState([]);
@@ -73,8 +80,8 @@ const Chat = ({ route, navigation }) => {
                 }
             })
         };
-        listenerChat(myId, youId)
-        
+        { salao ? listenerChat(youId, myId) : listenerChat(myId, youId) }
+
         // Retorna uma função de limpeza para desmontar o listener
         return () => {
             if (unsubscribe) {
@@ -86,7 +93,7 @@ const Chat = ({ route, navigation }) => {
     const enviarMensagem = async () => {
         if (newMessage.trim() !== '') {
             const newMessageObject = {
-                tipo: 'Salao',
+                tipo: salao ? 'Cliente' : 'Salao',
                 sent: myId,
                 to: youId,
                 newMessage: {
@@ -118,7 +125,7 @@ const Chat = ({ route, navigation }) => {
                     <Icon name="person-circle-outline" size={60} color="black" />
                 </View>
                 <View style={{ padding: 20 }} >
-                    <Texto tamanho={18} texto={chat.nome} />
+                    <Texto tamanho={18} texto={salao ? salao.nome : chat.nome} />
                 </View>
             </View>
             <View style={styles.messageList}>

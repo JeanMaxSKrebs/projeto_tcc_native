@@ -112,8 +112,8 @@ export const SaloesProvider = ({ children }) => {
     }
 
 
-    console.log('datao');
-    console.log(data);
+    // console.log('datao');
+    // console.log(data);
     // Filtrar cidades únicas, incluindo tratamento para valores nulos (null)
     const uniqueCityNames = [];
 

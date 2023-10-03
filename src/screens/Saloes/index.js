@@ -11,20 +11,24 @@ import { Container, FlatList } from './styles';
 import { CommonActions } from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
 import { AuthUserContext } from '../../context/AuthUserProvider';
+import { ClienteContext } from '../../context/ClienteProvider';
 import Texto from '../../components/Texto';
 import ListaCidadesButtons from '../../components/saloes/ListaCidadesButtons';
 
 const Saloes = ({ navigation }) => {
   const { user } = useContext(AuthUserContext)
+  const { cliente, getClientData} = useContext(ClienteContext)
 
   const { saloes, getHallsData, cidades, fetchCities, selectSaloesByCity } = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
-  console.log('user');
-  console.log(user);
+  console.log('cliente');
+  console.log(cliente);
   useEffect(() => {
     getHallsData();
     fetchCities();
+    getClientData(user.email);
+
     navigation.setOptions({
       // headerLeft: () => <LogoutButton />,
       // headerLeft: false,
@@ -43,7 +47,7 @@ const Saloes = ({ navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Salao',
-        params: { value: item },
+        params: { salao: item, user: cliente },
       }),
     );
   };
@@ -73,7 +77,7 @@ const Saloes = ({ navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Agenda',
-        params: { value: item, cliente: true},
+        params: { value: item, cliente: true },
       }),
     );
   };
@@ -102,10 +106,10 @@ const Saloes = ({ navigation }) => {
       <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
       <Texto style={styles.texto} cor={COLORS.secundary} tamanho={30} texto={'Salões nas Proximidades'} />
       <Container>
-        {console.log('saloes')}
+        {/* {console.log('saloes')}
           {console.log(saloes)}
         {console.log('saloesTemp')}
-        {console.log(saloesTemp.length)}
+        {console.log(saloesTemp.length)} */}
 
         <FlatList
           data={saloesTemp.length > 0 ? saloesTemp : saloes}
