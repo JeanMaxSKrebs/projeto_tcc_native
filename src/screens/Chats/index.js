@@ -36,7 +36,7 @@ const Chats = ({ route, navigation }) => {
         // console.log(text);
         let filtro = [];
         chats.filter(chat => {
-            if (chat.users[1].nome.toLowerCase().includes(text.toLowerCase())) {
+            if (messages.nome.toLowerCase().includes(text.toLowerCase())) {
                 filtro.push(chat);
             }
         });

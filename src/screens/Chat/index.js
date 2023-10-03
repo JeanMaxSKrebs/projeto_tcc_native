@@ -58,7 +58,14 @@ const Chat = ({ route, navigation }) => {
 
         const listenerChat = async (id, to) => {
             const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
-
+            if (!chatRef.exists) {
+                // O documento não existe, então vamos criar um novo
+                console.log('entrou aqui');
+                await chatRef.set({
+                    messages: [],  // Inicialmente, a coleção de mensagens está vazia
+                    // nome: 
+                });
+            }
             unsubscribe = chatRef.onSnapshot((chatSnapshot) => {
                 console.log(`Received query snapshot of size ${chatSnapshot.size}`);
 
