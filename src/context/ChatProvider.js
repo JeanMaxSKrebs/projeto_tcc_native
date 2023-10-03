@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 export const ChatContext = createContext({});
@@ -55,15 +55,50 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
-  const sendMessage = (newMessage) => {
-    console.log('newMessage');
-    console.log(newMessage);
-    db.collection('chatMessages').add({
-      content: newMessage.content,
-      sent: newMessage.sent,
-      sentBy: newMessage.sentBy,
-    });
+  const sendMessage = async (dados) => {
+    try {
+      const newMessage = dados.newMessage;
+      const tipo = dados.tipo;
+      let id = '';
+      let to = '';
+      switch (tipo) {
+        case 'Salao':
+          id = dados.sent;
+          to = dados.to;
+
+          break;
+        case 'Cliente':
+          id = dados.to;
+          to = dados.sent;
+
+          break;
+        default:
+          console.log('USUARIO NAO ENCONTRADO');
+          break;
+      }
+
+      const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
+
+      console.log('newMessage');
+      console.log(newMessage);
+      const newMessagewithsent = {
+        ...newMessage,
+        sent: firestore.Timestamp.now()
+      };
+      console.log('newMessagewithsent');
+      console.log(newMessagewithsent);
+      // Adicione a nova mensagem à coleção de mensagens do chat
+      await chatRef.update({
+        messages: firestore.FieldValue.arrayUnion(newMessagewithsent)
+      })
+
+      console.log('Mensagem enviada com sucesso');
+      return true;
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+    }
   };
+
 
   return (
     <ChatContext.Provider value={{ messages, fetchMessages, sendMessage }}>

@@ -6,11 +6,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Texto from '../../components/Texto';
 import { AutoScrollFlatList } from "react-native-autoscroll-flatlist";
 import { ChatContext } from "../../context/ChatProvider";
+import firestore from '@react-native-firebase/firestore';
 
 const MessageItem = ({ message, myId }) => {
     const isSentByMe = message.sendBy === myId;
     // console.log('message');
-    // console.log(message);
+    // console.log(message.content);
     // console.log('message.sent');
     // console.log(message.sendBy);
 
@@ -25,7 +26,7 @@ const MessageItem = ({ message, myId }) => {
 };
 
 const Chat = ({ route, navigation }) => {
-    const { messages, sendMessage  } = useContext(ChatContext);
+    const { messages, sendMessage } = useContext(ChatContext);
 
     const chat = route.params.chat;
     const user = route.params.user;
@@ -38,28 +39,69 @@ const Chat = ({ route, navigation }) => {
     const youId = chat.id
     const flatListRef = useRef(null);
 
-    const [mensagem, setMensagem] = useState([]);
+    const [mensagens, setMensagens] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
-    useEffect(() => {
-        // Carregue as mensagens iniciais do chat quando o componente for montado
-        // console.log('chat.mensagens');
-        // console.log(chat.mensagens);
-        setMensagem(chat.mensagens);
-    }, [chat]);
+    const voltar = () => {
+        navigation.goBack();
+    };
 
-    const enviarMensagem = () => {
+    useEffect(() => {
+        let unsubscribe;
+
+        const listenerChat = async (id, to) => {
+            const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
+
+            unsubscribe = chatRef.onSnapshot((chatSnapshot) => {
+                console.log(`Received query snapshot of size ${chatSnapshot.size}`);
+
+                if (chatSnapshot.exists) {
+                    const chatData = chatSnapshot.data();
+                    const updatedChat = {
+                        id: chatRef.id,
+                        nome: chatData.nome,
+                        mensagens: chatData.messages.map((message) => ({
+                            ...message,
+                            sent: message.sent ? message.sent.toDate().toISOString() : null,
+                        })),
+                    };
+                    console.log('updatedChat');
+                    console.log(updatedChat);
+                    setMensagens(updatedChat.mensagens);
+                } else {
+                    setMensagens(null);
+                }
+            })
+        };
+        listenerChat(myId, youId)
+        
+        // Retorna uma função de limpeza para desmontar o listener
+        return () => {
+            if (unsubscribe) {
+                unsubscribe(); // Chame a função de unsubscribe aqui para parar de ouvir o snapshot
+            }
+        };
+    }, []);
+
+    const enviarMensagem = async () => {
         if (newMessage.trim() !== '') {
             const newMessageObject = {
-                content: newMessage,
-                sent: new Date().toISOString(), // Obtenha a data e hora atual no formato ISO
-                sentBy: myId,
+                tipo: 'Salao',
+                sent: myId,
+                to: youId,
+                newMessage: {
+                    content: newMessage,
+                    sendBy: myId,
+                }
             };
-            const updatedMessages = [...messages, newMessageObject];
-
-            sendMessage()
-            setMensagem(updatedMessages);
+            const updatedMensagens = [...mensagens, newMessageObject.newMessage];
+            console.log('newMessageObject');
+            console.log(newMessageObject);
+            setMensagens(updatedMensagens);
             setNewMessage('');
+            if (await sendMessage(newMessageObject)) {
+                console.log('mensagem salva no banco');
+            }
 
             // Após adicionar a nova mensagem, role para o final
             flatListRef.current.scrollToEnd();
@@ -69,7 +111,7 @@ const Chat = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <View>
-                <VoltarWithoutColor texto="Voltar" onClick={() => navigation.goBack()} />
+                <VoltarWithoutColor texto="Voltar" onClick={() => voltar()} />
             </View>
             <View style={{ flexDirection: 'row', margin: 20 }}>
                 <View style={{}} >
@@ -87,7 +129,7 @@ const Chat = ({ route, navigation }) => {
                 <AutoScrollFlatList
                     ref={flatListRef}
                     style={{ marginBottom: 100 }}
-                    data={mensagem}
+                    data={mensagens}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => <MessageItem message={item} myId={myId} />}
                 />

@@ -14,6 +14,8 @@ const Chats = ({ route, navigation }) => {
     const [chatTemp, setChatTemp] = useState([]);
 
     const user = route.params.user;
+    const cliente = route.params.cliente;
+    const salao = route.params.salao;
 
     const voltar = () => {
         navigation.goBack();
@@ -22,7 +24,11 @@ const Chats = ({ route, navigation }) => {
     useEffect(() => {
         // console.log('user');
         // console.log(user.id);
-        fetchMessages(user.id)
+        if(cliente) {
+            // fetchMessages(salao.id) // um fetch by id
+        } else {
+            fetchMessages(user.id)
+        }
 
       }, []);
 
@@ -68,8 +74,8 @@ const Chats = ({ route, navigation }) => {
             </View>
             <Texto tamanho={35} texto={'Chats'}></Texto>
             <SearchBar search={filterCliente} name={'Cliente'} />
-            {console.log('messages')}
-            {console.log(messages)}
+            {/* {console.log('messages')}
+            {console.log(messages)} */}
             {/* {console.log(chats[0].users)}
             {console.log(chats[0].messages)}
             {console.log(chats[1].users)} */}
