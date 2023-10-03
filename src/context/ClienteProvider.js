@@ -22,8 +22,8 @@ export const ClienteProvider = ({children}) => {
         console.error('An error occurred while fetching client data:', error);
         // Handle the error appropriately
       } else {
-        console.log('data cliete');
-        console.log(data);
+        // console.log('data cliete');
+        // console.log(data);
         setCliente(data[0]);
       }
     } catch (error) {

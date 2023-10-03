@@ -22,8 +22,8 @@ const Saloes = ({ navigation }) => {
   const { saloes, getHallsData, cidades, fetchCities, selectSaloesByCity } = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
-  console.log('cliente');
-  console.log(cliente);
+  // console.log('cliente');
+  // console.log(cliente);
   useEffect(() => {
     getHallsData();
     fetchCities();

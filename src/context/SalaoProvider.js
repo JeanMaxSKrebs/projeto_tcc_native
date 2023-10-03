@@ -218,9 +218,45 @@ export const SalaoProvider = ({ children }) => {
     }
   };
 
+  async function contarFestasRealizadas(id) {
+    const hoje = new Date();
+    const { count, error } = await supabase
+      .from('reservas')
+      .select('*', { count: 'exact', head: true })
+      .eq('salao_id', id)
+      .lt('data_hora', hoje);
+  
+      console.log('data reali');
+      console.log(count);
+    if (error) {
+      throw error;
+    }
+  
+    return count;
+  }
+  
+  // Função para contar festas agendadas (data posterior à data atual)
+  async function contarFestasAgendadas(id) {
+    const hoje = new Date();
+    const { count, error } = await supabase
+      .from('reservas')
+      .select('*', { count: 'exact', head: true })
+      .eq('salao_id', id)
+      .gt('data_hora', hoje);
+  
+      console.log('data agendan');
+      console.log(count);
+    if (error) {
+      throw error;
+    }
+  
+    return count;
+  }
+
   return (
     <SalaoContext.Provider value={{ salao, saveSalao, updateSalao, getHallData,
-      reservas, createReserva, getReservasPorSalao}}>
+      reservas, createReserva, getReservasPorSalao, 
+      contarFestasRealizadas, contarFestasAgendadas, }}>
       {children}
     </SalaoContext.Provider>
   );

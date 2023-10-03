@@ -14,7 +14,7 @@ import MeuButton from '../../components/MeuButton';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
 import AnotherButtonMetade from '../../components/AnotherButtonMetade';
 import Loading from '../../components/Loading';
-import { SaloesContext } from '../../context/SaloesProvider';
+import { SalaoContext } from '../../context/SalaoProvider';
 import DeleteButton from '../../components/DeleteButton';
 import Swiper from 'react-native-swiper';
 import { CommonActions } from '@react-navigation/native';
@@ -23,6 +23,8 @@ import { COLORS } from '../../assets/colors';
 import Voltar from '../../components/Voltar';
 
 const Salao = ({ route, navigation }) => {
+  const { reservas, contarFestasRealizadas, contarFestasAgendadas } = useContext(SalaoContext);
+
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -40,17 +42,27 @@ const Salao = ({ route, navigation }) => {
 
   // console.log('route');
   // console.log(route);
-  
+
   const salao = route.params.salao
   const user = route.params.user
   // console.log('salao.id');
   // console.log(salao.id);
   // console.log('user.id');
   // console.log(user.id);
-  
+
   const voltar = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    contarFestasRealizadas(salao.id).then((count) => {
+      setfestasRealizadas(count);
+    });
+
+    contarFestasAgendadas(salao.id).then((count) => {
+      setfestasAgendadas(count);
+    });
+  }, [salao.id]);
 
   useEffect(() => {
     if (route.params.salao === null) {
@@ -118,6 +130,14 @@ const Salao = ({ route, navigation }) => {
           }),
         );
         break;
+      case 'VerAgenda':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Agenda',
+            params: { value: salao, cliente: true },
+          }),
+        );
+        break;
       default:
         navigation.dispatch(
           CommonActions.navigate({
@@ -164,8 +184,8 @@ const Salao = ({ route, navigation }) => {
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <AnotherButtonMetade prefixo={festasRealizadas} texto="Festas Realizadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
-            <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
+            <AnotherButtonMetade prefixo={festasRealizadas} texto="Festas Realizadas" onClick={() => routeGerenciador('Festas')} style={{ width: '45%' }} />
+            <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('Festas')} style={{ width: '45%' }} />
           </View>
           <ContainerImage>
             <Swiper

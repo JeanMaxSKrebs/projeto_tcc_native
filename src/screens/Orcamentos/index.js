@@ -34,8 +34,8 @@ const Orcamentos = ({ route, navigation }) => {
 
   { cliente ? tamanhoContainer = '95%' : imprimirContent = true }
 
-  console.log('cliente');
-  console.log(cliente);
+  // console.log('cliente');
+  // console.log(cliente);
 
   const routeOrcamento = item => {
     // console.log('calica');
