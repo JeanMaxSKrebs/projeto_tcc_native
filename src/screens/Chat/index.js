@@ -57,32 +57,33 @@ const Chat = ({ route, navigation }) => {
         let unsubscribe;
 
         const listenerChat = async (id, to) => {
+            // console.log('id');
+            // console.log(id);
+            // console.log('to');
+            // console.log(to);
             const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
-            if (!chatRef.exists) {
-                // O documento não existe, então vamos criar um novo
-                console.log('entrou aqui');
-                await chatRef.set({
-                    messages: [],  // Inicialmente, a coleção de mensagens está vazia
-                    // nome: 
-                });
-            }
-            unsubscribe = chatRef.onSnapshot((chatSnapshot) => {
-                console.log(`Received query snapshot of size ${chatSnapshot.size}`);
+
+            unsubscribe = chatRef.onSnapshot(async (chatSnapshot) => {
+                // console.log(`Received query snapshot of size ${chatSnapshot.exists}`);
 
                 if (chatSnapshot.exists) {
                     const chatData = chatSnapshot.data();
                     const updatedChat = {
                         id: chatRef.id,
-                        nome: chatData.nome,
+                        nome: salao && user.nome,
                         mensagens: chatData.messages.map((message) => ({
                             ...message,
                             sent: message.sent ? message.sent.toDate().toISOString() : null,
                         })),
                     };
-                    console.log('updatedChat');
-                    console.log(updatedChat);
+                    // console.log('updatedChat');
+                    // console.log(updatedChat);
                     setMensagens(updatedChat.mensagens);
                 } else {
+                    await chatRef.set({
+                        messages: [],  // Inicialmente, a coleção de mensagens está vazia
+                        nome: salao && user.nome,
+                    });
                     setMensagens(null);
                 }
             })
@@ -113,7 +114,7 @@ const Chat = ({ route, navigation }) => {
             console.log(newMessageObject);
             setMensagens(updatedMensagens);
             setNewMessage('');
-            if (await sendMessage(newMessageObject)) {
+            if (await sendMessage(newMessageObject, user)) {
                 console.log('mensagem salva no banco');
             }
 
