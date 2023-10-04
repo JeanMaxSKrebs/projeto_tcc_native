@@ -26,7 +26,7 @@ const Dia = ({ data, tamanho }) => {
     // Obtém o nome do dia da semana correspondente
     const nomeDoDiaDaSemana = diasDaSemana[numeroDoDiaDaSemana];
     return (
-        <View style={{}}>
+        <View>
             <Texto tamanho={tamanho} texto={nomeDoDiaDaSemana + ' dia ' + dataSelecionada.getDate()
                 + ' de ' + dataSelecionada.toLocaleDateString('pt-BR', { month: 'long' })
                 + ' de ' + dataSelecionada.getFullYear()} />
