@@ -84,6 +84,8 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
 
   return (
     <View style={styles.container}>
+      <Texto texto={'Calendário'} tamanho={25} />
+
       <Calendar
         minDate={dataAtualFormatada}
         // style={{ backgroundColor: COLORS.primaryShadow }}

@@ -14,6 +14,7 @@ import ItensSaloes from '../screens/ItensSaloes';
 import Chat from '../screens/Chat';
 import Chats from '../screens/Chats';
 import Reservar from '../screens/Reservar';
+import Reservas from '../screens/Reservas';
 import Agenda from '../screens/Agenda';
 import Agendar from '../screens/Agendar';
 import Orcamento from '../screens/Orcamento';
@@ -152,6 +153,7 @@ const Navigator = () => (
       <Stack.Screen component={Chats} name="Chats" />
       <Stack.Screen component={Chat} name="Chat" />
       <Stack.Screen component={Reservar} name="Reservar" />
+      <Stack.Screen component={Reservas} name="Reservas" />
       <Stack.Screen component={Agenda} name="Agenda" />
       <Stack.Screen component={Agendar} name="Agendar" />
       <Stack.Screen component={Orcamento} name="Orcamento" />

@@ -77,8 +77,22 @@ const Gerenciador = ({ navigation }) => {
           }),
         );
         break;
-      // case 'TelaReservas':
-      // case 'VerAgenda':
+      case 'VerAgenda':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Agenda',
+            params: { value: salao, cliente: false }
+          }),
+        );
+        break;
+      case 'TelaReservas':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: 'Reservas',
+            params: { salao: salao, cliente: false }
+          }),
+        );
+        break;
       // case 'Conversar':
       case 'VisaoCliente':
         navigation.dispatch(

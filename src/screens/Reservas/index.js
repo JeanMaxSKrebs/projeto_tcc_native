@@ -1,29 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, Modal, FlatList, ScrollView } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, FlatList, SafeAreaView, ScrollView, Modal } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import Texto from '../../components/Texto';
-import { SalaoContext } from '../../context/SalaoProvider';
-import MeuButton from '../../components/MeuButton';
-import Calendario from '../../components/Calendario';
-import Dia from '../../components/Calendario/Dia';
-import Voltar from '../../components/Voltar';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import MeuButtonMetade from '../../components/MeuButtonMetade';
 import { CommonActions } from '@react-navigation/native';
+import Dia from '../../components/Calendario/Dia';
+import Calendario from '../../components/Calendario';
+import { SalaoContext } from '../../context/SalaoProvider';
+import Voltar from '../../components/Voltar';
+import MeuButtonMetade from '../../components/MeuButtonMetade';
 
-const Agenda = ({ route, navigation }) => {
+const Reservas = ({ route, navigation }) => {
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-    // const salao = route.params.value;
-    // const cliente = route.params.cliente;
 
-    const [salao, setSalao] = useState(route.params.value);
-    const [cliente, setCliente] = useState(route.params.cliente);
+    const [name, setName] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+
+    const salao = route.params.salao;
+    const cliente = route.params.cliente;
+    // const dataReserva = route.params.dataReserva;
+
     const [modalVisible, setModalVisible] = useState(false);
 
-    // Função para voltar à tela anterior (Agenda)
+
     const voltar = () => {
         navigation.goBack();
     };
+
+
 
     useEffect(() => {
         if (salao) {
@@ -31,8 +35,12 @@ const Agenda = ({ route, navigation }) => {
             console.log(salao);
             getReservasPorSalao(salao.id);
         }
-    }, [route]);
+    }, []);
 
+    const reservar = () => {
+        // Perform reservation logic here
+        // You can use the 'name', 'date', and 'time' state variables to send data to your backend or perform other actions.
+    };
 
     const renderItem = ({ item }) => {
         console.log('itemitem');
@@ -48,30 +56,11 @@ const Agenda = ({ route, navigation }) => {
         )
     }
 
-    const routeFor = dados => {
-        console.log('a');
-        console.log(dados);
-        navigation.dispatch(
-            CommonActions.navigate({
-                name: dados[0],
-                params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
-            }),
-        );
-    };
-
-
     return (
         <SafeAreaView>
             <ScrollView>
                 <Voltar texto="Voltar" onClick={() => voltar()} />
                 <View style={styles.container}>
-                    <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Visualizar Agenda'} />
-
-                    {console.log('reservas')}
-                    {console.log(reservas)}
-                    <View style={styles.calendario}>
-                        <Calendario reservas={reservas} onPress={routeFor} reservarButton />
-                    </View>
                     <MeuButtonMetade
                         width={'auto'}
                         tamanho={25}
@@ -94,23 +83,23 @@ const Agenda = ({ route, navigation }) => {
                                     renderItem={renderItem}
                                     keyExtractor={(item) => item.id.toString()}
                                 />
-
                                 <MeuButtonMetade
                                     width={'auto'}
                                     tamanho={25}
                                     texto={'Voltar'}
                                     onClick={() => setModalVisible(false)}
                                 />
+
                             </View>
                         </View>
                     </Modal>
                 </View>
             </ScrollView>
-        </SafeAreaView >
+        </SafeAreaView>
     );
 };
 
-export default Agenda;
+export default Reservas;
 
 const styles = StyleSheet.create({
     modal: {

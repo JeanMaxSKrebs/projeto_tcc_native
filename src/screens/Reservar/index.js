@@ -41,9 +41,11 @@ const Reservar = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        console.log('salao');
-        console.log(salao);
-        getReservasPorSalao(salao.id);
+        if (salao) {
+            console.log('salao');
+            console.log(salao);
+            getReservasPorSalao(salao.id);
+        }
     }, []);
 
     const reservar = () => {
