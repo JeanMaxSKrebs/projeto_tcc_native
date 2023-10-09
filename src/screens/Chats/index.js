@@ -17,7 +17,6 @@ import { COLORS } from '../../assets/colors';
 
 const Chats = ({ route, navigation }) => {
     const { messages, fetchMessages } = useContext(ChatContext);
-    const [chats, setChats] = useState([]);
     const [chatsTemp, setChatsTemp] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -63,16 +62,13 @@ const Chats = ({ route, navigation }) => {
             await fetchMessages(user.id);
         }
         setIsLoading(false);
-
-        setChats(messages);
-
     };
 
     const filterCliente = text => {
         // console.log(text);
         let filtro = [];
-        chats.filter(chat => {
-            if (messages.nome.toLowerCase().includes(text.toLowerCase())) {
+        messages.filter(chat => {
+            if (chat.nome.toLowerCase().includes(text.toLowerCase())) {
                 filtro.push(chat);
             }
         });
@@ -113,11 +109,6 @@ const Chats = ({ route, navigation }) => {
             <Texto tamanho={35} texto={'Chats'}></Texto>
             <SearchBar search={filterCliente} name={'Cliente'} />
 
-            {/* {console.log(chats[0].users)}
-            {console.log(chats[0].messages)}
-            {console.log(chats[1].users)} */}
-            {console.log('chats')}
-            {console.log(chats)}
             {/* {console.log(chatTemp.length)} */}
 
             {isLoading ? (
@@ -125,21 +116,20 @@ const Chats = ({ route, navigation }) => {
             ) : (
                 console.log('messages123'),
                 console.log(messages),
-                console.log(chats),
                 // console.log(messages[0].mensagens[0].content),
                 <FlatList
-                    data={chatsTemp.length > 0 ? chatsTemp : chats}
+                    data={chatsTemp.length > 0 ? chatsTemp : messages}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderItem}
                 />
             )}
-            <BottomButton>
+            {/* <BottomButton>
                 <MeuButtonMetade
                     width={'auto'}
                     texto={<Icon size={30} name="refresh"></Icon>}
                     onClick={carregarMensagens}
                 />
-            </BottomButton>
+            </BottomButton> */}
 
         </SafeAreaView>
     );
