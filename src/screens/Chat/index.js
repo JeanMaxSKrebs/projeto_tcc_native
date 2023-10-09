@@ -109,9 +109,15 @@ const Chat = ({ route, navigation }) => {
                     sendBy: myId,
                 }
             };
-            const updatedMensagens = [...mensagens, newMessageObject.newMessage];
-            console.log('newMessageObject');
-            console.log(newMessageObject);
+            let updatedMensagens = [];
+            {
+                mensagens ?
+                    updatedMensagens = [...mensagens, newMessageObject.newMessage]
+                    :
+                    updatedMensagens = [newMessageObject.newMessage]
+            }
+            // console.log('newMessageObject');
+            // console.log(newMessageObject);
             setMensagens(updatedMensagens);
             setNewMessage('');
             if (await sendMessage(newMessageObject, user)) {

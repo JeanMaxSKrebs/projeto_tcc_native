@@ -57,8 +57,8 @@ export const ChatProvider = ({ children }) => {
 
   const sendMessage = async (dados, user) => {
     try {
-      console.log('dados');
-      console.log(dados);
+      // console.log('dados');
+      // console.log(dados);
       const newMessage = dados.newMessage;
       const tipo = dados.tipo;
       let id = '';
