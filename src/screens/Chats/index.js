@@ -3,16 +3,16 @@ import { SafeAreaView, View, FlatList, Text, TouchableOpacity } from 'react-nati
 import SearchBar from '../../components/SearchBar';
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
-import { chats } from './script';
 import Item from './Item'
 import { CommonActions } from '@react-navigation/native';
 import { ChatContext } from "../../context/ChatProvider";
 import Loading from '../../components/Loading';
 import firestore from '@react-native-firebase/firestore';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
-import { useFocusEffect } from '@react-navigation/native'; // Importe useFocusEffect
 import { Container } from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { BottomButton } from './styles';
+import { COLORS } from '../../assets/colors';
 
 
 const Chats = ({ route, navigation }) => {
@@ -30,21 +30,29 @@ const Chats = ({ route, navigation }) => {
     };
 
     useEffect(() => {
+        let unsubscribe;
 
+        const listenerChat = async (id) => {
+            const chatRef = firestore().collection(`chats/${id}/chat`);
+
+            unsubscribe = chatRef.onSnapshot((querySnapshot) => {
+                querySnapshot.docChanges().forEach((change) => {
+                    carregarMensagens()
+                });
+            });
+        };
+
+        // Chame a função de listener para o ID específico aqui
+        { salao ? listenerChat(salao.id) : listenerChat(user.id) }
         carregarMensagens();
+
+        // Retorna uma função de limpeza para desmontar o listener
+        return () => {
+            if (unsubscribe) {
+                unsubscribe(); // Chame a função de unsubscribe aqui para parar de ouvir o snapshot
+            }
+        };
     }, []);
-
-    const [hasFocused, setHasFocused] = useState(false);
-    useFocusEffect(() => {
-        // console.log(hasFocused);
-        if (!hasFocused) {
-
-            // console.log('user');
-            // console.log(user);
-            carregarMensagens();
-            setHasFocused(true);
-        }
-    });
 
     const carregarMensagens = async () => {
         setIsLoading(true);
@@ -81,7 +89,9 @@ const Chats = ({ route, navigation }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <Item item={item} onPress={() => routeChat(item)} />
+            <>
+                <Item item={item} onPress={() => routeChat(item)} />
+            </>
         );
     };
 
@@ -96,25 +106,20 @@ const Chats = ({ route, navigation }) => {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ height: '100%' }}>
             <View>
                 <Voltar texto="Voltar" onClick={() => voltar()} />
             </View>
-            <Container>
-                <MeuButtonMetade
-                    texto={<Icon size={20} name="refresh"></Icon>}
-                    onClick={carregarMensagens}
-                />
-                <Texto tamanho={35} texto={'Chats'}></Texto>
-            </Container>
+            <Texto tamanho={35} texto={'Chats'}></Texto>
             <SearchBar search={filterCliente} name={'Cliente'} />
 
             {/* {console.log(chats[0].users)}
             {console.log(chats[0].messages)}
             {console.log(chats[1].users)} */}
-            {/* {console.log('chatTemp')}
-            {console.log(chatTemp)}
-            {console.log(chatTemp.length)} */}
+            {console.log('chats')}
+            {console.log(chats)}
+            {/* {console.log(chatTemp.length)} */}
+
             {isLoading ? (
                 <Loading />
             ) : (
@@ -128,6 +133,14 @@ const Chats = ({ route, navigation }) => {
                     renderItem={renderItem}
                 />
             )}
+            <BottomButton>
+                <MeuButtonMetade
+                    width={'auto'}
+                    texto={<Icon size={30} name="refresh"></Icon>}
+                    onClick={carregarMensagens}
+                />
+            </BottomButton>
+
         </SafeAreaView>
     );
 };

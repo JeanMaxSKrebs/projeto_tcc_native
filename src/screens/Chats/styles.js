@@ -42,3 +42,9 @@ export const ChatHora = styled.Text`
   color: ${COLORS.secundary};
   flex: 1;
 `;
+export const BottomButton = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 10px;
+  background-color: ${COLORS.primary};
+  align-self: center;
+`;
