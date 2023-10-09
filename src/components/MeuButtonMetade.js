@@ -5,8 +5,16 @@ import { COLORS } from '../assets/colors';
 const MeuButtonMetade = props => {
   // console.log(props);
   const width = props.width || '45%';
+  const color = props.cor || COLORS.primary;
+  const estiloBorda = props.borda ? { borderWidth: 5, borderColor: color, backgroundColor: COLORS.black } : null;
+
   return (
-    <TouchableHighlight style={[styles.button, { width }]} onPress={() => props.onClick()}>
+    <TouchableHighlight style={[styles.button, { width },
+    estiloBorda
+      ? { backgroundColor: COLORS.primaryShadow, estiloBorda }
+      : { backgroundColor: color }
+    ]}
+      onPress={() => props.onClick()}>
       <Text style={styles.texto}>{props.texto}</Text>
     </TouchableHighlight>
   );
@@ -17,14 +25,14 @@ export default MeuButtonMetade;
 const styles = StyleSheet.create({
   texto: {
     fontSize: 18,
-    color: COLORS.secundary,
+    // color: COLORS.secundary,
     textAlign: 'center',
   },
   button: {
     width: '45%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
+    // backgroundColor: COLORS.primary,
     padding: 10,
     margin: 10,
     borderRadius: 5,

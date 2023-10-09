@@ -4,8 +4,8 @@ import { COLORS } from '../../assets/colors';
 import Texto from '../Texto';
 
 const Dia = ({ data, tamanho }) => {
-    console.log('datadata');
-    console.log(data);
+    // console.log('datadata');
+    // console.log(data);
     // Converte a data selecionada em um objeto Date
     const dataSelecionada = new Date(data);
 

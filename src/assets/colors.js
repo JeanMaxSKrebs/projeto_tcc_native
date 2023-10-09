@@ -9,6 +9,7 @@ export const COLORS = {
   soMuchAccent: '#157145',
   accent: '#57a773',
   accentSeccundary: '#6a8eae',
+  green: 'green',
   gray: 'gray',
   black: 'black',
   white: 'white',

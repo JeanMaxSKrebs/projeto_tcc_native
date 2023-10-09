@@ -27,36 +27,61 @@ const Agenda = ({ route, navigation }) => {
 
     useEffect(() => {
         if (salao) {
-            console.log('salao');
-            console.log(salao);
+            // console.log('salao');
+            // console.log(salao);
             getReservasPorSalao(salao.id);
         }
     }, [route]);
 
 
     const renderItem = ({ item }) => {
-        console.log('itemitem');
-        console.log(item);
+        // console.log('itemitem');
+        // console.log(item);
         //data formatada
         const data = item.data_hora.split('T')[0];
 
         return (
             <View style={styles.item}>
-                <Dia data={data} tamanho={16} />
+                <MeuButtonMetade width={'auto'} texto={<Dia data={data} tamanho={16} />}
+                    onClick={() => { setModalVisible(false), routeFor(['Festa', item]) }}
+                />
             </View>
 
         )
     }
 
     const routeFor = dados => {
-        console.log('a');
-        console.log(dados);
-        navigation.dispatch(
-            CommonActions.navigate({
-                name: dados[0],
-                params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
-            }),
-        );
+        // console.log('a');
+        // console.log(dados);
+        switch (dados[0]) {
+            case 'VerFesta':
+
+                navigation.dispatch(
+                    CommonActions.navigate({
+                        name: dados[0],
+                        params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
+                    }),
+                );
+                break;
+            case 'Reservar':
+                navigation.dispatch(
+                    CommonActions.navigate({
+                        name: dados[0],
+                        params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
+                    }),
+                );
+                break;
+
+            default:
+                navigation.dispatch(
+                    CommonActions.navigate({
+                        name: 'Manutencao',
+                        params: { value: dados[0] },
+                    }),
+                );
+                break;
+        }
+
     };
 
 
@@ -67,12 +92,15 @@ const Agenda = ({ route, navigation }) => {
                 <View style={styles.container}>
                     <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Visualizar Agenda'} />
 
-                    {console.log('reservas')}
-                    {console.log(reservas)}
+                    {/* {console.log('reservas')}
+                    {console.log(reservas)} */}
+                    {/* {console.log('cliente')}
+                    {console.log(cliente)} */}
                     <View style={styles.calendario}>
-                        <Calendario reservas={reservas} onPress={routeFor} reservarButton />
+                        <Calendario reservas={reservas} onPress={routeFor} reservarButton cliente={cliente} />
                     </View>
                     <MeuButtonMetade
+                        borda
                         width={'auto'}
                         tamanho={25}
                         texto={'Horários Reservados do Salão'}
@@ -126,6 +154,7 @@ const styles = StyleSheet.create({
     horario: {
         alignItems: 'center',
         backgroundColor: COLORS.background,
+        // backgroundColor: COLORS.primaryShadow,
         borderRadius: 15,
         margin: 10,
         padding: 10,
@@ -136,9 +165,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     item: {
-        backgroundColor: COLORS.primaryShadow,
-        padding: 10,
+        // backgroundColor: COLORS.primaryShadow,
+        backgroundColor: COLORS.background,
+        // padding: 10,
         marginVertical: 8,
         marginHorizontal: 16,
+    },
+    lado: {
+        flexDirection: 'row'
     },
 });

@@ -181,8 +181,8 @@ export const SalaoProvider = ({ children }) => {
 
   const getReservasPorSalao = async (id) => {
     try {
-      console.log('id');
-      console.log(id);
+      // console.log('id');
+      // console.log(id);
         const { data, error } = await supabase
           .from('reservas')
           .select('*')
