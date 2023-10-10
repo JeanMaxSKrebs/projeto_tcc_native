@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+import {View, TextInput, StyleSheet, Alert} from 'react-native';
+// import {TextInput} from 'react-native-gesture-handler';
 import {COLORS} from '../assets/colors';
 import MeuButton from '../components/MeuButton';
 import auth from '@react-native-firebase/auth';
@@ -50,7 +50,6 @@ const ForgotPassword = ({navigation}) => {
         keyBoardType="email-address"
         returnKeyType="next"
         onChangeText={t => setEmail(t)}
-        onEndEditing={() => this.senhaTextInput.focus()}
       />
       <MeuButton texto="Recuperar" onClick={recover} />
     </View>
