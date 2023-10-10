@@ -10,13 +10,13 @@ import Voltar from '../../components/Voltar';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
 
 const Reservar = ({ route, navigation }) => {
-    const [orcamento, setOrcamento] = useState(route.params.orcamento);
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-
+    console.log(route.params.orcamento);
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
 
+    const orcamento = route.params.orcamento;
     const salao = route.params.salao;
     const cliente = route.params.cliente;
     // const dataReserva = route.params.dataReserva;
@@ -63,18 +63,24 @@ const Reservar = ({ route, navigation }) => {
                     {orcamento ? (
                         <View>
                             <View>
-                                <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} />
+                                {/* <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} /> */}
+                                <Texto tamanho={20} texto={`Orçamento Selecionado: `} />
+                                <Texto tamanho={20} cor={COLORS.green} texto={orcamento.nome} />
                             </View>
-                            <MeuButtonMetade width={'auto'} tamanho={25}
-                                texto={'Trocar Orçamento'} onClick={selecionarOrcamento}
-                            />
+                            <View style={{ alignItems: 'center' }}>
+                                <MeuButtonMetade width={'auto'} tamanho={25}
+                                    texto={'Trocar Orçamento'} onClick={selecionarOrcamento}
+                                />
+                            </View>
                         </View>
                     ) : (
                         <MeuButtonMetade width={'auto'} tamanho={25}
                             texto={'Selecionar Orçamento'} onClick={selecionarOrcamento}
                         />
                     )}
-                    <Calendario reservas={reservas} dataReserva={dataReserva} horarioReserva={horarioReserva} onPress={setDataReserva} />
+                    <Calendario reservas={reservas} dataReserva={dataReserva}
+                        horarioReserva={horarioReserva} onPress={setDataReserva}
+                        cliente={cliente} />
                     {/* {console.log('dataReserva t')}
                     {console.log(dataReserva)} */}
 

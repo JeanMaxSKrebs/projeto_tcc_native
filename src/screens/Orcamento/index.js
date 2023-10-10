@@ -247,7 +247,8 @@ const Orcamento = ({ route, navigation }) => {
 
           </View>
           <View>
-            <MeuButton texto={dataReserva || horarioReserva ? 'Selecionar' : 'Reservar'} onClick={() => routeOrcamento(orcamento, 'Reservar')}
+            <MeuButton texto={dataReserva || horarioReserva ? 'Selecionar' : 'Reservar'} 
+            onClick={() => routeOrcamento(orcamento, 'Reservar')}
             />
           </View>
         </View>
