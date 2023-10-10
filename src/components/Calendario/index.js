@@ -208,7 +208,7 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
         </View>
       </View>
       <Calendar
-        minDate={cliente && dataAtualFormatada}
+        minDate={cliente ? dataAtualFormatada : ''}
         onDayPress={(day) => {
           handleDayPress(day);
           setSelectedDate(day.dateString);
