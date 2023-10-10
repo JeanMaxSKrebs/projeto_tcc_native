@@ -34,6 +34,7 @@ const Chat = ({ route, navigation }) => {
 
     const chat = route.params.chat;
     const user = route.params.user;
+    //salao só é setado se cliente for user senao o user é salao
     const salao = route.params.salao;
 
     // console.log('chat');
@@ -68,9 +69,15 @@ const Chat = ({ route, navigation }) => {
 
                 if (chatSnapshot.exists) {
                     const chatData = chatSnapshot.data();
+                    // console.log('chatData');
+                    // console.log(chatData.nome);
+                    // console.log('salao');
+                    // console.log(salao);
+                    // console.log('user');
+                    // console.log(user);
                     const updatedChat = {
                         id: chatRef.id,
-                        nome: salao && user.nome,
+                        nome: salao ? user.nome : chatData.nome,
                         mensagens: chatData.messages.map((message) => ({
                             ...message,
                             sent: message.sent ? message.sent.toDate().toISOString() : null,
@@ -82,7 +89,7 @@ const Chat = ({ route, navigation }) => {
                 } else {
                     await chatRef.set({
                         messages: [],  // Inicialmente, a coleção de mensagens está vazia
-                        nome: salao && user.nome,
+                        nome: salao ? user.nome : chatData.nome,
                     });
                     setMensagens(null);
                 }

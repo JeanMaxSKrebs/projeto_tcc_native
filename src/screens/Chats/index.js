@@ -114,8 +114,8 @@ const Chats = ({ route, navigation }) => {
             {isLoading ? (
                 <Loading />
             ) : (
-                console.log('messages123'),
-                console.log(messages),
+                // console.log('messages123'),
+                // console.log(messages),
                 // console.log(messages[0].mensagens[0].content),
                 <FlatList
                     data={chatsTemp.length > 0 ? chatsTemp : messages}

@@ -57,8 +57,10 @@ export const ChatProvider = ({ children }) => {
 
   const sendMessage = async (dados, user) => {
     try {
-      // console.log('dados');
-      // console.log(dados);
+      console.log('dados');
+      console.log(dados);
+      console.log('user');
+      console.log(user);
       const newMessage = dados.newMessage;
       const tipo = dados.tipo;
       let id = '';
@@ -81,7 +83,8 @@ export const ChatProvider = ({ children }) => {
 
       const chatRef = firestore().doc(`chats/${id}/chat/${to}`);
       const chatSnapshot = await chatRef.get();
-
+      const chatData = chatSnapshot.data();
+      const newName = chatData.nome;
       if (!chatSnapshot.exists) {
         // O documento não existe, então vamos criar um novo
         await chatRef.set({
@@ -91,16 +94,21 @@ export const ChatProvider = ({ children }) => {
       }
       // console.log('newMessage');
       // console.log(newMessage);
+      // console.log('chatData');
+      // console.log(chatData);
+      // console.log('newName');
+      // console.log(newName);
       const newMessagewithsent = {
         ...newMessage,
         sent: firestore.Timestamp.now()
       };
       // console.log('newMessagewithsent');
       // console.log(newMessagewithsent);
+
       // Adicione a nova mensagem à coleção de mensagens do chat
       await chatRef.update({
         messages: firestore.FieldValue.arrayUnion(newMessagewithsent),
-        nome: user.nome
+        nome: tipo == 'Cliente' ? user.nome : newName
       })
 
       console.log('Mensagem enviada com sucesso');
