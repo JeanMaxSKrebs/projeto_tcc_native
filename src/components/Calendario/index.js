@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { Calendar } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Dia from './Dia';
 import { COLORS } from '../../assets/colors';
@@ -9,6 +8,54 @@ import Texto from '../Texto';
 import MeuButtonMetade from '../MeuButtonMetade';
 import Sumario from './Sumario';
 import { CommonActions } from '@react-navigation/native';
+import { LocaleConfig } from 'react-native-calendars';
+import { Calendar } from 'react-native-calendars';
+
+LocaleConfig.locales['pt-br'] = {
+  monthNames: [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ],
+  monthNamesShort: [
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
+  ],
+  dayNames: [
+    'Domingo',
+    'Segunda-feira',
+    'Terça-feira',
+    'Quarta-feira',
+    'Quinta-feira',
+    'Sexta-feira',
+    'Sábado',
+  ],
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  today: 'Hoje',
+};
+
+LocaleConfig.defaultLocale = 'pt-br';
+export { LocaleConfig };
+
 
 const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioReserva, cliente }) => {
   const [selected, setSelected] = useState(dataReserva || '');
@@ -32,7 +79,7 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
   if (cliente) {
     sumario = [
       { color: 'red', label: 'Dia Reservado' },
-      { color: 'green', label: 'Dia Selecionado' },
+      { color: COLORS.primaryDark, label: 'Dia Selecionado' },
       { color: 'deepskyblue', label: 'Dia Atual' },
     ]
   } else {
