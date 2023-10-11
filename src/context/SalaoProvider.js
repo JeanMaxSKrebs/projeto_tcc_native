@@ -11,7 +11,7 @@ import { AuthUserContext } from './AuthUserProvider';
 export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({ children }) => {
-  const [salao, setSalao] = useState([]);
+  const [salao, setSalao] = useState();
   const [reservas, setReservas] = useState([]);
   const { user, getUser, signOut } = useContext(AuthUserContext);
 
@@ -37,17 +37,17 @@ export const SalaoProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (user !== null) {
-      // console.log(user)
-      // console.log('user salao')
-      getHallData();
-    } else {
-      // console.log(user)
-      // console.log('user aaaaa')
-      getUser();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     // console.log(user)
+  //     // console.log('user salao')
+  //     getHallData();
+  //   } else {
+  //     // console.log(user)
+  //     // console.log('user aaaaa')
+  //     getUser();
+  //   }
+  // }, []);
 
   const saveSalao = async salaoData => {
     // console.log('salaoData');
@@ -183,25 +183,57 @@ export const SalaoProvider = ({ children }) => {
     try {
       // console.log('id');
       // console.log(id);
-        const { data, error } = await supabase
-          .from('reservas')
-          .select('*')
-          .eq('salao_id', id);
+      const { data, error } = await supabase
+        .from('reservas')
+        .select('*')
+        .eq('salao_id', id)
+        .eq('status', 'ativo');
 
-        if (error) {
-          console.error('Erro ao buscar reservas:', error);
-          return;
-        }
+      if (error) {
+        console.error('Erro ao buscar reservas:', error);
+        return;
+      }
+      // console.log('data');
+      // console.log(data);
 
-        // setReservas(data);
+      // setReservas(data);
 
-        const reservasOrdenadas = data.sort((a, b) => {
-          const dataHoraA = new Date(a.data_hora).getTime();
-          const dataHoraB = new Date(b.data_hora).getTime();
-          return dataHoraA - dataHoraB;
-        });
-    
-        setReservas(reservasOrdenadas);
+      const reservasOrdenadas = data.sort((a, b) => {
+        const dataHoraA = new Date(a.data_hora).getTime();
+        const dataHoraB = new Date(b.data_hora).getTime();
+        return dataHoraA - dataHoraB;
+      });
+
+      setReservas(reservasOrdenadas);
+    } catch (error) {
+      console.error('Erro ao buscar reservas:', error);
+    }
+  };
+  const getReservasPorCliente = async (id) => {
+    try {
+      // console.log('id');
+      // console.log(id);
+      const { data, error } = await supabase
+        .from('reservas')
+        .select('*')
+        .eq('cliente_id', id)
+
+      if (error) {
+        console.error('Erro ao buscar reservas:', error);
+        return;
+      }
+      // console.log('data');
+      // console.log(data);
+
+      // setReservas(data);
+
+      const reservasOrdenadas = data.sort((a, b) => {
+        const dataHoraA = new Date(a.data_hora).getTime();
+        const dataHoraB = new Date(b.data_hora).getTime();
+        return dataHoraA - dataHoraB;
+      });
+
+      setReservas(reservasOrdenadas);
     } catch (error) {
       console.error('Erro ao buscar reservas:', error);
     }
@@ -209,14 +241,61 @@ export const SalaoProvider = ({ children }) => {
 
   const createReserva = async (data) => {
     try {
-      // Realize a lógica para criar uma reserva aqui.
-      // Use os dados passados para criar a reserva no banco de dados.
+      console.log('data');
+      console.log(data);
+      if (!data.data_hora || !data.salao_id || !data.cliente_id) {
+        console.error('Campos obrigatórios ausentes na reserva.');
+        return;
+      }
+
+      // Defina o campo 'status' como 'ativo'.
+      data.status = 'inativo';
+
+      // Insira a reserva no banco de dados usando o Supabase.
+      const { data: insertedData, error: insertError } = await supabase
+        .from('reservas')
+        .insert([data]);
+
+      if (insertError) {
+        console.error('Erro ao inserir reserva:', insertError);
+        return;
+      }
 
       showToast('Reserva criada com sucesso!');
+      return true;
+      console.log('Reserva inserida com sucesso:', insertedData);
     } catch (error) {
       console.error('Erro ao criar reserva:', error);
     }
   };
+  const updateStatus = async (reserva) => {
+    const reservaId = reserva.id; 
+    const novoStatus = reserva.status; 
+    try {
+      // Verifique se os parâmetros necessários estão presentes.
+      if (!reservaId || !novoStatus) {
+        console.error('Parâmetros ausentes para atualização de status da reserva.');
+        return;
+      }
+
+      // Atualize o status da reserva no banco de dados usando o Supabase.
+      const { data: updatedData, error: updateError } = await supabase
+        .from('reservas')
+        .update({ status: novoStatus })
+        .eq('id', reservaId);
+
+      if (updateError) {
+        console.error('Erro ao atualizar o status da reserva:', updateError);
+        return;
+      }
+
+      console.log('Status da reserva atualizado com sucesso:', updatedData);
+      return true;
+    } catch (error) {
+      console.error('Erro ao atualizar o status da reserva:', error);
+    }
+  };
+
 
   async function contarFestasRealizadas(id) {
     const hoje = new Date();
@@ -224,17 +303,18 @@ export const SalaoProvider = ({ children }) => {
       .from('reservas')
       .select('*', { count: 'exact', head: true })
       .eq('salao_id', id)
+      .eq('status', 'ativo')
       .lt('data_hora', hoje);
-  
-      console.log('data reali');
-      console.log(count);
+
+    // console.log('data reali');
+    // console.log(count);
     if (error) {
       throw error;
     }
-  
+
     return count;
   }
-  
+
   // Função para contar festas agendadas (data posterior à data atual)
   async function contarFestasAgendadas(id) {
     const hoje = new Date();
@@ -242,21 +322,25 @@ export const SalaoProvider = ({ children }) => {
       .from('reservas')
       .select('*', { count: 'exact', head: true })
       .eq('salao_id', id)
+      .eq('status', 'ativo')
       .gt('data_hora', hoje);
-  
-      console.log('data agendan');
-      console.log(count);
+
+    // console.log('data agendan');
+    // console.log(count);
     if (error) {
       throw error;
     }
-  
+
     return count;
   }
 
   return (
-    <SalaoContext.Provider value={{ salao, saveSalao, updateSalao, getHallData,
-      reservas, createReserva, getReservasPorSalao, 
-      contarFestasRealizadas, contarFestasAgendadas, }}>
+    <SalaoContext.Provider value={{
+      salao, saveSalao, updateSalao, getHallData,
+      reservas, createReserva, getReservasPorSalao,
+      getReservasPorCliente, updateStatus,
+      contarFestasRealizadas, contarFestasAgendadas,
+    }}>
       {children}
     </SalaoContext.Provider>
   );

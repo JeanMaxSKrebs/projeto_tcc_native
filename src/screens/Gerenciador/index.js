@@ -14,6 +14,7 @@ import MeuButton from '../../components/MeuButton';
 import { SalaoContext } from '../../context/SalaoProvider';
 import { SaloesContext } from '../../context/SaloesProvider';
 import { AuthUserContext } from '../../context/AuthUserProvider';
+import Texto from '../../components/Texto';
 
 const Gerenciador = ({ navigation }) => {
   const { salao, getHallData } = useContext(SalaoContext);
@@ -22,8 +23,8 @@ const Gerenciador = ({ navigation }) => {
   const { user } = useContext(AuthUserContext);
 
   useEffect(() => {
-    // console.log('gerenciador user')
-    // console.log(user)
+    console.log('gerenciador user')
+    console.log(user)
     if (user) {
       getHallData();
       getHallsData();
@@ -119,22 +120,26 @@ const Gerenciador = ({ navigation }) => {
         <>
           {/* {console.log('salao')}
         {console.log(salao)} */}
-          <View style={{ alignItems: 'center' }}>
-            {salao.logo && (
-              <Image
-                source={{ uri: salao.logo }}
-                key={salao.logo}
-                style={{ width: 320, height: 300, borderRadius: 15 }}
-              />
-            )}
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Text style={styles.nome} >{salao.nome}</Text>
-              <Text style={styles.descricao} >{salao.descricao}</Text>
-              <Text style={styles.endereco}>{salao.endereco}</Text>
-              <Text style={styles.cidade}>{salao.cidade}</Text>
-              <Text style={styles.capacidade}>Capacidade: {salao.capacidade}</Text>
+          {salao ? (
+            <View style={{ alignItems: 'center' }}>
+              {salao.logo && (
+                <Image
+                  source={{ uri: salao.logo }}
+                  key={salao.logo}
+                  style={{ width: 320, height: 300, borderRadius: 15 }}
+                />
+              )}
+              <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <Text style={styles.nome} >{salao.nome}</Text>
+                <Text style={styles.descricao} >{salao.descricao}</Text>
+                <Text style={styles.endereco}>{salao.endereco}</Text>
+                <Text style={styles.cidade}>{salao.cidade}</Text>
+                <Text style={styles.capacidade}>Capacidade: {salao.capacidade}</Text>
+              </View>
             </View>
-          </View>
+          ) : (
+            <Texto texto={'Não foi possível carregar o Salão'} />
+          )}
 
 
         </>

@@ -8,20 +8,22 @@ import Calendario from '../../components/Calendario';
 import { SalaoContext } from '../../context/SalaoProvider';
 import Voltar from '../../components/Voltar';
 import MeuButtonMetade from '../../components/MeuButtonMetade';
+import { ToastAndroid } from 'react-native';
 
 const Reservar = ({ route, navigation }) => {
-    const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-    console.log(route.params.orcamento);
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
+    const { reservas, getReservasPorSalao, createReserva } = useContext(SalaoContext);
 
     const orcamento = route.params.orcamento;
     const salao = route.params.salao;
     const cliente = route.params.cliente;
+    const user = route.params.user;
     // const dataReserva = route.params.dataReserva;
     const [dataReserva, setDataReserva] = useState(route.params.dataReserva);
     const [horarioReserva, setHorarioReserva] = useState(route.params.horarioReserva);
+
+    const showToast = message => {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+    };
 
     const voltar = () => {
         navigation.goBack();
@@ -34,7 +36,8 @@ const Reservar = ({ route, navigation }) => {
                 name: 'Orcamentos',
                 params: {
                     salao: salao, cliente: cliente,
-                    dataReserva: dataReserva, horarioReserva: horarioReserva
+                    dataReserva: dataReserva, horarioReserva: horarioReserva,
+                    user: user
                 }
             }),
         );
@@ -42,15 +45,57 @@ const Reservar = ({ route, navigation }) => {
 
     useEffect(() => {
         if (salao) {
-            console.log('salao');
-            console.log(salao);
+            // console.log('salao');
+            // console.log(salao);
             getReservasPorSalao(salao.id);
         }
     }, []);
 
-    const reservar = () => {
-        // Perform reservation logic here
-        // You can use the 'name', 'date', and 'time' state variables to send data to your backend or perform other actions.
+    function converterHora(dia, hora) {
+        console.log('dia');
+        console.log(dia);
+        console.log('hora');
+        console.log(hora);
+
+        const parsedDate = `${dia}T${hora}`; // tem um T no meio nao esquecer
+        // console.log('parsedDate');
+        // console.log(parsedDate);
+        
+
+        return parsedDate;
+      }
+
+    const reservar = async (dado) => {
+        console.log('dado'); // dado
+        console.log(dado); // ["Reservar", "2023-10-18", "1:35:00 AM", ]
+        setDataReserva(dado[1])
+        setHorarioReserva(dado[2])
+
+        const dataHoraString = converterHora(dado[1], dado[3])
+        console.log('dataHoraString');
+        console.log(dataHoraString);
+
+        if (salao && cliente) {
+            // console.log('salao');
+            // console.log(salao.id);
+            // console.log('user');
+            // console.log(user.id);
+
+            if (orcamento) {
+                const dados = {};
+                dados.data_hora = dataHoraString
+                dados.salao_id = salao.id
+                dados.cliente_id = user.id
+                dados.orcamento_id = orcamento.id
+
+                {await createReserva(dados) ? voltar() : showToast('Erro ao Reservar!')}
+            } else {
+                showToast('Selecione orcamento da Reserva!');
+            }
+        } else {
+            showToast('Você é um salão, logo não pode reservar');
+        }
+
     };
 
     return (
@@ -79,15 +124,15 @@ const Reservar = ({ route, navigation }) => {
                         />
                     )}
                     <Calendario reservas={reservas} dataReserva={dataReserva}
-                        horarioReserva={horarioReserva} onPress={setDataReserva}
+                        horarioReserva={horarioReserva} onPress={reservar}
                         cliente={cliente} />
                     {/* {console.log('dataReserva t')}
                     {console.log(dataReserva)} */}
 
 
-                    <MeuButtonMetade width={'auto'} tamanho={25}
+                    {/* <MeuButtonMetade width={'auto'} tamanho={25}
                         texto={'Reservar'} onClick={reservar}
-                    />
+                    /> */}
                 </View>
             </ScrollView>
         </SafeAreaView>

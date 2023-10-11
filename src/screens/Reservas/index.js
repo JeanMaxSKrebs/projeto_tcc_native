@@ -11,11 +11,7 @@ import MeuButtonMetade from '../../components/MeuButtonMetade';
 
 const Reservas = ({ route, navigation }) => {
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
-
+    
     const salao = route.params.salao;
     const cliente = route.params.cliente;
     // const dataReserva = route.params.dataReserva;

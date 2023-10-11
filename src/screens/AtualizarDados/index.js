@@ -30,7 +30,6 @@ const AtualizarDados = ({route, navigation}) => {
       setNome(salao.nome);
       setCidade(salao.cidade);
       setEndereco(salao.endereco);
-      setCidade(salao.cidade);
       setDescricao(salao.descricao);
       setCapacidade(salao.capacidade);
     }

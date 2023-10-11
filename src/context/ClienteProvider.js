@@ -12,7 +12,7 @@ import {AuthUserContext} from './AuthUserProvider';
 export const ClienteContext = createContext({});
 
 export const ClienteProvider = ({children}) => {
-  const [cliente, setCliente] = useState([]);
+  const [cliente, setCliente] = useState();
   const {user, getUser, signOut} = useContext(AuthUserContext);
 
   const getClientData = async (email) => {
