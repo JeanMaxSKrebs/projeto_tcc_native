@@ -13,8 +13,8 @@ const Sumario = ({ sumario, onPress, tamanho }) => {
   };
 
   const renderModal = (item) => {
-    console.log('item');
-    console.log(item);
+    // console.log('item');
+    // console.log(item);
     return (
       <Modal transparent={true} >
         <TouchableOpacity onPress={toggleModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

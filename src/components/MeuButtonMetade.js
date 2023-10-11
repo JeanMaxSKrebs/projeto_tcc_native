@@ -3,17 +3,20 @@ import { Text, TouchableHighlight, StyleSheet } from 'react-native';
 import { COLORS } from '../assets/colors';
 
 const MeuButtonMetade = props => {
-  // console.log(props);
   const width = props.width || '45%';
   const color = props.cor || COLORS.primary;
-  const estiloBorda = props.borda ? { borderWidth: 5, borderColor: color, backgroundColor: COLORS.black } : null;
+  const estiloBorda = props.borda ? { borderWidth: 5, borderColor: color, backgroundColor: COLORS.primaryShadow } : null;
+  const disable = props.disabled || false;
+
 
   return (
-    <TouchableHighlight style={[styles.button, { width },
+    <TouchableHighlight disabled={disable} style={[{ width },
     estiloBorda
-      ? { backgroundColor: COLORS.primaryShadow, estiloBorda }
-      : { backgroundColor: color }
-    ]}
+      ? { backgroundColor: COLORS.primaryShadow, ...estiloBorda }
+      : { backgroundColor: color },
+    disable ? styles.disabledButton : styles.button
+  ]}
+
       onPress={() => props.onClick()}>
       <Text style={styles.texto}>{props.texto}</Text>
     </TouchableHighlight>
@@ -29,12 +32,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    width: '45%',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: COLORS.primary,
+    padding: 10,
+    marginStart: 5,
+    margin: 10,
+    borderRadius: 5,
+  },
+  disabledButton: {
+    backgroundColor: COLORS.terciary, // Cor para botão desabilitado
+    opacity: 0.5, // Reduz a opacidade para indicar que está desabilitado
     padding: 10,
     margin: 10,
     borderRadius: 5,
+  },
+  disabledText: {
+    color: COLORS.background, // Cor do texto para botão desabilitado
   },
 });

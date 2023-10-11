@@ -13,9 +13,8 @@ import { CommonActions } from '@react-navigation/native';
 
 const Agenda = ({ route, navigation }) => {
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-    // const salao = route.params.value;
-    // const cliente = route.params.cliente;
 
+    const [user, setUser] = useState(route.params.user);
     const [salao, setSalao] = useState(route.params.value);
     const [cliente, setCliente] = useState(route.params.cliente);
     const [modalVisible, setModalVisible] = useState(false);
@@ -67,7 +66,8 @@ const Agenda = ({ route, navigation }) => {
                 navigation.dispatch(
                     CommonActions.navigate({
                         name: dados[0],
-                        params: { dataReserva: dados[1], horarioReserva: dados[2], salao: salao, cliente: cliente },
+                        params: { dataReserva: dados[1], horarioReserva: dados[2],
+                             salao: salao, cliente: cliente, user: user },
                     }),
                 );
                 break;
@@ -97,7 +97,7 @@ const Agenda = ({ route, navigation }) => {
                     {/* {console.log('cliente')}
                     {console.log(cliente)} */}
                     <View style={styles.calendario}>
-                        <Calendario reservas={reservas} onPress={routeFor} reservarButton cliente={cliente} />
+                        <Calendario reservas={reservas} onPress={routeFor} cliente={cliente} />
                     </View>
                     <MeuButtonMetade
                         borda

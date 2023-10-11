@@ -57,12 +57,13 @@ LocaleConfig.defaultLocale = 'pt-br';
 export { LocaleConfig };
 
 
-const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioReserva, cliente }) => {
+const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente }) => {
   const [selected, setSelected] = useState(dataReserva || '');
   const [selectedInfo, setSelectedInfo] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
 
   const [tamanhoSumario, setTamanhoSumario] = useState(50);
+  const [hora, setHora] = useState('');
   const [selectedTime, setSelectedTime] = useState(horarioReserva || '');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -143,22 +144,23 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
   });
 
   function converterHora(dia, hora) {
-    console.log('dia');
-    console.log(dia);
-    // Parse a string no formato "04:30:00+00:00"
-    const parsedDate = new Date(`${dia}T${hora}`); // tem um T no meio nao esquecer
+    // console.log('dia');
+    // console.log(dia);
+    // console.log('hora');
+    // console.log(hora);
 
-    // Formate a hora no formato "4:30:00 AM"
-    const formattedHora = parsedDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const parsedDate = Date(`${dia}T${hora}`); // tem um T no meio nao esquecer
+    // console.log('parsedDate');
+    // console.log(parsedDate);
 
-    return formattedHora;
+
+    return parsedDate;
   }
 
 
   const handleDayPress = (day) => {
     // console.log('day');
     // console.log(day);
-    setSelectedTime('')
     let dia = day.dateString;
     setSelected(dia);
 
@@ -181,10 +183,11 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
     return <Dia data={data} tamanho={20} />
   };
 
-  const handleDateConfirm = (date) => {
-    { console.log('date') }
-    { console.log(date) }
-    setSelectedTime(date.toLocaleTimeString());
+  const handleDateConfirm = (hora) => {
+    const date = new Date(`${selected}T${hora}`);
+
+    setHora(hora);
+    setSelectedTime(hora.toLocaleTimeString());
     setDatePickerVisibility(false);
   };
 
@@ -250,8 +253,14 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
               )}
 
               <MeuButtonMetade borda width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
-              {reservarButton && selectedTime && (
-                <MeuButtonMetade width={'auto'} texto={'Solicitar Reserva'} onClick={() => onPress(['Reservar', selected, selectedTime])} />
+              {selectedTime ? (
+                <MeuButtonMetade width={'auto'} texto={'Solicitar Reserva'}
+                  cor={COLORS.primary}
+                  onClick={() => onPress(['Reservar', selected, selectedTime, hora])} />
+              ) : (
+                <MeuButtonMetade disabled={true} width={'auto'}
+                  texto={'Solicitar Reserva'}
+                />
               )}
             </View>
           ) : (
@@ -263,8 +272,13 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
                     onClick={() => onPress(['VerFesta', selected, selectedTime])} style={styles.infoText} />
                 </>
               ) : (
-                <Texto tamanho={16} cor={COLORS.red} texto={'Data sem Agendamentos'} style={styles.infoText} />
+                <>
+                  <Texto tamanho={16} cor={COLORS.red} texto={'Data sem Agendamentos'} style={styles.infoText} />
+                </>
               )}
+              <MeuButtonMetade borda width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
+
+
             </View>
           )}
 
@@ -274,7 +288,11 @@ const Calendario = ({ reservas, onPress, reservarButton, dataReserva, horarioRes
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="time"
-        onConfirm={handleDateConfirm}
+        onConfirm={(dayhour) => {
+          const hour = dayhour.toISOString().substr(11, 13);
+
+          handleDateConfirm(hour);
+        }}
         onCancel={() => setDatePickerVisibility(false)}
       />
     </View >
