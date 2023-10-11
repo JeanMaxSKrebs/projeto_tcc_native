@@ -13,6 +13,7 @@ import OrcamentoItens from '../screens/OrcamentoItens';
 import ItensSaloes from '../screens/ItensSaloes';
 import Chat from '../screens/Chat';
 import Chats from '../screens/Chats';
+import Festa from '../screens/Festa/index.js';
 import Reservar from '../screens/Reservar';
 import Reservas from '../screens/Reservas';
 import Agenda from '../screens/Agenda';
@@ -28,6 +29,7 @@ import Home from '../screens/Home';
 import Manutencao from '../screens/Manutencao';
 import AtualizarDados from '../screens/AtualizarDados';
 
+import MinhasReservas from '../screens/MinhasReservas';
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
 
@@ -66,6 +68,7 @@ const AppStack = () => {
       console.log(user)
     }
   }, [user]);
+
 
   return (
     <Tab.Navigator
@@ -109,15 +112,15 @@ const AppStack = () => {
           </>
         )
         }
-        {/* <Tab.Screen
-            component={Gerenciador}
-            name="Gerenciador"
-            options={{
-              tabBarLabel: 'Gerenciador',
-              // eslint-disable-next-line react/no-unstable-nested-components
-              tabBarIcon: () => <Icon name="home" color={COLORS.primaryDark} />,
-            }}
-            /> */}
+        <Tab.Screen
+          component={MinhasReservas}
+          name="MinhasReservas"
+          options={{
+            tabBarLabel: 'Minhas Reservas',
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tabBarIcon: () => <Icon name="book" color={COLORS.primaryDark} />,
+          }}
+        />
         <Tab.Screen
           component={Menu}
           name="Menu"
@@ -143,7 +146,7 @@ const Navigator = () => (
       <Stack.Screen component={AuthStack} name="AuthStack" />
       <Stack.Screen component={AppStack} name="AppStack" />
       <Stack.Screen component={Saloes} name="Saloes" />
-      <Stack.Screen component={Manutencao} name="Manutencao" options={{headerShown: true,}}/>
+      <Stack.Screen component={Manutencao} name="Manutencao" options={{ headerShown: true, }} />
       <Stack.Screen component={AlterarOrcamento} name="AlterarOrcamento" />
       <Stack.Screen component={AdicionarItemSalao} name="AdicionarItemSalao" />
       <Stack.Screen component={NovoOrcamento} name="NovoOrcamento" />
@@ -154,6 +157,7 @@ const Navigator = () => (
       <Stack.Screen component={Chat} name="Chat" />
       <Stack.Screen component={Reservar} name="Reservar" />
       <Stack.Screen component={Reservas} name="Reservas" />
+      <Stack.Screen component={Festa} name="Festa" />
       <Stack.Screen component={Agenda} name="Agenda" />
       <Stack.Screen component={Agendar} name="Agendar" />
       <Stack.Screen component={Orcamento} name="Orcamento" />
