@@ -35,6 +35,7 @@ const Orcamento = ({ route, navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalClienteVisible, setModalClienteVisible] = useState(false);
 
+  const user = route.params.user;
   const orcamento = route.params.orcamento;
   const salao = route.params.salao;
   const cliente = route.params.cliente;
@@ -98,7 +99,8 @@ const Orcamento = ({ route, navigation }) => {
         params: {
           orcamento: orcamento, itensSaloesId: itensSaloesId,
           salao: salao, cliente: cliente,
-          dataReserva: dataReserva, horarioReserva: horarioReserva
+          dataReserva: dataReserva, horarioReserva: horarioReserva, 
+          user: user
         },
       }),
     );

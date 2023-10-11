@@ -105,7 +105,7 @@ const Salao = ({ route, navigation }) => {
     switch (item) {
 
       case 'Orcar':
-        console.log(salao);
+        // console.log(salao);
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamentos',
@@ -126,7 +126,7 @@ const Salao = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Reservar',
-            params: { salao: salao, cliente: true }
+            params: { salao: salao, cliente: true, user: user }
           }),
         );
         break;
@@ -134,7 +134,7 @@ const Salao = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Agenda',
-            params: { value: salao, cliente: true },
+            params: { value: salao, cliente: true, user: user },
           }),
         );
         break;

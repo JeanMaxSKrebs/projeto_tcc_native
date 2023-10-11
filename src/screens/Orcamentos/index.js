@@ -25,6 +25,7 @@ const Orcamentos = ({ route, navigation }) => {
 
   let itensSaloes = route.params.itensSaloes;
 
+  const user = route.params.user;
   const dataReserva = route.params.dataReserva;
   const horarioReserva = route.params.horarioReserva;
   const salao = route.params.salao;
@@ -66,7 +67,8 @@ const Orcamentos = ({ route, navigation }) => {
             name: 'Orcamento',
             params: {
               orcamento: item, salao: salao, cliente: cliente,
-              dataReserva: dataReserva, horarioReserva: horarioReserva
+              dataReserva: dataReserva, horarioReserva: horarioReserva,
+              user: user
             },
           }),
         );
