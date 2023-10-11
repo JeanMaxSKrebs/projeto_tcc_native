@@ -89,19 +89,19 @@ const TextCidade = styled.Text`
 `;
 
 const Item = ({ item, onPress, onPressAgenda }) => {
-  const [activeButton, setActiveButton] = React.useState(null);
+  const [activeButton, setActiveButton] =  useState('image');
   const [images, setImages] = useState([]);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
-    console.log('me clicou');
+    // console.log('me clicou');
     setModalVisible(!isModalVisible);
   };
 
   const renderModal = (item) => {
-    console.log('item');
-    console.log(item);
+    // console.log('item');
+    // console.log(item);
     return (
       <Modal transparent={true}>
         <TouchableOpacity onPress={toggleModal} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -118,14 +118,14 @@ const Item = ({ item, onPress, onPressAgenda }) => {
 
   const handleButtonPress = button => {
     setActiveButton(button);
-    console.log('button');
-    console.log(button);
+    // console.log('button');
+    // console.log(button);
   };
   /**/
 
   const handleSlideChange = index => {
+    console.log('Slide alterado:', index);
     setActiveSlideIndex(index);
-    // console.log('Slide alterado:', index+1);
   };
 
   const CustomPrevButton = () => {
