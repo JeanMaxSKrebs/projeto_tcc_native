@@ -67,6 +67,7 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
   const [selectedTime, setSelectedTime] = useState(horarioReserva || '');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+  const [solicitarReserva, setSolicitarReserva] = useState(false);
   const [selectedMarkedDate, setSelectedMarkedDate] = useState(false);
 
   // console.log('entrou calendario');
@@ -185,9 +186,10 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
 
   const handleDateConfirm = (hora) => {
     const date = new Date(`${selected}T${hora}`);
+    setSolicitarReserva(true);
 
     setHora(hora);
-    setSelectedTime(hora.toLocaleTimeString());
+    setSelectedTime(date.toLocaleTimeString());
     setDatePickerVisibility(false);
   };
 
@@ -229,10 +231,6 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
       {selected !== '' && (
         <View>
           <Text style={styles.infoText}>{selectedInfo}</Text>
-          {/* {console.log('selectedMarkedDate')}
-          {console.log(selectedMarkedDate)}
-          {console.log(cliente)} */}
-
 
           {selectedTime !== '' && (
             <View>
@@ -242,6 +240,8 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
 
             </View>
           )}
+          {console.log('cliente')}
+          {console.log(cliente)}
           {cliente ? (
             <View style={styles.infoContainer}>
               {selectedMarkedDate ? (
@@ -253,15 +253,11 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
               )}
 
               <MeuButtonMetade borda width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
-              {selectedTime ? (
-                <MeuButtonMetade width={'auto'} texto={'Solicitar Reserva'}
-                  cor={COLORS.primary}
-                  onClick={() => onPress(['Reservar', selected, selectedTime, hora])} />
-              ) : (
-                <MeuButtonMetade disabled={true} width={'auto'}
-                  texto={'Solicitar Reserva'}
-                />
-              )}
+
+              <MeuButtonMetade disabled={!solicitarReserva} width={'50%'} texto={'Solicitar Reserva'}
+                cor={COLORS.primary}
+                onClick={() => onPress(['Reservar', selected, selectedTime, hora])} />
+
             </View>
           ) : (
             <View style={styles.infoContainer}>
@@ -282,9 +278,12 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
             </View>
           )}
 
+
         </View>
       )
+
       }
+
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="time"
