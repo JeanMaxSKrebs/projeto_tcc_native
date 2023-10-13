@@ -33,8 +33,8 @@ const InfoFesta = ({ route, navigation }) => {
     const [novoStatus, setNovoStatus] = useState('');
 
     const reserva = route.params.reserva
-    // const cliente = route.params.cliente
-    // const salao = route.params.salao
+    const user = route.params.user
+    const salao = route.params.salao
 
     const voltar = () => {
         navigation.goBack();
@@ -88,12 +88,29 @@ const InfoFesta = ({ route, navigation }) => {
                 break;
 
             case 'Conversar':
-                navigation.dispatch(
-                    CommonActions.navigate({
-                        name: 'Chats',
-                        params: { user: salao }
-                    }),
-                );
+                // console.log('user2');
+                // console.log(user);
+                // console.log(salao);
+                let chat = {id: cliente.id, nome: cliente.nome}
+                console.log('chat');
+                console.log(chat);
+                user.tipo === "Salão" ? (
+                    
+                    navigation.dispatch(
+                        CommonActions.navigate({
+                            name: 'Chat',
+                            params: { chat: chat, user: salao }
+                        }),
+                    )
+                ) : (
+                    console.log('etrou aqui'),
+                    navigation.dispatch(
+                        CommonActions.navigate({
+                            name: 'Chats',
+                            params: { user: salao, cliente: true, salao: salao }
+                        }),
+                    )
+                )
                 break;
 
             default:
@@ -126,6 +143,8 @@ const InfoFesta = ({ route, navigation }) => {
                         <MeuButtonMetade texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
                         <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
                     </View>
+                    {console.log('user')}
+                    {console.log(user)}
                     {/* {console.log('cliente')}
                     {console.log(cliente)} */}
                     {/* {console.log('reserva')}

@@ -37,8 +37,8 @@ const Chat = ({ route, navigation }) => {
     //salao só é setado se cliente for user senao o user é salao
     const salao = route.params.salao;
 
-    // console.log('chat');
-    // console.log(chat);
+    console.log('chat');
+    console.log(chat);
     // console.log('user');
     // console.log(user);
 
@@ -89,7 +89,7 @@ const Chat = ({ route, navigation }) => {
                 } else {
                     await chatRef.set({
                         messages: [],  // Inicialmente, a coleção de mensagens está vazia
-                        nome: salao ? user.nome : chatData.nome,
+                        nome: salao ? user.nome : chat.nome,
                     });
                     setMensagens(null);
                 }

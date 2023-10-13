@@ -66,10 +66,10 @@ const MinhasReservas = ({ navigation }) => {
         getClientData(user.email);
         getHallData();
 
-        console.log('cliente');
-        console.log(cliente);
-        console.log('salao');
-        console.log(salao);
+        // console.log('cliente');
+        // console.log(cliente);
+        // console.log('salao');
+        // console.log(salao);
         if (cliente) {
             getReservasPorCliente(cliente.id)
         }
@@ -105,16 +105,19 @@ const MinhasReservas = ({ navigation }) => {
     }
 
     const routeFor = dados => {
-
+        console.log('dados');
+        console.log(dados);
+        console.log('user');
+        console.log(user);
         switch (dados[0]) {
             case 'InfoFesta':
-
                 navigation.dispatch(
                     CommonActions.navigate({
                         name: dados[0],
-                        params: { reserva: dados[1] },
+                        params: { reserva: dados[1], user: user, salao: salao },
                     }),
-                );
+                )
+
                 break;
 
             default:
