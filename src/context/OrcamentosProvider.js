@@ -90,6 +90,7 @@ export const OrcamentosProvider = ({children}) => {
         .from('orcamentos')
         .insert([
           {
+            cliente_id: orcamentoData.cliente_id,
             salao_id: orcamentoData.salao_id,
             nome: orcamentoData.nome,
             descricao: orcamentoData.descricao,

@@ -49,6 +49,7 @@ const Salao = ({ route, navigation }) => {
   // console.log(salao.id);
   // console.log('user.id');
   // console.log(user.id);
+  // console.log(user);
 
   const voltar = () => {
     navigation.goBack();
@@ -109,7 +110,7 @@ const Salao = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Orcamentos',
-            params: { salao: salao, cliente: true }
+            params: { salao: salao, cliente: user }
           }),
         );
         break;

@@ -1,33 +1,33 @@
 import styled from 'styled-components/native';
-import {COLORS} from '../../assets/colors';
+import { COLORS } from '../../assets/colors';
 
-export const View = styled.SafeAreaView`
-    color: black;
-    font-size: 30px;
-    align-items: center; 
+export const View = styled.View`
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    /* background-color: red; */
     `;
-export const Container = styled.SafeAreaView`
-    color: ${COLORS.primary};
+    export const Container = styled.View`
     width: 80%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
     background-color: ${COLORS.secundary};
-    justify-items: center;
     border-radius: 15px;
     `;
-export const Content = styled.SafeAreaView`
+export const Content = styled.View`
   align-items: center; 
-  /* background-color: ${COLORS.primaryDark}; */
   padding: 10% 0;
+  width: 100%;
+  
   `;
 
 export const FlatList = styled.FlatList`
-  /* background-color: ${COLORS.gray}; */
+  // background-color: ${COLORS.gray};
   color: black;
   `;
 
 export const Button = styled.TouchableOpacity`
-    width: 80%;
+    width: 90%;
     text-align: center;
     padding: 5px;
     margin: 10px;

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, ScrollView } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
 import AlterarOrcamentoButton from '../../components/Orcamento/AlterarOrcamentoButton';
@@ -29,6 +29,7 @@ const Orcamento = ({ route, navigation }) => {
   const [valorTotal, setValorTotal] = useState(0);
   const acao = "atualizar"; // variável que muda o tipo do item (atualizar, adicionar, excluir(qualquer escrita))
   let contador = 0;
+  const [observacoes, setObservacoes] = useState('');
 
 
   const [selectedItem, setSelectedItem] = useState(null);
@@ -47,10 +48,10 @@ const Orcamento = ({ route, navigation }) => {
   { cliente ? tamanhoContainer = '95%' : imprimirContent = true }
 
   useEffect(() => {
-    // console.log('entrou ItensOrcamentos');
+    console.log('entrou ItensOrcamentos');
     // console.log(route.params);
     // console.log(route.params.orcamento);
-    // console.log(orcamento.id);
+    console.log(orcamento.id);
     // console.log(route.params.salao);
     // console.log('orcamento.id');
     // console.log(route.params.orcamento);
@@ -85,12 +86,23 @@ const Orcamento = ({ route, navigation }) => {
   }
 
   const routeOrcamento = (orcamento, nextView) => {
-    // console.log("TESTE")
-    // console.log(orcamento)
+    console.log("TESTE")
+    console.log(orcamento)
+    // console.log(cliente)
     // console.log(salao)
     // console.log(route)
     // console.log('itensOrcamentos');
     // console.log(itensOrcamento);
+    console.log('observacoes');
+    console.log(observacoes);
+    {
+      observacoes && (
+        orcamento.observacoes = observacoes
+      )
+    }
+    console.log(orcamento)
+
+
     let itensSaloesId = pegarIds(itensOrcamento)
 
     navigation.dispatch(
@@ -99,7 +111,7 @@ const Orcamento = ({ route, navigation }) => {
         params: {
           orcamento: orcamento, itensSaloesId: itensSaloesId,
           salao: salao, cliente: cliente,
-          dataReserva: dataReserva, horarioReserva: horarioReserva, 
+          dataReserva: dataReserva, horarioReserva: horarioReserva,
           user: user
         },
       }),
@@ -233,12 +245,19 @@ const Orcamento = ({ route, navigation }) => {
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       {cliente
-        ? <View>
+        ? (<View>
           <AlterarOrcamento
             item={orcamento}
           />
           <View>
-            <Content style={{ height: 350 }}>
+            <View>
+              <Texto tamanho={25} texto={'Observações'}></Texto>
+              <TextInput
+                value={observacoes}
+                onChangeText={text => setObservacoes(text)}
+              />
+            </View>
+            <Content style={{ height: 300 }}>
               <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
               <FlatList
                 data={itensOrcamento}
@@ -248,39 +267,42 @@ const Orcamento = ({ route, navigation }) => {
             </Content>
 
           </View>
+
           <View>
-            <MeuButton texto={dataReserva || horarioReserva ? 'Selecionar' : 'Reservar'} 
-            onClick={() => routeOrcamento(orcamento, 'Reservar')}
+            <MeuButton texto={dataReserva || horarioReserva ? 'Selecionar' : 'Reservar'}
+              onClick={() => routeOrcamento(orcamento, 'Reservar')}
             />
           </View>
         </View>
-        : <View>
-          {/* {console.log('orcamento teste')}
-        {console.log(orcamento)} */}
-          <AlterarOrcamentoButton
-            item={orcamento}
-            onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
-          />
+        ) : (
           <View>
+            {/* {console.log('orcamento teste')}
+        {console.log(orcamento)} */}
+            <AlterarOrcamentoButton
+              item={orcamento}
+              onClick={() => routeOrcamento(orcamento, 'AlterarOrcamento')}
+            />
             <View>
-              <AdicionarItemButton
-                item={orcamento}
-                onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
-              />
-
-              <Content style={{ height: 250 }}>
-                <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
-                <FlatList
-                  data={itensOrcamento}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
+              <View>
+                <AdicionarItemButton
+                  item={orcamento}
+                  onClick={() => routeOrcamento(orcamento, 'OrcamentoItens')}
                 />
-              </Content>
-              {renderModal()}
 
+                <Content style={{ height: 250 }}>
+                  <Texto tamanho={25} texto={'Itens Disponibilizados'}></Texto>
+                  <FlatList
+                    data={itensOrcamento}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                  />
+                </Content>
+                {renderModal()}
+
+              </View>
             </View>
           </View>
-        </View>
+        )
       }
     </SafeAreaView >
   );

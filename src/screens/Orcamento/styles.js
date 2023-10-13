@@ -6,9 +6,8 @@ export const View = styled.SafeAreaView`
     font-size: 30px;
     align-items: center; 
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     /* background-color: red; */
-
     `;
 export const Container = styled.SafeAreaView`
     padding: 1px;

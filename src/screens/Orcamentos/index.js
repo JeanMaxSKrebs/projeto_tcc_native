@@ -30,17 +30,15 @@ const Orcamentos = ({ route, navigation }) => {
   const horarioReserva = route.params.horarioReserva;
   const salao = route.params.salao;
   const cliente = route.params.cliente;
-  let tamanhoContainer = '90%';
-  let imprimirContent = false;
 
-  { cliente ? tamanhoContainer = '95%' : imprimirContent = true }
+  { cliente ? imprimirContent = false : imprimirContent = true }
 
   // console.log('cliente');
   // console.log(cliente);
 
   const routeOrcamento = item => {
     // console.log('calica');
-    // console.log(item);
+    // console.log(user);
     // console.log(route.params.value);
     // console.log(route.params.salao);
 
@@ -49,7 +47,7 @@ const Orcamentos = ({ route, navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'NovoOrcamento',
-            params: { salao: salao },
+            params: { salao: salao, cliente: cliente },
           }),
         );
         break;
@@ -104,41 +102,39 @@ const Orcamentos = ({ route, navigation }) => {
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
-      <View>
-        {/* {console.log('orcametno item: ' + item)} */}
-        {/* {console.log('orcametno temp: ' + orcamentosTemp)} */}
-        {/* {console.log('orcametnos: ' + orcamentos)} */}
-        {/* {console.log('1')}
-      {console.log(orcamentos)}
-    {console.log('2')} */}
-        {/* {console.log(orcamentos[0].nome)} */}
-        {/* <Text>{orcamentos[0].nome}</Text> */}
+      <View style={{ height: '90%' }}>
 
-        <Container style={{ height: tamanhoContainer }}>
-          <Content style={{ padding: 20 }}>
+        <Container>
+          <Content>
             <Texto tamanho={40} texto={'Orçamentos'} cor={COLORS.primary} />
           </Content>
           {/* {console.log(orcamentos.length)} */}
+          <View style={{ flex: 1 }}>
 
-          <FlatList
-            data={orcamentosTemp.length > 0 ? orcamentosTemp : orcamentos}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
+            <FlatList
+              data={orcamentosTemp.length > 0 ? orcamentosTemp : orcamentos}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+            />
+          </View>
           {imprimirContent
-            ? <Content>
+            &&
+            <Content>
+
               <MeuButton
                 texto="Novo Orçamento"
                 cor={COLORS.primary}
                 onClick={() => routeOrcamento('NovoOrcamento')}
               />
+
+
               <MeuButton
                 texto="Gerenciar Itens"
                 cor={COLORS.primary}
                 onClick={() => routeOrcamento('GerenciarItens')}
               />
             </Content>
-            : <Content></Content>}
+          }
         </Container>
       </View>
     </SafeAreaView>

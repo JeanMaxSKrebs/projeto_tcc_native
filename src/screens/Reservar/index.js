@@ -60,10 +60,10 @@ const Reservar = ({ route, navigation }) => {
         const parsedDate = `${dia}T${hora}`; // tem um T no meio nao esquecer
         // console.log('parsedDate');
         // console.log(parsedDate);
-        
+
 
         return parsedDate;
-      }
+    }
 
     const reservar = async (dado) => {
         console.log('dado'); // dado
@@ -88,7 +88,7 @@ const Reservar = ({ route, navigation }) => {
                 dados.cliente_id = user.id
                 dados.orcamento_id = orcamento.id
 
-                {await createReserva(dados) ? voltar() : showToast('Erro ao Reservar!')}
+                { await createReserva(dados) ? voltar() : showToast('Erro ao Reservar!') }
             } else {
                 showToast('Selecione orcamento da Reserva!');
             }
@@ -103,26 +103,36 @@ const Reservar = ({ route, navigation }) => {
             <ScrollView>
                 <Voltar texto="Voltar" onClick={() => voltar()} />
                 <View style={styles.container}>
-                    <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Solicitação de Reserva'} />
-                    <Text style={styles.textoMenor}>Preencha os detalhes:</Text>
-                    {orcamento ? (
-                        <View>
+                    <View style={styles.content}>
+                        <Texto style={styles.texto} tamanho={40} cor={COLORS.secundary} texto={'Solicitação de Reserva'} />
+                        <Text style={styles.textoMenor}>Preencha os detalhes:</Text>
+                        {orcamento ? (
                             <View>
-                                {/* <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} /> */}
-                                <Texto tamanho={20} texto={`Orçamento Selecionado: `} />
-                                <Texto tamanho={20} cor={COLORS.green} texto={orcamento.nome} />
+                                <View style={styles.containerOrcamento}>
+                                    {/* <Texto tamanho={20} texto={`Orçamento Selecionado: ${orcamento.nome}`} /> */}
+                                    <Texto tamanho={20} texto={`Orçamento Selecionado: `} />
+                                    <Texto tamanho={20} cor={COLORS.green} texto={orcamento.nome} />
+                                    {orcamento.observacoes && (
+                                        <View>
+                                            <Texto tamanho={20} texto={`Observação: `} />
+                                            <Texto tamanho={20} cor={COLORS.secundary} texto={orcamento.observacoes} />
+                                        </View>
+                                    )
+                                    }
+                                </View>
+                                <View style={{ alignItems: 'center' }}>
+                                    <MeuButtonMetade width={'auto'} tamanho={25}
+                                        texto={'Trocar Orçamento'} onClick={selecionarOrcamento}
+                                    />
+                                </View>
                             </View>
-                            <View style={{ alignItems: 'center' }}>
-                                <MeuButtonMetade width={'auto'} tamanho={25}
-                                    texto={'Trocar Orçamento'} onClick={selecionarOrcamento}
-                                />
-                            </View>
-                        </View>
-                    ) : (
-                        <MeuButtonMetade width={'auto'} tamanho={25}
-                            texto={'Selecionar Orçamento'} onClick={selecionarOrcamento}
-                        />
-                    )}
+                        ) : (
+                            <MeuButtonMetade width={'auto'} tamanho={25}
+                                texto={'Selecionar Orçamento'} onClick={selecionarOrcamento}
+                            />
+                        )}
+                    </View>
+
                     <Calendario reservas={reservas} dataReserva={dataReserva}
                         horarioReserva={horarioReserva} onPress={reservar}
                         cliente={cliente} />
@@ -142,6 +152,14 @@ const Reservar = ({ route, navigation }) => {
 export default Reservar;
 
 const styles = StyleSheet.create({
+    containerOrcamento: {
+        padding: 10,
+        borderRadius: 15,
+        backgroundColor: COLORS.background,
+    },
+    content: {
+        marginBottom: 20,
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -157,7 +175,7 @@ const styles = StyleSheet.create({
     textoMenor: {
         textAlign: 'center',
         fontSize: 20,
-        color: COLORS.secondary,
+        color: COLORS.secundary,
         marginBottom: 20,
     },
     input: {
