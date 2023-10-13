@@ -37,8 +37,8 @@ const Chat = ({ route, navigation }) => {
     //salao só é setado se cliente for user senao o user é salao
     const salao = route.params.salao;
 
-    console.log('chat');
-    console.log(chat);
+    // console.log('chat');
+    // console.log(chat);
     // console.log('user');
     // console.log(user);
 

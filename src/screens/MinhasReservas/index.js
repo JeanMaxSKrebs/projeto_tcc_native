@@ -105,10 +105,6 @@ const MinhasReservas = ({ navigation }) => {
     }
 
     const routeFor = dados => {
-        console.log('dados');
-        console.log(dados);
-        console.log('user');
-        console.log(user);
         switch (dados[0]) {
             case 'InfoFesta':
                 navigation.dispatch(
@@ -137,7 +133,7 @@ const MinhasReservas = ({ navigation }) => {
 
             <View style={styles.container}>
                 <View style={styles.containerTexto}>
-                    <Texto texto={'Horários de Reservas Concluídas'} tamanho={25} />
+                    <Texto texto={'Reservas Antigas'} tamanho={25} />
                 </View>
                 <View style={{ height: '70%' }}>
                     <FlatList
@@ -156,7 +152,7 @@ const MinhasReservas = ({ navigation }) => {
 
             <View style={styles.container}>
                 <View style={styles.containerTexto}>
-                    <Texto texto={'Horários de Reservas Solicitadas'} tamanho={25} />
+                    <Texto texto={'Reservas Solicitadas'} tamanho={25} />
                 </View>
                 <View style={{ height: '70%' }}>
 
@@ -176,7 +172,7 @@ const MinhasReservas = ({ navigation }) => {
 
             <View style={styles.container}>
                 <View style={styles.containerTexto}>
-                    <Texto texto={'Horários de Reservas Aceitas'} tamanho={25} />
+                    <Texto texto={'Reservas Aceitas'} tamanho={25} />
                 </View>
                 <View style={{ height: '70%' }}>
 
@@ -211,7 +207,7 @@ const MinhasReservas = ({ navigation }) => {
                     <MeuButtonMetade
                         width={'30%'}
                         tamanho={25}
-                        texto={'Reservas Concluídas'}
+                        texto={'Reservas Antigas'}
                         onClick={() => { setSelectedModal('Modal1'), abrirModal() }}
                     />
                     <MeuButtonMetade

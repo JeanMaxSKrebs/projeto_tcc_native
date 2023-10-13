@@ -23,6 +23,7 @@ import Horario from '../../components/Calendario/Horario';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { ClienteContext } from '../../context/ClienteProvider';
 import { CommonActions } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const InfoFesta = ({ route, navigation }) => {
@@ -91,11 +92,11 @@ const InfoFesta = ({ route, navigation }) => {
                 // console.log('user2');
                 // console.log(user);
                 // console.log(salao);
-                let chat = {id: cliente.id, nome: cliente.nome}
+                let chat = { id: cliente.id, nome: cliente.nome }
                 console.log('chat');
                 console.log(chat);
                 user.tipo === "Salão" ? (
-                    
+
                     navigation.dispatch(
                         CommonActions.navigate({
                             name: 'Chat',
@@ -103,10 +104,9 @@ const InfoFesta = ({ route, navigation }) => {
                         }),
                     )
                 ) : (
-                    console.log('etrou aqui'),
                     navigation.dispatch(
                         CommonActions.navigate({
-                            name: 'Chats',
+                            name: 'Chat',
                             params: { user: salao, cliente: true, salao: salao }
                         }),
                     )
@@ -132,6 +132,10 @@ const InfoFesta = ({ route, navigation }) => {
             </View>
             <ScrollView style={{ height: '90%' }}>
                 <View style={{ alignItems: 'center' }}>
+                    <View style={{ margin: 10 }}>
+                        <Texto texto={'CONFIGURAÇÕES DA FESTA'} tamanho={25} />
+                    </View>
+
                     <Image
                         source={{
                             uri: 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20a.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBhLmpwZWciLCJpYXQiOjE2ODc5OTgzOTksImV4cCI6MTcxOTUzNDM5OX0.WI1WLP0lK-y3_8Hbc--JoHCUaJ8CASA5pUnV24kvO4o&t=2023-06-29T00%3A26%3A39.877Z'
@@ -139,48 +143,59 @@ const InfoFesta = ({ route, navigation }) => {
                         key={'logo'}
                         style={{ width: 280, height: 250, borderRadius: 15 }}
                     />
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <MeuButtonMetade texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
-                        <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
-                    </View>
-                    {console.log('user')}
-                    {console.log(user)}
-                    {/* {console.log('cliente')}
-                    {console.log(cliente)} */}
-                    {/* {console.log('reserva')}
-                    {console.log(reserva)}
-                    {console.log('orcamento')}
-                    {console.log(orcamento)} */}
-                    {/* {console.log('festa')}
-                {console.log(festa)} */}
-                    <Texto texto={'CONFIGURAÇÕES DA FESTA'} tamanho={25} />
-                    {/* <Texto texto={reserva.id} tamanho={25} /> */}
-                    {/* <Texto texto={cliente.nome} tamanho={25}/> */}
-                    <Picker
-                        style={{ width: 150, height: 50 }}
-                        selectedValue={novoStatus}
-                        onValueChange={(itemValue) => handleChangeStatus(itemValue)}
-                    >
-                        <Picker.Item label="ativo" value="ativo" />
-                        <Picker.Item label="inativo" value="inativo" />
-                    </Picker>
+                    {user.tipo === 'Salão' ? (
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <MeuButtonMetade texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
+                                <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
+                            </View>
+
+                            <Picker
+                                style={{ width: 150, height: 50 }}
+                                selectedValue={novoStatus}
+                                onValueChange={(itemValue) => handleChangeStatus(itemValue)}
+                            >
+                                <Picker.Item label="ativo" value="ativo" />
+                                <Picker.Item label="inativo" value="inativo" />
+                            </Picker>
+                        </View>
+                    ) : (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <MeuButtonMetade texto="Conversar com o Salão" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
+                            <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
+                        </View>
+                    )
+
+                    }
                     <View style={styles.container}>
-                        <View style={styles.containerSon}>
+                        <View style={styles.containerTitle}>
                             <Texto texto="Detalhes da Reserva" tamanho={25} />
+
+                            <View style={styles.edit}>
+                                <Icon size={20} name="create"></Icon>
+                            </View>
                         </View>
                         <View style={styles.containerSon}>
-                            <Texto texto={`Status: ${reserva.status}`} tamanho={18} />
-                            <Texto texto={`Data da Reserva:`} tamanho={18} />
+                            {reserva.status === 'ativo' ? (
+                                <Texto texto={`Status: ${reserva.status}`} tamanho={18} />
+                            ) : (
+                                <Texto texto={`Status: Aguardando Salão`} tamanho={18} />
+                            )}
+                            < Texto texto={`Data da Reserva:`} tamanho={18} />
                             <Dia data={reserva.data_hora} tamanho={16} />
                             <Texto texto={`Horário da Reserva:`} tamanho={18} />
                             <Horario data={reserva.data_hora} tamanho={16} />
                         </View>
                     </View>
 
-                    {cliente && (
+                    {user.tipo === 'Salão' && cliente && (
                         <View style={styles.container}>
-                            <View style={styles.containerSon}>
+                            <View style={styles.containerTitle}>
                                 <Texto texto="Detalhes do Cliente" tamanho={25} />
+
+                                <View style={styles.edit}>
+                                    <Icon size={20} name="create"></Icon>
+                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${cliente.nome}`} tamanho={18} />
@@ -190,10 +205,35 @@ const InfoFesta = ({ route, navigation }) => {
                             </View>
                         </View>
                     )}
+                    {console.log(salao)}
+                    {user.tipo === 'Cliente' && salao && (
+                        <View style={styles.container}>
+                            <View style={styles.containerTitle}>
+                                <Texto texto="Detalhes do Salão" tamanho={25} />
+
+                                <View style={styles.edit}>
+                                    <Icon size={20} name="create"></Icon>
+                                </View>
+                            </View>
+                            <View style={styles.containerSon}>
+                                <Texto texto={`Nome: ${salao.nome}`} tamanho={18} />
+                                <Texto texto={`Descricao: ${salao.descricao}`} tamanho={18} />
+                                <Texto texto={`CNPJ: ${salao.cnpj}`} tamanho={18} />
+                                <Texto texto={`Cidade: ${salao.cidade}`} tamanho={18} />
+                                <Texto texto={`Endereco: ${salao.endereco}`} tamanho={18} />
+                                <Texto texto={`Capacidade: ${salao.capacidade}`} tamanho={18} />
+                                <Texto texto={`Email: ${salao.email}`} tamanho={18} />
+                            </View>
+                        </View>
+                    )}
                     {festa && (
                         <View style={styles.container}>
-                            <View style={styles.containerSon}>
+                            <View style={styles.containerTitle}>
                                 <Texto texto="Detalhes da Festa" tamanho={25} />
+
+                                <View style={styles.edit}>
+                                    <Icon size={20} name="create"></Icon>
+                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${festa.nome}`} tamanho={18} />
@@ -204,8 +244,12 @@ const InfoFesta = ({ route, navigation }) => {
                     )}
                     {orcamento && (
                         <View style={styles.container}>
-                            <View style={styles.containerSon}>
+                            <View style={styles.containerTitle}>
                                 <Texto texto="Orcamento da Festa" tamanho={25} />
+
+                                <View style={styles.edit}>
+                                    <Icon size={20} name="create"></Icon>
+                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${orcamento.nome}`} tamanho={18} />
@@ -235,5 +279,15 @@ const styles = {
         alignItems: 'center',
         backgroundColor: COLORS.background,
         padding: 10,
+    },
+    containerTitle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+        marginLeft: 20
+    },
+    edit: {
+        marginLeft: 20,
     },
 };
