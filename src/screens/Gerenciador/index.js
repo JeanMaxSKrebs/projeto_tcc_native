@@ -86,15 +86,6 @@ const Gerenciador = ({ navigation }) => {
           }),
         );
         break;
-      case 'TelaReservas':
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: 'Reservas',
-            params: { salao: salao, cliente: false }
-          }),
-        );
-        break;
-      // case 'Conversar':
       case 'VisaoCliente':
         navigation.dispatch(
           CommonActions.navigate({
@@ -146,7 +137,7 @@ const Gerenciador = ({ navigation }) => {
         <Container>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <MeuButtonMetade texto="Tela Orçamento" onClick={() => routeGerenciador('TelaOrcamento')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Tela de Reservas" onClick={() => routeGerenciador('TelaReservas')} style={{ width: '45%' }} />
+            <MeuButtonMetade texto="Atualizar Dados" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -158,7 +149,6 @@ const Gerenciador = ({ navigation }) => {
             <MeuButtonMetade texto="Visão Cliente" onClick={() => routeGerenciador('VisaoCliente')} style={{ width: '45%' }} />
             <MeuButtonMetade texto="Gerenciar Itens" onClick={() => routeGerenciador('GerenciarItens')} style={{ width: '45%' }} />
           </View>
-          <MeuButtonMetade texto="Atualizar Dados" onClick={() => routeGerenciador('AtualizarDados')} style={{ width: '45%' }} />
         </Container>
         {/* {loading && <Loading />} */}
       </ScrollView>

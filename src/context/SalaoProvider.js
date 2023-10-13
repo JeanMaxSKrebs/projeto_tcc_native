@@ -187,7 +187,7 @@ export const SalaoProvider = ({ children }) => {
         .from('reservas')
         .select('*')
         .eq('salao_id', id)
-        .eq('status', 'ativo');
+        // .eq('status', 'ativo'); deixar todas pq filtro depois
 
       if (error) {
         console.error('Erro ao buscar reservas:', error);

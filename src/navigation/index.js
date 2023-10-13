@@ -7,6 +7,7 @@ import { OrcamentosProvider } from '../context/OrcamentosProvider';
 import { AuthUserProvider } from '../context/AuthUserProvider';
 import { ProfileProvider } from '../context/ProfileProvider';
 import { ChatProvider } from '../context/ChatProvider';
+import { FestaProvider } from '../context/FestaProvider';
 import { ApiProvider } from '../context/ApiProvider';
 import { ItensOrcamentosProvider } from '../context/ItensOrcamentosProvider';
 
@@ -39,15 +40,17 @@ export default function Providers() {
             <ClienteProvider>
               <SaloesProvider>
                 <SalaoProvider>
-                  <OrcamentosProvider>
-                    <ItensSaloesProvider>
-                      <ItensOrcamentosProvider>
-                        <ThemeProvider theme={theme}>
-                          <Navigator />
-                        </ThemeProvider>
-                      </ItensOrcamentosProvider>
-                    </ItensSaloesProvider>
-                  </OrcamentosProvider>
+                  <FestaProvider>
+                    <OrcamentosProvider>
+                      <ItensSaloesProvider>
+                        <ItensOrcamentosProvider>
+                          <ThemeProvider theme={theme}>
+                            <Navigator />
+                          </ThemeProvider>
+                        </ItensOrcamentosProvider>
+                      </ItensSaloesProvider>
+                    </OrcamentosProvider>
+                  </FestaProvider>
                 </SalaoProvider>
               </SaloesProvider>
             </ClienteProvider>

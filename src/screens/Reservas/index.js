@@ -11,7 +11,7 @@ import MeuButtonMetade from '../../components/MeuButtonMetade';
 
 const Reservas = ({ route, navigation }) => {
     const { reservas, getReservasPorSalao } = useContext(SalaoContext);
-    
+
     const salao = route.params.salao;
     const cliente = route.params.cliente;
     // const dataReserva = route.params.dataReserva;
@@ -45,11 +45,20 @@ const Reservas = ({ route, navigation }) => {
         return dataReserva <= dataAtual;
     });
 
+    // Filtra as reservas ativas e futuras
+    const reservasFuturasAtivas = reservasFuturas.filter((reserva) => reserva.status === 'ativo');
+
+    // Filtra as reservas passadas e ativas
+    const reservasPassadasAtivas = reservasPassadas.filter((reserva) => reserva.status === 'ativo');
+
+    // Filtra as reservas inativas
+    const reservasInativas = reservas.filter((reserva) => reserva.status == 'inativo');
+
 
     useEffect(() => {
         if (salao) {
-            console.log('reservas');
-            console.log(reservas);
+            // console.log('reservas');
+            // console.log(reservas);
             // console.log('salao');
             // console.log(salao);
             getReservasPorSalao(salao.id);
@@ -80,7 +89,7 @@ const Reservas = ({ route, navigation }) => {
             <View style={styles.container}>
                 <Texto texto={'Horários de Reservas Efetuadas do Salão'} tamanho={25} />
                 <FlatList
-                    data={reservasPassadas}
+                    data={reservasPassadasAtivas}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
                 />

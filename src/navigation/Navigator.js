@@ -13,7 +13,8 @@ import OrcamentoItens from '../screens/OrcamentoItens';
 import ItensSaloes from '../screens/ItensSaloes';
 import Chat from '../screens/Chat';
 import Chats from '../screens/Chats';
-import Festa from '../screens/Festa/index.js';
+import InfoFesta from '../screens/InfoFesta';
+import Festa from '../screens/Festa';
 import Reservar from '../screens/Reservar';
 import Reservas from '../screens/Reservas';
 import Agenda from '../screens/Agenda';
@@ -158,6 +159,7 @@ const Navigator = () => (
       <Stack.Screen component={Reservar} name="Reservar" />
       <Stack.Screen component={Reservas} name="Reservas" />
       <Stack.Screen component={Festa} name="Festa" />
+      <Stack.Screen component={InfoFesta} name="InfoFesta" />
       <Stack.Screen component={Agenda} name="Agenda" />
       <Stack.Screen component={Agendar} name="Agendar" />
       <Stack.Screen component={Orcamento} name="Orcamento" />

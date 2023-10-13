@@ -22,9 +22,10 @@ import Dia from '../../components/Calendario/Dia';
 import Horario from '../../components/Calendario/Horario';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { ClienteContext } from '../../context/ClienteProvider';
+import { CommonActions } from '@react-navigation/native';
 
 
-const Festa = ({ route, navigation }) => {
+const InfoFesta = ({ route, navigation }) => {
     const { cliente, getClientById } = useContext(ClienteContext);
     const { orcamento, getOrcamentoById } = useContext(OrcamentosContext);
     const { festa, getFestaByReservaId } = useContext(FestaContext);
@@ -62,7 +63,14 @@ const Festa = ({ route, navigation }) => {
         }
         console.log('reservaAtualizada');
         console.log(reservaAtualizada);
-        { await updateStatus(reservaAtualizada) ? voltar() : showToast('Erro ao Aceitar Reserva!') }
+        {
+            await updateStatus(reservaAtualizada) ?
+                navigation.dispatch(
+                    CommonActions.navigate({
+                        name: 'MinhasReservas',
+                    })
+                ) : showToast('Erro ao Aceitar Reserva!')
+        }
     };
 
 
@@ -116,9 +124,10 @@ const Festa = ({ route, navigation }) => {
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <MeuButtonMetade texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
+                        <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
                     </View>
-                    {console.log('cliente')}
-                    {console.log(cliente)}
+                    {/* {console.log('cliente')}
+                    {console.log(cliente)} */}
                     {/* {console.log('reserva')}
                     {console.log(reserva)}
                     {console.log('orcamento')}
@@ -186,16 +195,13 @@ const Festa = ({ route, navigation }) => {
                             </View>
                         </View>
                     )}
-                    <View>
-                        <MeuButtonMetade texto={'Salvar'} onClick={() => save()} />
-                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
 };
 
-export default Festa;
+export default InfoFesta;
 
 const styles = {
     container: {

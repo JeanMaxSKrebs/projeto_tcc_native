@@ -44,15 +44,21 @@ const MinhasReservas = ({ navigation }) => {
         return dataReserva <= dataAtual;
     });
 
+    const reservasPassadasAtivas = reservasPassadas.filter((reserva) => reserva.status === 'ativo');
+
+    // Filtra as reservas ativas e futuras
+    const reservasFuturasAtivas = reservasFuturas.filter((reserva) => reserva.status === 'ativo');
+
     // Filtra as reservas ativas
     const reservasAtivas = reservas.filter((reserva) => reserva.status === 'ativo');
 
-    // Filtra as reservas inativas
-    const reservasInativas = reservas.filter((reserva) => reserva.status === 'inativo');
+    // Filtra as reservas inativas e futuras
+    const reservasFuturasInativas = reservasFuturas.filter((reserva) => reserva.status == 'inativo');
 
 
     useEffect(() => {
-        // console.log('reservas');
+        // console.log('reservasInativas');
+        // console.log(reservasInativas);
         // console.log(reservas);
         // console.log(reservasFuturas);
         // console.log(reservasPassadas);
@@ -92,8 +98,7 @@ const MinhasReservas = ({ navigation }) => {
             <MeuButtonMetade style={styles.item} width={'auto'} cor={COLORS.primaryShadow} texto={<Dia data={data} tamanho={16} />}
                 onClick={() => {
                     setModalVisible(false)
-                    getReservasPorCliente(cliente.id)
-                    routeFor(['Festa', item])
+                    routeFor(['InfoFesta', item])
                 }}
             />
         )
@@ -102,8 +107,7 @@ const MinhasReservas = ({ navigation }) => {
     const routeFor = dados => {
 
         switch (dados[0]) {
-            // case 'Festas':
-            case 'Festa':
+            case 'InfoFesta':
 
                 navigation.dispatch(
                     CommonActions.navigate({
@@ -134,7 +138,7 @@ const MinhasReservas = ({ navigation }) => {
                 </View>
                 <View style={{ height: '70%' }}>
                     <FlatList
-                        data={reservasPassadas}
+                        data={reservasPassadasAtivas}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                     />
@@ -154,7 +158,7 @@ const MinhasReservas = ({ navigation }) => {
                 <View style={{ height: '70%' }}>
 
                     <FlatList
-                        data={reservasInativas}
+                        data={reservasFuturasInativas}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                     />
@@ -169,12 +173,12 @@ const MinhasReservas = ({ navigation }) => {
 
             <View style={styles.container}>
                 <View style={styles.containerTexto}>
-                    <Texto texto={'Horários de Reservas Ativas'} tamanho={25} />
+                    <Texto texto={'Horários de Reservas Aceitas'} tamanho={25} />
                 </View>
                 <View style={{ height: '70%' }}>
 
                     <FlatList
-                        data={reservasAtivas}
+                        data={reservasFuturasAtivas}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id.toString()}
                     />
