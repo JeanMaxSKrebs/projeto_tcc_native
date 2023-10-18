@@ -24,6 +24,8 @@ import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { ClienteContext } from '../../context/ClienteProvider';
 import { CommonActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MeuButton from '../../components/MeuButton';
+import ButtonEdite from '../../components/ButtonEdite';
 
 
 const InfoFesta = ({ route, navigation }) => {
@@ -74,18 +76,22 @@ const InfoFesta = ({ route, navigation }) => {
         }
     };
 
-
     const routeFesta = item => {
         // console.log('gerenciador');
         // console.log(item);
         switch (item) {
-            case 'Mudar':
+
+
+            case 'Reservar':
                 navigation.dispatch(
                     CommonActions.navigate({
                         name: item,
-                        params: { salao: salao },
+                        params: {
+                            salao: salao, cliente: true, user: user,
+                            alterar: true, reserva: reserva
+                        },
                     }),
-                );
+                )
                 break;
 
             case 'Conversar':
@@ -146,23 +152,29 @@ const InfoFesta = ({ route, navigation }) => {
                     {user.tipo === 'Salão' ? (
                         <View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <MeuButtonMetade texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
-                                <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
+                                <MeuButtonMetade width={'45%'} texto="Conversar com o Cliente" onClick={() => routeFesta('Conversar')} />
+                                <MeuButtonMetade width={'45%'} texto="Alterar Reserva" onClick={() => routeFesta('Reservar')} />
                             </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <MeuButtonMetade width={'45%'} texto="Salvar Alterações" onClick={save} />
 
-                            <Picker
-                                style={{ width: 150, height: 50 }}
-                                selectedValue={novoStatus}
-                                onValueChange={(itemValue) => handleChangeStatus(itemValue)}
-                            >
-                                <Picker.Item label="ativo" value="ativo" />
-                                <Picker.Item label="inativo" value="inativo" />
-                            </Picker>
+
+                                <Picker
+                                    style={{ width: 150, height: 50 }}
+                                    selectedValue={novoStatus}
+                                    onValueChange={(itemValue) => handleChangeStatus(itemValue)}
+                                >
+                                    <Picker.Item label="ativo" value="ativo" />
+                                    <Picker.Item label="inativo" value="inativo" />
+                                </Picker>
+                            </View>
                         </View>
                     ) : (
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <MeuButtonMetade texto="Conversar com o Salão" onClick={() => routeFesta('Conversar')} style={{ width: '45%' }} />
-                            <MeuButtonMetade texto={'Salvar Alterações'} onClick={() => save()} style={{ width: '45%' }} />
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <MeuButtonMetade width={'45%'} texto="Conversar com o Salão" onClick={() => routeFesta('Conversar')} />
+                                <MeuButtonMetade width={'45%'} texto="Alterar Reserva" onClick={() => routeFesta('Reservar')} />
+                            </View>
                         </View>
                     )
 
@@ -170,10 +182,6 @@ const InfoFesta = ({ route, navigation }) => {
                     <View style={styles.container}>
                         <View style={styles.containerTitle}>
                             <Texto texto="Detalhes da Reserva" tamanho={25} />
-
-                            <View style={styles.edit}>
-                                <Icon size={20} name="create"></Icon>
-                            </View>
                         </View>
                         <View style={styles.containerSon}>
                             {reserva.status === 'ativo' ? (
@@ -187,15 +195,23 @@ const InfoFesta = ({ route, navigation }) => {
                             <Horario data={reserva.data_hora} tamanho={16} />
                         </View>
                     </View>
+                    {orcamento && (
+                        <View style={styles.container}>
+                            <View style={styles.containerTitle}>
+                                <Texto texto="Orcamento da Festa" tamanho={25} />
+                            </View>
+                            <View style={styles.containerSon}>
+                                <Texto texto={`Nome: ${orcamento.nome}`} tamanho={18} />
+                                <Texto texto={`Descrição: ${orcamento.descricao}`} tamanho={18} />
+                                <Texto texto={`Valor Total: ${orcamento.valorTotal}`} tamanho={18} />
+                            </View>
+                        </View>
+                    )}
 
                     {user.tipo === 'Salão' && cliente && (
                         <View style={styles.container}>
                             <View style={styles.containerTitle}>
                                 <Texto texto="Detalhes do Cliente" tamanho={25} />
-
-                                <View style={styles.edit}>
-                                    <Icon size={20} name="create"></Icon>
-                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${cliente.nome}`} tamanho={18} />
@@ -205,15 +221,10 @@ const InfoFesta = ({ route, navigation }) => {
                             </View>
                         </View>
                     )}
-                    {console.log(salao)}
                     {user.tipo === 'Cliente' && salao && (
                         <View style={styles.container}>
                             <View style={styles.containerTitle}>
                                 <Texto texto="Detalhes do Salão" tamanho={25} />
-
-                                <View style={styles.edit}>
-                                    <Icon size={20} name="create"></Icon>
-                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${salao.nome}`} tamanho={18} />
@@ -230,10 +241,6 @@ const InfoFesta = ({ route, navigation }) => {
                         <View style={styles.container}>
                             <View style={styles.containerTitle}>
                                 <Texto texto="Detalhes da Festa" tamanho={25} />
-
-                                <View style={styles.edit}>
-                                    <Icon size={20} name="create"></Icon>
-                                </View>
                             </View>
                             <View style={styles.containerSon}>
                                 <Texto texto={`Nome: ${festa.nome}`} tamanho={18} />
@@ -242,22 +249,7 @@ const InfoFesta = ({ route, navigation }) => {
                             </View>
                         </View>
                     )}
-                    {orcamento && (
-                        <View style={styles.container}>
-                            <View style={styles.containerTitle}>
-                                <Texto texto="Orcamento da Festa" tamanho={25} />
 
-                                <View style={styles.edit}>
-                                    <Icon size={20} name="create"></Icon>
-                                </View>
-                            </View>
-                            <View style={styles.containerSon}>
-                                <Texto texto={`Nome: ${orcamento.nome}`} tamanho={18} />
-                                <Texto texto={`Descrição: ${orcamento.descricao}`} tamanho={18} />
-                                <Texto texto={`Valor Total: ${orcamento.valorTotal}`} tamanho={18} />
-                            </View>
-                        </View>
-                    )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -288,6 +280,9 @@ const styles = {
         marginLeft: 20
     },
     edit: {
+        backgroundColor: COLORS.primary,
+        padding: 5,
         marginLeft: 20,
+        borderRadius: 10,
     },
 };
