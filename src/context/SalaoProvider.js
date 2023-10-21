@@ -8,6 +8,12 @@ import { supabase } from '../../supabase/supabase';
 
 import { AuthUserContext } from './AuthUserProvider';
 
+// imagem em Blob
+import RNFetchBlob from 'rn-fetch-blob';
+//decode
+import { decode } from 'base64-arraybuffer'
+
+
 export const SalaoContext = createContext({});
 
 export const SalaoProvider = ({ children }) => {
@@ -138,11 +144,39 @@ export const SalaoProvider = ({ children }) => {
   };
 
   const updateSalao = async salaoData => {
-    // console.log('salaoData');
-    // console.log(salaoData);
+    console.log('salaoData');
+    console.log(salaoData);
 
     try {
-      const { data: updatedData, error: updateError } = await supabase
+      const nomeArquivo = `${salaoData.id}_${salaoData.nome}.png`;
+
+      // Lê o conteúdo do arquivo
+      const conteudoBlob = await RNFetchBlob.fs.readFile(salaoData.logo, 'base64');
+
+      console.log('conteudoBlob');
+      console.log(conteudoBlob);
+
+
+      const { data: logoUploadResponse, error: logoUploadError } = await supabase
+        .storage
+        .from('perfil') //nome do bucket
+        .upload(nomeArquivo, decode(conteudoBlob), {
+          cacheControl: '3600', // configurações de cache
+          contentType: 'image/png'
+        },);
+
+      if (logoUploadError) {
+        console.error('Erro ao fazer upload da logo:', logoUploadError);
+        return;
+      }
+      console.log('logoUploadResponse');
+      console.log(logoUploadResponse);
+      // Após o upload da logo, obtenha a URL do arquivo no armazenamento
+
+      const baseUrl = 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/';
+      const logoURL = baseUrl + logoUploadResponse.path;
+      console.log('logoURL');
+      console.log(logoURL);      const { data: updatedData, error: updateError } = await supabase
         .from('saloes')
         .update({
           nome: salaoData.nome,
@@ -152,7 +186,7 @@ export const SalaoProvider = ({ children }) => {
           endereco: salaoData.endereco,
           cidade: salaoData.cidade,
           capacidade: salaoData.capacidade,
-          logo: salaoData.logo,
+          logo: logoURL,
           // imagens: salaoData.imagens,
 
           //logo e imagens estaticas
@@ -187,7 +221,7 @@ export const SalaoProvider = ({ children }) => {
         .from('reservas')
         .select('*')
         .eq('salao_id', id)
-        // .eq('status', 'ativo'); deixar todas pq filtro depois
+      // .eq('status', 'ativo'); deixar todas pq filtro depois
 
       if (error) {
         console.error('Erro ao buscar reservas:', error);
@@ -269,8 +303,8 @@ export const SalaoProvider = ({ children }) => {
     }
   };
   const updateStatus = async (reserva) => {
-    const reservaId = reserva.id; 
-    const novoStatus = reserva.status; 
+    const reservaId = reserva.id;
+    const novoStatus = reserva.status;
     try {
       // Verifique se os parâmetros necessários estão presentes.
       if (!reservaId || !novoStatus) {

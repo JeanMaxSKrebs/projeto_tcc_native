@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, ToastAndroid, Image, View, TouchableOpacity, ScrollViewComponent, ScrollView } from 'react-native';
+import {
+  Alert, ToastAndroid, Image, View, TouchableOpacity,
+  ScrollViewComponent, ScrollView, SafeAreaView
+} from 'react-native';
 import { Container, TextInput, Text, TextPlaceholder } from './styles';
 import MeuButton from '../../components/MeuButton';
 import DeleteButton from '../../components/DeleteButton';
@@ -11,6 +14,7 @@ import { COLORS } from '../../assets/colors';
 import { SalaoContext } from '../../context/SalaoProvider';
 import ImagePicker from '../../components/Camera/ImagePicker';
 import Texto from '../../components/Texto';
+import Voltar from '../../components/Voltar';
 
 const AtualizarDados = ({ route, navigation }) => {
   const [id, setId] = useState('');
@@ -39,6 +43,10 @@ const AtualizarDados = ({ route, navigation }) => {
       setLogo(salao.logo);
     }
   }, [salao]);
+
+  const voltar = () => {
+    navigation.goBack();
+  };
 
   const salvar = () => {
     const newSalao = {
@@ -72,90 +80,94 @@ const AtualizarDados = ({ route, navigation }) => {
 
   return (
 
-    <ScrollView>
-      <Container>
-        <Text style={{ color: 'black', marginBottom: 20 }} >Atualizar Dados do Salão</Text>
+    <SafeAreaView>
+      <Voltar texto="Voltar" onClick={() => voltar()} />
+      <ScrollView>
 
-        {logo !== undefined && logo !== null
-          && (
-            <View>
-              <View style={{ width: '65%' }} >
-                {renderPlaceholder(logo ? 'Logo' : '')}
+        <Container>
+          <Text style={{ color: 'black', marginBottom: 20 }} >Atualizar Dados do Salão</Text>
+
+          {logo !== undefined && logo !== null
+            && (
+              <View>
+                <View style={{ width: '65%' }} >
+                  {renderPlaceholder(logo ? 'Logo' : '')}
+                </View>
+                <View style={{ borderWidth: 3, borderColor: 'black', borderRadius: 10 }}>
+                  <Image
+                    style={{ width: 300, height: 300 }}
+                    source={{ uri: logo }}
+                    resizeMode="cover"
+                  />
+                </View>
+
               </View>
-              <View style={{ borderWidth: 3, borderColor: 'black', borderRadius: 10 }}>
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{ uri: logo }}
-                  resizeMode="cover"
-                />
-              </View>
-
-            </View>
-          )
-        }
-        <ImagePicker onPress={handleImageSelected} />
+            )
+          }
+          <ImagePicker onPress={handleImageSelected} />
 
 
-        <View style={{ width: '65%', marginTop: 30 }} >
-          {renderPlaceholder(nome ? 'Nome' : '')}
-        </View>
-        <TextInput
-          placeholderTextColor="gray"
-          value={nome}
-          placeholder="Nome"
-          keyboardType="default"
-          returnKeyType="next"
-          onChangeText={t => setNome(t)}
-        />
-        <View style={{ width: '65%' }} >
-          {renderPlaceholder(descricao ? 'Descrição' : '')}
-        </View>
-        <TextInput
-          placeholderTextColor="gray"
-          value={descricao}
-          placeholder="Descrição"
-          keyboardType="default"
-          returnKeyType="next"
-          onChangeText={t => setDescricao(t)}
-        />
-        <View style={{ width: '65%' }} >
-          {renderPlaceholder(capacidade ? 'Capacidade' : '')}
-        </View>
-        <TextInput
-          placeholderTextColor="gray"
-          value={capacidade.toString()}
-          placeholder="Capacidade"
-          keyboardType="numeric"
-          returnKeyType="done"
-          onChangeText={t => setCapacidade(t)}
-        />
-        <Text style={{ color: 'black', fontSize: 18 }} >Localização</Text>
-        <View style={{ width: '65%' }} >
-          {renderPlaceholder(endereco ? 'Endereço' : '')}
-        </View>
-        <TextInput
-          placeholderTextColor="gray"
-          value={endereco}
-          placeholder="Endereço"
-          keyboardType="default"
-          returnKeyType="next"
-          onChangeText={t => setEndereco(t)}
-        />
-        <View style={{ width: '65%' }} >
-          {renderPlaceholder(endereco ? 'Cidade' : '')}
-        </View>
-        <TextInput
-          placeholderTextColor="gray"
-          value={cidade}
-          placeholder="Cidade"
-          keyboardType="default"
-          returnKeyType="next"
-          onChangeText={t => setCidade(t)}
-        />
-        <MeuButton texto="Salvar" onClick={salvar} />
-        {loading && <Loading />}
-      </Container>
-    </ScrollView>
+          <View style={{ width: '65%', marginTop: 30 }} >
+            {renderPlaceholder(nome ? 'Nome' : '')}
+          </View>
+          <TextInput
+            placeholderTextColor="gray"
+            value={nome}
+            placeholder="Nome"
+            keyboardType="default"
+            returnKeyType="next"
+            onChangeText={t => setNome(t)}
+          />
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(descricao ? 'Descrição' : '')}
+          </View>
+          <TextInput
+            placeholderTextColor="gray"
+            value={descricao}
+            placeholder="Descrição"
+            keyboardType="default"
+            returnKeyType="next"
+            onChangeText={t => setDescricao(t)}
+          />
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(capacidade ? 'Capacidade' : '')}
+          </View>
+          <TextInput
+            placeholderTextColor="gray"
+            value={capacidade.toString()}
+            placeholder="Capacidade"
+            keyboardType="numeric"
+            returnKeyType="done"
+            onChangeText={t => setCapacidade(t)}
+          />
+          <Text style={{ color: 'black', fontSize: 18 }} >Localização</Text>
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(endereco ? 'Endereço' : '')}
+          </View>
+          <TextInput
+            placeholderTextColor="gray"
+            value={endereco}
+            placeholder="Endereço"
+            keyboardType="default"
+            returnKeyType="next"
+            onChangeText={t => setEndereco(t)}
+          />
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(endereco ? 'Cidade' : '')}
+          </View>
+          <TextInput
+            placeholderTextColor="gray"
+            value={cidade}
+            placeholder="Cidade"
+            keyboardType="default"
+            returnKeyType="next"
+            onChangeText={t => setCidade(t)}
+          />
+          <MeuButton texto="Salvar" onClick={salvar} />
+          {loading && <Loading />}
+        </Container>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
