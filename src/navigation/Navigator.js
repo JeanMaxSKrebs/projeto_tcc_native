@@ -30,6 +30,7 @@ import Home from '../screens/Home';
 import Manutencao from '../screens/Manutencao';
 import AtualizarDados from '../screens/AtualizarDados';
 
+import Imagens from '../screens/Imagens';
 import MinhasReservas from '../screens/MinhasReservas';
 import Menu from '../screens/Menu';
 import PerfilUsuario from '../screens/PerfilUsuario';
@@ -165,6 +166,7 @@ const Navigator = () => (
       <Stack.Screen component={Orcamento} name="Orcamento" />
       <Stack.Screen component={Orcamentos} name="Orcamentos" />
       <Stack.Screen component={AtualizarDados} name="AtualizarDados" />
+      <Stack.Screen component={Imagens} name="Imagens" />
       <Stack.Screen component={Salao} name="Salao" />
       <Stack.Screen
         component={PerfilUsuario}

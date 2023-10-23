@@ -1,11 +1,15 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from 'react-native';
+import {
+  SafeAreaView, ScrollView, View, Text, StyleSheet,
+  Modal, TouchableWithoutFeedback, TouchableOpacity
+} from 'react-native';
 import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
 import { Image } from '../Preload/styles';
 // import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
 import { Container, FlatList } from './styles';
+import ContainerImagens from '../../components/Imagens/ContainerImagens';
 
 import { CommonActions } from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
@@ -15,6 +19,9 @@ import { SalaoContext } from '../../context/SalaoProvider';
 import { SaloesContext } from '../../context/SaloesProvider';
 import { AuthUserContext } from '../../context/AuthUserProvider';
 import Texto from '../../components/Texto';
+
+import Swiper from 'react-native-swiper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Gerenciador = ({ navigation }) => {
   const { salao, getHallData } = useContext(SalaoContext);
@@ -45,6 +52,14 @@ const Gerenciador = ({ navigation }) => {
     // console.log('gerenciador');
     // console.log(item);
     switch (item) {
+      case 'Imagens':
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: item,
+            params: { salao: salao },
+          }),
+        );
+        break;
       case 'AtualizarDados':
         navigation.dispatch(
           CommonActions.navigate({
@@ -54,7 +69,7 @@ const Gerenciador = ({ navigation }) => {
         );
         break;
       case 'GerenciarItens':
-        console.log(salao);
+        // console.log(salao);
         navigation.dispatch(
           CommonActions.navigate({
             name: 'ItensSaloes',
@@ -104,6 +119,7 @@ const Gerenciador = ({ navigation }) => {
     }
   };
 
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -150,9 +166,32 @@ const Gerenciador = ({ navigation }) => {
             <MeuButtonMetade texto="Gerenciar Itens" onClick={() => routeGerenciador('GerenciarItens')} style={{ width: '45%' }} />
           </View>
         </Container>
+        <Container>
+          <View style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            marginLeft: 100
+          }}>
+            <Texto texto="Imagens" tamanho={35} />
+            <View style={styles.edit}>
+              <MeuButtonMetade width={'auto'}
+                texto={<Icon name="create" size={20} color={COLORS.secundary} />}
+
+                onClick={() => routeGerenciador('Imagens')} />
+            </View>
+          </View>
+
+          {salao && (
+            <>
+              <ContainerImagens listImagens={salao.imagens} />
+            </>
+          )}
+
+        </Container>
+
         {/* {loading && <Loading />} */}
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
@@ -199,5 +238,8 @@ const styles = StyleSheet.create({
   },
   logout: {
     backgroundColor: COLORS.red
+  },
+  edit: {
+    marginLeft: 50
   },
 });
