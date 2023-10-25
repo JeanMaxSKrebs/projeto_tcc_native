@@ -22,6 +22,7 @@ import Texto from '../../components/Texto';
 
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Ads from '../../components/ADs/Ads';
 
 const Gerenciador = ({ navigation }) => {
   const { salao, getHallData } = useContext(SalaoContext);
@@ -118,10 +119,17 @@ const Gerenciador = ({ navigation }) => {
         break;
     }
   };
+  //brincadeira ads
+  const randomIndex = Math.floor(Math.random() * 2);
 
 
   return (
     <SafeAreaView style={styles.container}>
+      {randomIndex === 1 ?
+        <Ads id='matheus' />
+        :
+        <Ads id='miguel' />
+      }
       <ScrollView>
 
         <>
