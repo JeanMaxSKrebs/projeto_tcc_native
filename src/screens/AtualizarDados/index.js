@@ -57,6 +57,7 @@ const AtualizarDados = ({ route, navigation }) => {
       endereco: endereco,
       descricao: descricao,
       capacidade: capacidade,
+      tipo: 'logo'
     };
     console.log('newSalao');
     console.log(newSalao);
@@ -82,7 +83,7 @@ const AtualizarDados = ({ route, navigation }) => {
 
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
-      <ScrollView>
+      <ScrollView style={{height: '90%'}}>
 
         <Container>
           <Text style={{ color: 'black', marginBottom: 20 }} >Atualizar Dados do Salão</Text>

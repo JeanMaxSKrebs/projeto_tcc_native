@@ -1,9 +1,12 @@
 import Swiper from 'react-native-swiper';
-import { StyleSheet, Text, Image, View, Modal, Button } from 'react-native';
+import { StyleSheet, Text, Image, View, Modal, ToastAndroid, FlatList } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import styled from 'styled-components/native';
 import React, { useEffect, useContext, useState } from 'react';
 import MeuButtonMetade from '../MeuButtonMetade';
+import ImagePicker from '../Camera/ImagePicker';
+import { SalaoContext } from '../../context/SalaoProvider';
+import Texto from '../Texto';
 
 export const TextPlaceholder = styled.Text`
   /* background-color: red; */
@@ -13,8 +16,12 @@ export const TextPlaceholder = styled.Text`
   color: gray;
 `;
 
-const ContainerImagens = ({ listImagens, alterar }) => {
+const ContainerImagens = ({ alterar, salao }) => {
 
+    const [indexCategoriaSelected, setIndexCategoriaSelected] = useState('');
+    const [categoriaSelected, setCategoriaSelected] = useState('');
+    const [imagem, setImagem] = useState(null);
+    const [listImagens, setListImagens] = useState(salao.imagens ? salao.imagens : null);
     const [activeSlideIndex, setActiveSlideIndex] = useState(0);
     // console.log('listImagens');
     // console.log(listImagens);
@@ -22,8 +29,140 @@ const ContainerImagens = ({ listImagens, alterar }) => {
     // console.log(alterar);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalAction, setModalAction] = useState('');
+    const { updateImagem, deleteImagem } = useContext(SalaoContext);
 
-    const routeImagem = (item) => {
+    const showToast = message => {
+        ToastAndroid.show(message, ToastAndroid.SHORT);
+    };
+
+    const categorias = [
+        'salao',
+        'entrada',
+        'jardim',
+        'area livre',
+        'buffet',
+        'danca',
+        'playground',
+        'cozinha',
+        'banheiro',
+    ]
+    const categoriasNome = [
+        'Salão',
+        'Entrada',
+        'Jardim',
+        'Área Livre',
+        'Buffet',
+        'Dança',
+        'Playground',
+        'Cozinha',
+        'Banheiro',
+    ]
+
+
+    const adicionar = () => {
+        // listImagens
+        // activeSlideIndex
+        console.log('listImagens');
+        console.log(listImagens);
+        console.log('imagem');
+        console.log(imagem);
+        console.log('categoriaSelected')
+        console.log(categoriaSelected)
+
+        const newSalao = {
+            id: salao.id,
+            nome: salao.nome,
+            logo: salao.logo,
+            cidade: salao.cidade,
+            endereco: salao.endereco,
+            descricao: salao.descricao,
+            capacidade: salao.capacidade,
+            imagens: listImagens,
+            newImagem: imagem,
+            tipo: categoriaSelected
+        };
+        console.log('newSalao');
+        console.log(newSalao);
+
+        {
+            updateImagem(newSalao) ?
+                (() => {
+                    closeModal();
+                    showToast(`Sucesso ao Adicionar Imagem`);
+                }
+                )
+                :
+                (() => {
+                    closeModal();
+                    showToast(`Falha ao Adicionar Imagem`);
+                }
+                )
+        }
+    };
+    const excluir = () => {
+        // console.log('listImagens');
+        // console.log(listImagens);
+        // console.log('categoriaSelected')
+        // console.log(categoriaSelected)
+        // console.log('activeSlideIndex')
+        // console.log(activeSlideIndex)
+
+
+        let listImagensCategoria = [...listImagens[categoriaSelected]];
+        listImagensCategoria.splice(activeSlideIndex, 1);
+        console.log('listImagensCategoria');
+        console.log(listImagensCategoria);
+
+        let listImagensNova = listImagens;
+        listImagensNova[categoriaSelected] = listImagensCategoria;
+        console.log('listImagensNova');
+        console.log(listImagensNova);
+        // console.log('listImagensAntiga');
+        // console.log(listImagensAntiga);
+
+        const newSalao = {
+            id: salao.id,
+            nome: salao.nome,
+            logo: salao.logo,
+            cidade: salao.cidade,
+            endereco: salao.endereco,
+            descricao: salao.descricao,
+            capacidade: salao.capacidade,
+            imagens: listImagensNova,
+            tipo: categoriaSelected
+        };
+        // console.log('newSalao');
+        // console.log(newSalao);
+        // console.log('newSalao');
+        // console.log(listImagens[categoriaSelected]);
+        // console.log(listImagensNova[categoriaSelected]);
+
+        {
+            deleteImagem(newSalao) ?
+                (() => {
+                    closeModal();
+                    showToast(`Sucesso ao Excluir Imagem`);
+                }
+                )
+                :
+                (() => {
+                    closeModal();
+                    showToast(`Falha ao Excluir Imagem`);
+                }
+                )
+        }
+    };
+
+
+    const handleImageSelected = (imageUri) => {
+        console.log('imageUri');
+        console.log(imageUri);
+        setImagem(imageUri);
+    };
+
+    const routeImagem = (item, categoria, index) => {
+        setIndexCategoriaSelected(index);
+        setCategoriaSelected(categoria);
         setModalAction(item);
         setModalVisible(true);
     };
@@ -54,100 +193,140 @@ const ContainerImagens = ({ listImagens, alterar }) => {
         return null;
     };
 
-    const AddModal = ({ activeSlideIndex }) => {
-        console.log('activeSlideIndex')
-        console.log(activeSlideIndex)
+    const AddModal = () => {
+        // console.log('activeSlideIndex')
+        // console.log(activeSlideIndex)
+        // console.log('categoriaSelected')
+        // console.log(categoriaSelected)
+
         return (
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Adicionar Item</Text>
+                    <Text style={styles.modalTitle}>Adicionar Imagem</Text>
+                    <Text style={styles.modalTitle}>{categoriasNome[indexCategoriaSelected]}</Text>
                     {/* Conteúdo do modal de Adicionar */}
                     {/* TODO adicioar foto*/}
-                    <MeuButtonMetade width={'auto'} texto="Fechar" onClick={closeModal} />
+                    {imagem !== undefined && imagem !== null &&
+                        <View>
+                            <View style={{ width: '65%' }} >
+                                {renderPlaceholder('Nova Imagem')}
+                            </View>
+                            <View style={{ borderWidth: 3, borderColor: 'black', borderRadius: 10 }}>
+                                <Image
+                                    style={{ width: 300, height: 300 }}
+                                    source={{ uri: imagem }}
+                                    resizeMode="cover"
+                                />
+                            </View>
+
+                        </View>
+                    }
+                    <ImagePicker onPress={handleImageSelected} />
+
+                    <MeuButtonMetade width={200} texto="Adicionar"
+                        onClick={() => { closeModal(); adicionar(); }} />
+                    <MeuButtonMetade texto="Fechar" cor={'red'} width={200}
+                        onClick={closeModal} />
                 </View>
-            </View>
+            </View >
         );
     };
 
-    const UpdateModal = ({ activeSlideIndex }) => {
+    const DeleteModal = () => {
         console.log('activeSlideIndex')
         console.log(activeSlideIndex)
+        console.log('categoriaSelected')
+        console.log(categoriaSelected)
         return (
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Atualizar Item</Text>
-                    {/* Conteúdo do modal de Atualizar */}
-                    {/* TODO atualizar foto*/}
+                    <Text style={styles.modalTitle}>Excluir Imagem</Text>
+                    <Text style={styles.modalTitle}>{categoriasNome[indexCategoriaSelected]}</Text>
+                    <View>
+                        <View style={{ width: '65%' }} >
+                            {renderPlaceholder('Imagem Selecionada')}
+                        </View>
+                        <View style={{ borderWidth: 3, borderColor: 'black', borderRadius: 10 }}>
 
-                    <MeuButtonMetade width={'auto'} texto="Fechar" onClick={closeModal} />
-                </View>
-            </View>
-        );
-    };
-
-    const DeleteModal = ({ activeSlideIndex }) => {
-        console.log('activeSlideIndex')
-        console.log(activeSlideIndex)
-        return (
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Excluir Item</Text>
+                            <Image
+                                style={{ width: 300, height: 300 }}
+                                source={{ uri: salao.imagens[categoriaSelected][activeSlideIndex] }}
+                                resizeMode="cover"
+                            />
+                        </View>
+                    </View>
                     {/* Conteúdo do modal de Excluir */}
                     {/* TODO Excluir foto*/}
-                    <MeuButtonMetade width={'auto'} texto="Fechar" onClick={closeModal} />
+                    <MeuButtonMetade width={200} texto="Confirmar Exclusão"
+                        onClick={() => { closeModal(); excluir(); }} />
+                    <MeuButtonMetade texto="Fechar" cor={'red'} width={200}
+                        onClick={closeModal} />
                 </View>
             </View>
         );
     };
 
     return (
-        <View style={[styles.container, { height: alterar ? 400 : 350 }]}>
+        <View style={{ marginBottom: 100 }}>
             <>
-                {renderPlaceholder('Salão de Festa')}
-                <Swiper
-                    index={0}
-                    style={styles.wrapper}
-                    onIndexChanged={handleSlideChange}
-                    showsButtons={true}
-                    prevButton={<CustomPrevButton />}
-                    nextButton={<CustomNextButton />}>
-                    {listImagens.map((image, index) => {
-                        return (
-                            <>
-                                <View style={styles.slide} key={index}>
-                                    <Image
-                                        source={{ uri: image }}
-                                        style={{ width: 300, height: 250, borderRadius: 15 }}
-                                    />
-                                </View>
-                            </>
-                        )
-                    })}
-                </Swiper>
-                {alterar && (
-                    <View style={styles.buttonModal}>
-                        <MeuButtonMetade texto="Adicionar" width={'auto'}
-                            onClick={() => routeImagem('Adicionar')} />
-                        <MeuButtonMetade texto="Atualizar" width={'auto'}
-                            onClick={() => routeImagem('Atualizar')} />
-                        <MeuButtonMetade texto="Excluir" cor={'red'} width={'auto'}
-                            onClick={() => routeImagem('Excluir')} />
-                    </View>
-                )}
+                {categorias.map((categoria, indexCategoria) => {
+                    // console.log('categoria');
+                    // console.log(categoria);
+                    // console.log('indexCategoria');
+                    // console.log(indexCategoria);
+                    return (
+                        <>
+                            <View style={[styles.container, { height: alterar ? 400 : 350 }]}>
+
+                                {renderPlaceholder(categoriasNome[indexCategoria])}
+
+                                <Swiper
+                                    index={0}
+                                    style={styles.wrapper}
+                                    onIndexChanged={handleSlideChange}
+                                    showsButtons={true}
+                                    prevButton={<CustomPrevButton />}
+                                    nextButton={<CustomNextButton />}
+                                >
+                                    {salao && salao.imagens[categoria].map((image, index) => {
+                                        return (
+                                            <>
+                                                <View style={styles.slide} key={categoria + index}>
+                                                    <Image
+                                                        source={{ uri: image }}
+                                                        key={categoria + index}
+                                                        style={{ width: 280, height: 250, borderRadius: 15 }}
+                                                    />
+                                                </View>
+                                            </>
+                                        )
+                                    })}
+
+                                </Swiper>
+                                {alterar && (
+                                    <View style={styles.buttonModal}>
+                                        <MeuButtonMetade texto="Adicionar" width={'auto'}
+                                            onClick={() => routeImagem('Adicionar', categoria, indexCategoria)} />
+                                        <MeuButtonMetade texto="Excluir" cor={'red'} width={'auto'}
+                                            onClick={() => routeImagem('Excluir', categoria, indexCategoria)} />
+                                    </View>
+                                )}
+                            </View>
+                        </>
+
+                    )
+                })}
 
                 <Modal visible={modalVisible} animationType="slide">
-                    {console.log('modalVisible')}
+                    {/* {console.log('modalVisible')}
                     {console.log(modalVisible)}
                     {console.log('modalAction')}
-                    {console.log(modalAction)}
+                    {console.log(modalAction)} */}
                     {modalAction === 'Adicionar' && (
-                        <AddModal activeSlideIndex={activeSlideIndex} />
-                    )}
-                    {modalAction === 'Atualizar' && (
-                        <UpdateModal activeSlideIndex={activeSlideIndex} />
+                        <AddModal />
                     )}
                     {modalAction === 'Excluir' && (
-                        <DeleteModal activeSlideIndex={activeSlideIndex} />
+                        <DeleteModal />
                     )}
                 </Modal>
 
@@ -213,6 +392,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         borderRadius: 10,
+        alignItems: 'center',
     },
     modalTitle: {
         fontSize: 20,

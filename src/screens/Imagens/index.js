@@ -22,7 +22,7 @@ const Imagens = ({ route, navigation }) => {
                 <View style={styles.container}>
                     {salao && (
                         <>
-                            <ContainerImagens alterar={true} listImagens={salao.imagens} />
+                            <ContainerImagens alterar={true} salao={salao} />
                         </>
                     )}
                 </View>

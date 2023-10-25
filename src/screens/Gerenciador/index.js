@@ -183,7 +183,7 @@ const Gerenciador = ({ navigation }) => {
 
           {salao && (
             <>
-              <ContainerImagens listImagens={salao.imagens} />
+              <ContainerImagens salao={salao} />
             </>
           )}
 

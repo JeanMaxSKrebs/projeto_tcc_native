@@ -80,6 +80,8 @@ const ImagePicker = ({ onPress }) => {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            {/* {console.log('imageUri2')}
+            {console.log(imageUri)} */}
             {imageUri !== undefined && imageUri !== null
                 ? (
                     <View>
