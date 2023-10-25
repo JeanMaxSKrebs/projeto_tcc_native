@@ -27,18 +27,21 @@ const ItemButton = ({ item, onPress, direita, icone, isItensSaloes }) => {
             {direita
                 ?
                 <View style={styles.container}>
-                    {novaImagem !== undefined && novaImagem !== null
-                        ? (<Image
-                            style={styles.image}
-                            source={{ uri: novaImagem }}
-                            resizeMode="cover"
-                        />)
-                        : (<Image
-                            style={styles.image}
-                            source={{ uri: imagem }}
-                            resizeMode="cover"
-                        />)
-                    }
+                    <View style={styles.contentImage}>
+                        {novaImagem !== undefined && novaImagem !== null
+                            ? (<Image
+                                style={styles.image}
+                                source={{ uri: novaImagem }}
+                                resizeMode="cover"
+                            />)
+                            : (<Image
+                                style={styles.image}
+                                source={{ uri: imagem }}
+                                resizeMode="cover"
+                            />)
+                        }
+                    </View>
+
                     <View style={styles.descricao}>
                         {novoNome
                             ? (<Texto tamanho={18} texto={novoNome} />)
@@ -144,12 +147,16 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         alignItems: 'center',
     },
-    image: {
-        // borderWidth: 2,
-        // borderRadius: 15,
-        // borderColor: COLORS.secundary,
+    contentImage: {
+        margin: 5,
         width: '25%',
+        borderRadius: 15,
+        alignItems: 'center',
+    },
+    image: {
+        height: 80,
         aspectRatio: 1,
+        borderRadius: 15,
         marginRight: 5,
     },
     descricao: {
