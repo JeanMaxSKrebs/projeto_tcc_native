@@ -11,10 +11,10 @@ const Ads = ({ id }) => {
     let title = `Anúncio do ${id}`;
     let description = `Descrição do ${id}`;
 
-    if (id === 'matheus') {
-        imageUrl = "https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/ads/miguel.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhZHMvbWlndWVsLmpwZyIsImlhdCI6MTY5ODI3NjM1NCwiZXhwIjoxNzI5ODEyMzU0fQ.j8GEq_7WecwsFuOBKTLQx3UdBB_bRJ9O7FyyhDvV1U0&t=2023-10-25T23%3A25%3A54.034Z",
-            description = 'O caminho para vitória começa com a conexão certa'
-        title = 'Game Connect'
+    if (id === 'ifsul') {
+        imageUrl = "https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/ads/ifsul_logo.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhZHMvaWZzdWxfbG9nby5qcGVnIiwiaWF0IjoxNjk4MjIyOTQ1LCJleHAiOjE3Mjk3NTg5NDV9.Jpd0HaMCSgQ5bgKq9hA3C3ohT1liBjohExmHoHzN8U8&t=2023-10-25T08%3A35%3A45.182Z";
+            description = 'Instituto Federal Sul-rio-grandense Campus Pelotas'
+        title = 'Ifsul'
     } else if (id === 'miguel') {
         imageUrl = "https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/ads/miguel.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhZHMvbWlndWVsLmpwZyIsImlhdCI6MTY5ODI3NjM1NCwiZXhwIjoxNzI5ODEyMzU0fQ.j8GEq_7WecwsFuOBKTLQx3UdBB_bRJ9O7FyyhDvV1U0&t=2023-10-25T23%3A25%3A54.034Z",
             description = 'O caminho para vitória começa com a conexão certa'

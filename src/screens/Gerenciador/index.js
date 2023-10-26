@@ -126,9 +126,9 @@ const Gerenciador = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {randomIndex === 1 ?
-        <Ads id='matheus' />
-        :
         <Ads id='miguel' />
+        :
+        <Ads id='ifsul' />
       }
       <ScrollView>
 
