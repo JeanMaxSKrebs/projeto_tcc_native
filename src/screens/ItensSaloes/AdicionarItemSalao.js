@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity, ToastAndroid, ScrollView} from 'react-native';
 import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
-import { ToastAndroid } from 'react-native';
 
 import MeuButton from '../../components/MeuButton';
 import Voltar from '../../components/Voltar';
@@ -12,13 +11,23 @@ import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { CommonActions } from '@react-navigation/native';
 import { ItensSaloesContext } from '../../context/ItensSaloesProvider';
 import { Picker } from '@react-native-picker/picker';
+import ImagePicker from '../../components/Camera/ImagePicker';
+import styled from 'styled-components/native';
+
+export const TextPlaceholder = styled.Text`
+  /* background-color: red; */
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 1px;
+  color: gray;
+`;
 
 const AdicionarItemSalao = ({ route, navigation }) => {
   const [valorUnitario, setValorUnitario] = useState(0);
   const [quantidadeMaxima, setQuantidadeMaxima] = useState(0);
   const [novoNome, setNovoNome] = useState('');
   const [novaDescricao, setNovaDescricao] = useState('');
-  const [novaImagem, setNovaImagem] = useState('');
+  const [novaImagem, setNovaImagem] = useState(null);
 
   const { insertItemItensSaloes } = useContext(ItensSaloesContext);
 
@@ -43,8 +52,10 @@ const AdicionarItemSalao = ({ route, navigation }) => {
   const salvar = async () => {
     const itemSalao = {
       salaoId: salao.id,
+      nomeSalao: salao.nome,
       novoNome: novoNome,
       novaDescricao: novaDescricao,
+      novaImagem: novaImagem,
       valorUnitario: parseFloat(valorUnitario), // Converte o valor para número (se necessário)
       quantidadeMaxima: parseFloat(quantidadeMaxima),
     };
@@ -68,76 +79,98 @@ const AdicionarItemSalao = ({ route, navigation }) => {
     }
   };
 
+  const renderPlaceholder = (value) => {
+    if (value !== '') {
+      return <TextPlaceholder>{value}</TextPlaceholder>;
+    }
+    return null;
+  };
+
+  const handleImageSelected = (imageUri) => {
+    console.log('imageUri');
+    console.log(imageUri);
+    setNovaImagem(imageUri);
+  };
+
   const toggleInputMethod = () => {
     setUsarPicker(!usarPicker);
   };
 
   return (
     <SafeAreaView>
-      <Voltar texto="Voltar" onClick={() => voltar()} />
-      <View>
+      <ScrollView>
+
+        <Voltar texto="Voltar" onClick={() => voltar()} />
         <View>
-          <Texto tamanho={40} texto={'NOVO ITEM'}></Texto>
+          <View>
+            <Texto tamanho={40} texto={'NOVO ITEM'}></Texto>
+          </View>
+          <View>
+            <TextInput
+              placeholder="Nome"
+              value={novoNome}
+              onChangeText={setNovoNome}
+            />
+            <TextInput
+              placeholder="Descrição"
+              value={novaDescricao}
+              onChangeText={setNovaDescricao}
+            />
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Valor Unitário"
+              value={valorUnitario.toString()}
+              onChangeText={setValorUnitario}
+            />
+            <>
+              {usarPicker ? (
+                <Picker
+                  style={{ width: 120, height: 50 }}
+                  selectedValue={quantidadeMaxima}
+                  onValueChange={(item, index) => {
+                    setQuantidadeMaxima(item);
+                  }}
+                >
+                  {valoresDe0aDefinicao.map((value) => (
+                    <Picker.Item key={value} label={value.toString()} value={value} />
+                  ))}
+                </Picker>
+              ) : (
+                <TextInput
+                  placeholder={`Quantidade Antiga: ${quantidadeMaxima}`}
+                  value={quantidadeMaxima.toString()}
+                  onChangeText={(text) => {
+                    if (text > definicao) {
+                      showToast(`Quantidade Máxima de Itens: ${definicao}`);
+                      setQuantidadeMaxima(quantidadeMaxima);
+                    } else {
+                      setQuantidadeMaxima(text);
+                    }
+                  }}
+                  keyboardType="numeric"
+                />
+              )}
+              <TouchableOpacity onPress={toggleInputMethod}>
+                <View style={{
+                  flexDirection: 'row', alignItems: 'center',
+                  backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
+                }}>
+                  <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
+                </View>
+              </TouchableOpacity>
+            </>
+            <ImagePicker onPress={handleImageSelected} />
+
+
+          </View>
+
+
+          <MeuButton texto="Criar Item" onClick={() => salvar()} />
+          {/* <MeuButton texto="Voltar" onClick={() => voltar()} /> */}
         </View>
-        <View>
-          <TextInput
-            placeholder="Nome"
-            value={novoNome}
-            onChangeText={setNovoNome}
-          />
-          <TextInput
-            placeholder="Descrição"
-            value={novaDescricao}
-            onChangeText={setNovaDescricao}
-          />
-          <TextInput
-            keyboardType="numeric"
-            placeholder="Valor Unitário"
-            value={valorUnitario}
-            onChangeText={setValorUnitario}
-          />
-          <>
-            {usarPicker ? (
-              <Picker
-                style={{ width: 120, height: 50 }}
-                selectedValue={quantidadeMaxima}
-                onValueChange={(item, index) => {
-                  setQuantidadeMaxima(item);
-                }}
-              >
-                {valoresDe0aDefinicao.map((value) => (
-                  <Picker.Item key={value} label={value.toString()} value={value} />
-                ))}
-              </Picker>
-            ) : (
-              <TextInput
-                placeholder={`Quantidade Antiga: ${quantidadeMaxima}`}
-                value={quantidadeMaxima.toString()}
-                onChangeText={(text) => {
-                  if (text > definicao) {
-                    showToast(`Quantidade Máxima de Itens: ${definicao}`);
-                    setQuantidadeMaxima(quantidadeMaxima);
-                  } else {
-                    setQuantidadeMaxima(text);
-                  }
-                }}
-                keyboardType="numeric"
-              />
-            )}
-            <TouchableOpacity onPress={toggleInputMethod}>
-              <View style={{
-                flexDirection: 'row', alignItems: 'center',
-                backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
-              }}>
-                <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
-              </View>
-            </TouchableOpacity>
-          </>
-        </View>
-        <MeuButton texto="Criar Item" onClick={() => salvar()} />
-        <MeuButton texto="Voltar" onClick={() => voltar()} />
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+
+    </SafeAreaView >
   );
 };
 

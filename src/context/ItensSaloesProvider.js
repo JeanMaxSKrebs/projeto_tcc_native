@@ -9,6 +9,10 @@ import { supabase } from '../../supabase/supabase';
 import { AuthUserContext } from './AuthUserProvider';
 import { SalaoContext } from './SalaoProvider';
 
+import RNFetchBlob from 'rn-fetch-blob';
+
+import { decode } from 'base64-arraybuffer'
+
 export const ItensSaloesContext = createContext({});
 
 export const ItensSaloesProvider = ({ children }) => {
@@ -55,7 +59,7 @@ export const ItensSaloesProvider = ({ children }) => {
           console.error('Erro ao buscar os itens:', error);
           return;
         }
-        
+
         dados = data;
 
       }
@@ -91,10 +95,48 @@ export const ItensSaloesProvider = ({ children }) => {
   };
 
   const insertItemItensSaloes = async ItemItensSaloesData => {
-    // console.log('ItemItensSaloesData');
-    // console.log(ItemItensSaloesData);
+    console.log('ItemItensSaloesData');
+    console.log(ItemItensSaloesData);
 
     try {
+      console.log('ItemItensSaloesData.imagens');
+      console.log(ItemItensSaloesData.imagens);
+
+      const pastaDesejada = `${ItemItensSaloesData.salaoId}_${ItemItensSaloesData.nomeSalao}`;
+
+      console.log('pastaDesejada');
+      console.log(pastaDesejada);
+      const nomeArquivo = `${ItemItensSaloesData.novoNome}`;
+
+      console.log('nomeArquivo');
+      console.log(nomeArquivo);
+
+      // Lê o conteúdo do arquivo
+      const conteudoBlob = await RNFetchBlob.fs.readFile(ItemItensSaloesData.novaImagem, 'base64');
+
+      // console.log('conteudoBlob');
+      // console.log(conteudoBlob);
+
+      const { data: UploadResponse, error: logoUploadError } = await supabase
+        .storage
+        .from('perfil') //nome do bucket
+        .upload(`${pastaDesejada}/itens/${nomeArquivo}`, decode(conteudoBlob), {
+          cacheControl: '3600', // configurações de cache
+          contentType: 'image/png'
+        },);
+
+        if (logoUploadError) {
+          console.error('Erro ao fazer upload da logo:', logoUploadError);
+          return;
+        }
+        console.log('UploadResponse');
+        console.log(UploadResponse);
+        // Após o upload da logo, obtenha a URL do arquivo no armazenamento
+  
+        const baseUrl = 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/';
+        const imgURL = baseUrl + UploadResponse.path;
+        console.log('imgURL');
+        console.log(imgURL);
       const { error: insertError } = await supabase
         .from('itens_saloes')
         .insert([
@@ -106,7 +148,7 @@ export const ItensSaloesProvider = ({ children }) => {
             quantidade_maxima: ItemItensSaloesData.quantidadeMaxima,
             novo_nome: ItemItensSaloesData.novoNome,
             nova_descricao: ItemItensSaloesData.novaDescricao,
-            nova_imagem: ItemItensSaloesData.novaImagem,
+            nova_imagem: imgURL,
           }
         ]);
 
