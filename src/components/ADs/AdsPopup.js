@@ -13,9 +13,9 @@ const AdsPopup = ({ adsData }) => {
         style={styles.image}
       />
       <View style={styles.content}>
-        <Text style={styles.title}>Anúncios</Text>
-        <Text>{adsData.title}</Text>
-        <Text>{adsData.description}</Text>
+        <Text style={styles.title}>Anúncio</Text>
+        <Text style={styles.title}>{adsData.title}</Text>
+        <Text style={styles.description}>{adsData.description}</Text>
       </View>
 
     </View>
@@ -27,17 +27,25 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'space-between',
+
     flexDirection: 'row'
+
   },
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
 
   title: {
     fontSize: 14,
     fontWeight: 'bold',
+    textAlign:'center'
+
+  },
+  description: {
+    fontSize: 14,
+    textAlign:'center'
   },
   image: {
     width: 150,
