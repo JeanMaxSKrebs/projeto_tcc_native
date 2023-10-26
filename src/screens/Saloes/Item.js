@@ -89,10 +89,13 @@ const TextCidade = styled.Text`
 `;
 
 const Item = ({ item, onPress, onPressAgenda }) => {
-  const [activeButton, setActiveButton] =  useState('image');
+  const [activeButton, setActiveButton] = useState('image');
   const [images, setImages] = useState([]);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  console.log('item');
+  console.log(item);
 
   const toggleModal = () => {
     // console.log('me clicou');
@@ -142,11 +145,22 @@ const Item = ({ item, onPress, onPressAgenda }) => {
         <Profile>
           <Button onPress={onPress} underlayColor="transparent">
             <>
-              <Icon
-                name="person-circle-outline"
-                size={60}
-                color={COLORS.primaryDark}
-              />
+              {console.log('item.logo')}
+              {console.log(item.logo)}
+              {item.logo
+                ? (
+                  <View>
+                    <Image source={{ uri: item.logo }} style={{  borderRadius: 15, width: 60, height: 60 }}
+                      onError={() => console.log('Image failed to load')}
+                    />
+                  </View>)
+                : (
+                  <Icon
+                    name="person-circle-outline"
+                    size={60}
+                    color={COLORS.primaryDark}
+                  />)
+              }
               <TextNome>{item.nome}</TextNome>
             </>
           </Button>

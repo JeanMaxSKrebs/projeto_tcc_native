@@ -17,13 +17,16 @@ import ListaCidadesButtons from '../../components/saloes/ListaCidadesButtons';
 
 const Saloes = ({ navigation }) => {
   const { user } = useContext(AuthUserContext)
-  const { cliente, getClientData} = useContext(ClienteContext)
+  const { cliente, getClientData } = useContext(ClienteContext)
 
   const { saloes, getHallsData, cidades, fetchCities, selectSaloesByCity } = useContext(SaloesContext);
   const [saloesTemp, setSaloesTemp] = useState([]);
 
-  // console.log('cliente');
-  // console.log(cliente);
+  useEffect(() => {
+    console.log('cliente');
+    console.log(cliente);
+  }, [cliente]);
+
   useEffect(() => {
     getHallsData();
     fetchCities();
@@ -102,7 +105,14 @@ const Saloes = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar search={filterSalao} name={'Salões'} />
+      
+      <SearchBar logo={
+        cliente
+          ? (user.tipo === "Cliente"
+            ? cliente.foto_perfil
+            : salao.logo)
+          : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/icone-de-perfil-de-avatar_188544-4755.png'}
+        search={filterSalao} name={'Salões'} />
       <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
       <Texto style={styles.texto} cor={COLORS.secundary} tamanho={30} texto={'Salões nas Proximidades'} />
       <Container>
