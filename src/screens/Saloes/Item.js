@@ -183,7 +183,7 @@ const Item = ({ item, onPress, onPressAgenda }) => {
               prevButton={<CustomPrevButton />}
               nextButton={<CustomNextButton />}>
               {/* {images.map((image, index) => ( */}
-              {item.imagens.map((image, index) => {
+              {item.imagens.salao.map((image, index) => {
                 // console.log('Image:', image);
                 // console.log('index:', index);
                 // console.log('item.uid:', item.uid); 

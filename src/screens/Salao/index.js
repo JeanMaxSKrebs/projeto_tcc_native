@@ -21,6 +21,9 @@ import { CommonActions } from '@react-navigation/native';
 
 import { COLORS } from '../../assets/colors';
 import Voltar from '../../components/Voltar';
+import ContainerImagens from '../../components/Imagens/ContainerImagens';
+import Texto from '../../components/Texto';
+
 
 const Salao = ({ route, navigation }) => {
   const { reservas, contarFestasRealizadas, contarFestasAgendadas } = useContext(SalaoContext);
@@ -188,31 +191,16 @@ const Salao = ({ route, navigation }) => {
             <AnotherButtonMetade prefixo={festasRealizadas} texto="Festas Realizadas" onClick={() => routeGerenciador('Festas')} style={{ width: '45%' }} />
             <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('Festas')} style={{ width: '45%' }} />
           </View>
-          <ContainerImage>
-            <Swiper
-              index={0}
-              style={styles.wrapper}
-              onIndexChanged={handleSlideChange}
-              showsButtons={true}
-              prevButton={<CustomPrevButton />}
-              nextButton={<CustomNextButton />}>
-              {/* {images.map((image, index) => ( */}
-              {imagens.map((image, index) => (
-                <>
-                  <View style={styles.slide} key={index}>
-                    {logo && (
+          <Container>
+            <Texto texto="Imagens" tamanho={35} />
 
-                      <Image
-                        source={{ uri: image }}
-                        key={image}
-                        style={{ width: 280, height: 250, borderRadius: 15 }}
-                      />
-                    )}
-                  </View>
-                </>
-              ))}
-            </Swiper>
-          </ContainerImage>
+            {salao && (
+              <>
+                <ContainerImagens salao={salao} />
+              </>
+            )}
+
+          </Container>
 
         </Container>
         {/* {loading && <Loading />} */}
