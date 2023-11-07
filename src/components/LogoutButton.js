@@ -12,7 +12,7 @@ const ButtonExit = styled.TouchableHighlight`
 `;
 
 const Image = styled.Image`
-  width: 45px;
+  width: 35px;
   height: 50px;
 `;
 
