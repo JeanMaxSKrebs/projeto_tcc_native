@@ -42,7 +42,7 @@ const Botao = styled.TouchableHighlight`
 `;
 const BotaoOpcao = styled.TouchableHighlight`
   width: auto;
-  padding: 0 40px 0 40px;
+  padding: 0 50px 0 50px;
   background-color: ${({ active }) =>
     active ? COLORS.primary : COLORS.terciary};
   border-radius: 30px;
@@ -145,8 +145,8 @@ const Item = ({ item, onPress, onPressAgenda }) => {
         <Profile>
           <Button onPress={onPress} underlayColor="transparent">
             <>
-              {console.log('item.logo')}
-              {console.log(item.logo)}
+              {/* {console.log('item.logo')}
+              {console.log(item.logo)} */}
               {item.logo
                 ? (
                   <View>
@@ -231,13 +231,13 @@ const Item = ({ item, onPress, onPressAgenda }) => {
             onPress={() => handleButtonPress('menu')}
             underlayColor="transparent"
             active={activeButton === 'menu'}>
-            <Icon name="menu" size={60} color="black" />
+            <Icon name="menu" size={50} color="black" />
           </BotaoOpcao>
           <BotaoOpcao
             onPress={() => handleButtonPress('image')}
             underlayColor="transparent"
             active={activeButton === 'image'}>
-            <Icon name="image" size={60} color="black" />
+            <Icon name="image" size={50} color="black" />
           </BotaoOpcao>
         </Opcoes>
       </Div>
