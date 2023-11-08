@@ -35,14 +35,17 @@ const ListaCidadesButtons = ({ cidades, onCityButtonClick }) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 50, // Defina a altura desejada aqui
+        width: '90%',
+        borderRadius: 5,
+        backgroundColor: COLORS.primaryShadow,
+        padding: 10,
     },
     button: {
         alignContent: 'center',
         alignSelf: 'center',
-        backgroundColor: COLORS.primaryShadow, // Cor de fundo do botão
+        backgroundColor: COLORS.primary,
         padding: 10,
-        margin: 5,
+        marginHorizontal: 15,
         borderRadius: 5,
     },
 });

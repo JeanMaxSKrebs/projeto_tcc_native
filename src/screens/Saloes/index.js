@@ -6,7 +6,7 @@ import { SaloesContext } from '../../context/SaloesProvider';
 import { Image } from '../Preload/styles';
 import Item from './Item';
 import AddFloatButton from '../../components/AddFloatButton';
-import { Container, FlatList } from './styles';
+import { Container, FlatList, ContainerTitle } from './styles';
 
 import { CommonActions } from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
@@ -15,16 +15,21 @@ import { ClienteContext } from '../../context/ClienteProvider';
 import Texto from '../../components/Texto';
 import ListaCidadesButtons from '../../components/saloes/ListaCidadesButtons';
 
+import MeuButtonCidade from '../../components/MeuButtonCidade';
+
 const Saloes = ({ navigation }) => {
   const { user } = useContext(AuthUserContext)
   const { cliente, getClientData } = useContext(ClienteContext)
 
   const { saloes, getHallsData, cidades, fetchCities, selectSaloesByCity } = useContext(SaloesContext);
+  const [saloesCidadeTemp, setSaloesCidadeTemp] = useState([]);
   const [saloesTemp, setSaloesTemp] = useState([]);
+  const [cidade, setCidade] = useState(null);
+  const [mostrarListaCidades, setMostrarListaCidades] = useState(false);
 
   useEffect(() => {
-    console.log('cliente');
-    console.log(cliente);
+    // console.log('cliente');
+    // console.log(cliente);
   }, [cliente]);
 
   useEffect(() => {
@@ -55,28 +60,55 @@ const Saloes = ({ navigation }) => {
     );
   };
   const filterSalao = text => {
-    // console.log(text);
+    console.log('text');
+    console.log(text);
+    console.log('cidade');
+    console.log(cidade);
+    // console.log('saloesTemp');
+    // console.log(saloesTemp);
     let filtro = [];
-    saloes.filter(salao => {
-      if (salao.nome.toLowerCase().includes(text.toLowerCase())) {
-        filtro.push(salao);
+    if (cidade == null) {
+      console.log(`filtro de todos os registros`);
+
+      saloes.filter(salao => {
+        if (salao.nome.toLowerCase().includes(text.toLowerCase())) {
+          filtro.push(salao);
+        }
+      });
+      if (filtro.length > 0) {
+        setSaloesTemp(filtro);
+        // console.log(filtro.length);
+      } else {
+        setCidade(null)
+        setSaloesTemp([])
       }
-    });
+    } else {
+      console.log(`filtro de todos os registros de ${cidade}`);
+
+      saloesTemp.filter(salao => {
+        if (salao.nome.toLowerCase().includes(text.toLowerCase())) {
+          filtro.push(salao);
+        }
+      });
+      if (filtro.length > 0) {
+        setSaloesCidadeTemp(filtro);
+        // console.log(filtro.length);
+      } else {
+        console.log('nada');
+        setSaloesCidadeTemp([])
+      }
+    }
+
     // console.log('filtro');
     // console.log(filtro);
     // console.log(filtro.length);
-    if (filtro.length > 0) {
-      setSaloesTemp(filtro);
-      // console.log(filtro.length);
-    } else {
-      setSaloesTemp([]);
-    }
+
   };
 
   const routeAgenda = (item) => {
     // Ação específica quando o botão "Ver Agenda" for clicado
-    console.log('Botão "Ver Agenda" foi clicado com argumento:');
-    console.log(item);
+    // console.log('Botão "Ver Agenda" foi clicado com argumento:');
+    // console.log(item);
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Agenda',
@@ -95,26 +127,50 @@ const Saloes = ({ navigation }) => {
   };
 
   const handleCityButtonClick = async (cidade) => {
-    // Lógica a ser executada quando um botão de cidade for clicado
-    console.log(`Clicou em ${cidade}`);
-    setSaloesTemp(await selectSaloesByCity(cidade))
+    if (cidade !== 'HOME') {
+      // Lógica a ser executada quando um botão de cidade for clicado
+      console.log(`Clicou em ${cidade}`);
+      setCidade(cidade)
+      setSaloesCidadeTemp([])
+      setSaloesTemp(await selectSaloesByCity(cidade))
+    } else {
+      setSaloesCidadeTemp([])
+      setCidade(null)
+      setSaloesTemp([])
 
-    // Você pode atualizar a lista de salões com base na cidade selecionada
+    }
+    setMostrarListaCidades(false)
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
       <SearchBar logo={
         cliente
           ? (user.tipo === "Cliente"
             ? cliente.foto_perfil
             : salao.logo)
           : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/icone-de-perfil-de-avatar_188544-4755.png'}
-        search={filterSalao} name={'Salões'} />
-      <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
-      <Texto style={styles.texto} cor={COLORS.secundary} tamanho={30} texto={'Salões nas Proximidades'} />
+        search={filterSalao} name={'Salões'}
+      />
+      {!mostrarListaCidades && (
+        <MeuButtonCidade onClick={() => setMostrarListaCidades(true)}
+          texto={'Lista de Cidades'} />
+      )}
+      {mostrarListaCidades && (
+        <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
+      )}
+      {cidade ?
+        <ContainerTitle>
+          <Texto cor={COLORS.secundary} tamanho={20} texto={'Salões nas Proximidades de'} />
+          <Texto cor={COLORS.secundary} tamanho={20} texto={`${cidade}`} />
+        </ContainerTitle>
+        :
+        <ContainerTitle>
+          <Texto cor={COLORS.secundary} tamanho={20} texto={'Salões nas Proximidades'} />
+        </ContainerTitle>
+
+      }
       <Container>
         {/* {console.log('saloes')}
           {console.log(saloes)}
@@ -122,14 +178,21 @@ const Saloes = ({ navigation }) => {
         {console.log(saloesTemp.length)} */}
 
         <FlatList
-          data={saloesTemp.length > 0 ? saloesTemp : saloes}
+          data={saloesCidadeTemp.length > 0 ? saloesCidadeTemp : saloesTemp.length > 0 ? saloesTemp : saloes}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
       </Container>
+
+      {/* <ContainerTitle>
+    <Texto cor={COLORS.secundary} tamanho={30} texto={'Nenhum Salão nas proximidades'} />
+
+    <Texto cor={COLORS.secundary} tamanho={30} texto={`${cidade}`} />
+  </ContainerTitle> */}
+
       {/* {loading && <Loading />} */}
       {/* <AddFloatButton onClick={() => routeSalao(null)} /> */}
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
@@ -141,13 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  texto: {
-    fontSize: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    color: COLORS.primaryDark,
-  },
+
   logout: {
     backgroundColor: COLORS.red,
   },

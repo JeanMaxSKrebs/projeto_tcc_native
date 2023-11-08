@@ -269,8 +269,8 @@ export const SalaoProvider = ({ children }) => {
 
   const createReserva = async (data) => {
     try {
-      console.log('data');
-      console.log(data);
+      // console.log('data');
+      // console.log(data);
       if (!data.data_hora || !data.salao_id || !data.cliente_id) {
         console.error('Campos obrigatórios ausentes na reserva.');
         return;

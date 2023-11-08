@@ -28,7 +28,7 @@ export default MeuButtonMetade;
 const styles = StyleSheet.create({
   texto: {
     fontSize: 18,
-    // color: COLORS.secundary,
+    color: COLORS.secundary,
     textAlign: 'center',
   },
   button: {

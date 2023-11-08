@@ -138,13 +138,13 @@ export const SaloesProvider = ({ children }) => {
       return null;
     }
 
-    console.log('data');
-    console.log(data);
+    // console.log('data');
+    // console.log(data);
     
     // e agora filtre as cidadeDesejadas
     const saloesNaCidadeDesejada = data.filter((salao) => salao.cidade === cidadeDesejada);
-    console.log('saloesNaCidadeDesejada');
-    console.log(saloesNaCidadeDesejada);
+    // console.log('saloesNaCidadeDesejada');
+    // console.log(saloesNaCidadeDesejada);
 
     return saloesNaCidadeDesejada;
   }

@@ -94,8 +94,8 @@ const Item = ({ item, onPress, onPressAgenda }) => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  console.log('item');
-  console.log(item);
+  // console.log('item');
+  // console.log(item);
 
   const toggleModal = () => {
     // console.log('me clicou');

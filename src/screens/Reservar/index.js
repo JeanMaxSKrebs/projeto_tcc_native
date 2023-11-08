@@ -72,8 +72,8 @@ const Reservar = ({ route, navigation }) => {
         setHorarioReserva(dado[2])
 
         const dataHoraString = converterHora(dado[1], dado[3])
-        console.log('dataHoraString');
-        console.log(dataHoraString);
+        // console.log('dataHoraString');
+        // console.log(dataHoraString);
 
         if (salao && cliente) {
             // console.log('salao');
