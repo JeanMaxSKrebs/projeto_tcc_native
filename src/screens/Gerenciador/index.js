@@ -106,6 +106,7 @@ const Gerenciador = ({ navigation }) => {
         navigation.dispatch(
           CommonActions.navigate({
             name: 'Saloes',
+            params: { desabilitarBotoes: true }
           }),
         );
         break;
@@ -178,9 +179,10 @@ const Gerenciador = ({ navigation }) => {
           <View style={{
             flexDirection: 'row',
             alignSelf: 'center',
-            marginLeft: 100
+            marginLeft: 100,
+            marginTop: 20
           }}>
-            <Texto texto="Imagens" tamanho={35} />
+            <Texto cor={COLORS.secundary} texto="Imagens" tamanho={35} />
             <View style={styles.edit}>
               <MeuButtonMetade width={'auto'}
                 texto={<Icon name="create" size={20} color={COLORS.secundary} />}

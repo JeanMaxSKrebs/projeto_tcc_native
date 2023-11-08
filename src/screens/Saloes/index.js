@@ -17,7 +17,7 @@ import ListaCidadesButtons from '../../components/saloes/ListaCidadesButtons';
 
 import MeuButtonCidade from '../../components/MeuButtonCidade';
 
-const Saloes = ({ navigation }) => {
+const Saloes = ({ route, navigation }) => {
   const { user } = useContext(AuthUserContext)
   const { cliente, getClientData } = useContext(ClienteContext)
 
@@ -26,7 +26,11 @@ const Saloes = ({ navigation }) => {
   const [saloesTemp, setSaloesTemp] = useState([]);
   const [cidade, setCidade] = useState(null);
   const [mostrarListaCidades, setMostrarListaCidades] = useState(false);
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(route.params.desabilitarBotoes ? route.params.desabilitarBotoes : null);
 
+
+  console.log('desabilitarBotoes');
+  console.log(desabilitarBotoes);
   useEffect(() => {
     // console.log('cliente');
     // console.log(cliente);
@@ -55,7 +59,7 @@ const Saloes = ({ navigation }) => {
     navigation.dispatch(
       CommonActions.navigate({
         name: 'Salao',
-        params: { salao: item, user: cliente },
+        params: { salao: item, user: cliente,  desabilitarBotoes },
       }),
     );
   };
@@ -122,7 +126,7 @@ const Saloes = ({ navigation }) => {
     // console.log('item.id:', item.id);
 
     return (
-      <Item item={item} onPress={() => routeSalao(item)} onPressAgenda={() => routeAgenda(item)} />
+      <Item item={item}onPress={() => routeSalao(item)} onPressAgenda={() => routeAgenda(item)} />
     );
   };
 

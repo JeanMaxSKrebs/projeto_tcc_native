@@ -9,11 +9,10 @@ import { SalaoContext } from '../../context/SalaoProvider';
 import Texto from '../Texto';
 
 export const TextPlaceholder = styled.Text`
-  /* background-color: red; */
   text-align: center;
-  font-size: 18px;
-  margin-bottom: 1px;
-  color: gray;
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: ${COLORS.secundary};
 `;
 
 const ContainerImagens = ({ alterar, salao }) => {

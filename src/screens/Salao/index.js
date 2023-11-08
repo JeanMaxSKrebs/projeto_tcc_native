@@ -48,6 +48,9 @@ const Salao = ({ route, navigation }) => {
 
   const salao = route.params.salao
   const user = route.params.user
+  const desabilitarBotoes  = route.params.desabilitarBotoes 
+  console.log('desabilitarBotoesSalao');
+  console.log(desabilitarBotoes);
   // console.log('salao.id');
   // console.log(salao.id);
   // console.log('user.id');
@@ -178,13 +181,13 @@ const Salao = ({ route, navigation }) => {
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <MeuButtonMetade texto="Orçar" onClick={() => routeGerenciador('Orcar')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Reservar" onClick={() => routeGerenciador('Reservar')} style={{ width: '45%' }} />
+            <MeuButtonMetade disabled={desabilitarBotoes} texto="Orçar" onClick={() => routeGerenciador('Orcar')} style={{ width: '45%' }} />
+            <MeuButtonMetade disabled={desabilitarBotoes} texto="Reservar" onClick={() => routeGerenciador('Reservar')} style={{ width: '45%' }} />
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <MeuButtonMetade texto="Ver Agenda" onClick={() => routeGerenciador('VerAgenda')} style={{ width: '45%' }} />
-            <MeuButtonMetade texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
+            <MeuButtonMetade disabled={desabilitarBotoes} texto="Conversar" onClick={() => routeGerenciador('Conversar')} style={{ width: '45%' }} />
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -192,7 +195,7 @@ const Salao = ({ route, navigation }) => {
             <AnotherButtonMetade prefixo={festasAgendadas} texto="Festas Agendadas" onClick={() => routeGerenciador('Festas')} style={{ width: '45%' }} />
           </View>
           <Container>
-            <Texto texto="Imagens" tamanho={35} />
+            <Texto cor={COLORS.secundary} texto="Imagens" tamanho={35} />
 
             {salao && (
               <>
