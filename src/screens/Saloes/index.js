@@ -153,10 +153,11 @@ const Saloes = ({ navigation }) => {
           : 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/icone-de-perfil-de-avatar_188544-4755.png'}
         search={filterSalao} name={'Salões'}
       />
-      {!mostrarListaCidades && (
-        <MeuButtonCidade onClick={() => setMostrarListaCidades(true)}
-          texto={'Lista de Cidades'} />
-      )}
+      {/*TO SHOW*/}
+      {/* {!mostrarListaCidades && ( */}
+      <MeuButtonCidade onClick={() => setMostrarListaCidades(!mostrarListaCidades)}
+        texto={'Lista de Cidades'} />
+      {/* )} */}
       {mostrarListaCidades && (
         <ListaCidadesButtons cidades={cidades} onCityButtonClick={handleCityButtonClick} />
       )}

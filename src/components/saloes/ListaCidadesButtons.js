@@ -37,13 +37,13 @@ const styles = StyleSheet.create({
     container: {
         width: '90%',
         borderRadius: 5,
-        backgroundColor: COLORS.primaryShadow,
+        // backgroundColor: COLORS.primaryShadow,
         padding: 10,
     },
     button: {
         alignContent: 'center',
         alignSelf: 'center',
-        backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.primaryShadow,
         padding: 10,
         marginHorizontal: 15,
         borderRadius: 5,

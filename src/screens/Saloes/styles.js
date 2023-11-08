@@ -17,5 +17,6 @@ export const ContainerTitle = styled.View`
   border-radius: 15px;
   width: 80%;
   background-color: ${COLORS.primaryShadow}
-  margin: 15px
+  margin: 5px;
+  margin-bottom: 15px;
 `;
