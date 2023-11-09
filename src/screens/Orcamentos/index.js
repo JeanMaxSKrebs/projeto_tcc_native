@@ -15,6 +15,8 @@ const Orcamentos = ({ route, navigation }) => {
   const { orcamentos, getBudgetData } = useContext(OrcamentosContext);
   const [orcamentosTemp, setOrcamentosTemp] = useState([]);
 
+  const [hasFocused, setHasFocused] = useState(false);
+
   const voltar = () => {
     navigation.goBack();
   };
@@ -30,6 +32,7 @@ const Orcamentos = ({ route, navigation }) => {
   const horarioReserva = route.params.horarioReserva;
   const salao = route.params.salao;
   const cliente = route.params.cliente;
+  const atualizar = route.params.atualizar;
 
   { cliente ? imprimirContent = false : imprimirContent = true }
 
@@ -73,7 +76,14 @@ const Orcamentos = ({ route, navigation }) => {
         break;
     }
   };
-  const [hasFocused, setHasFocused] = useState(false);
+
+  console.log('atualizar');
+  console.log(atualizar);
+
+  useEffect(() => {
+    setHasFocused(false)
+  }, [atualizar])
+
   useFocusEffect(() => {
     // console.log(hasFocused);
     if (!hasFocused) {

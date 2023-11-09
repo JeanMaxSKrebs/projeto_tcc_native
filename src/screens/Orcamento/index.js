@@ -67,7 +67,7 @@ const Orcamento = ({ route, navigation }) => {
   }, [route.params.orcamento]);
 
   const voltar = () => {
-    navigation.goBack();
+    navigation.navigate('Orcamentos', { salao:salao, atualizar: true });
   };
 
   function pegarIds(itensOrcamentos) {
