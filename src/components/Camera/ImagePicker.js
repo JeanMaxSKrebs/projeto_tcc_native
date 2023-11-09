@@ -6,6 +6,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MeuButtonMetade from '../MeuButtonMetade';
 import Texto from '../Texto';
+import { COLORS } from '../../assets/colors';
 
 
 const ImagePicker = ({ onPress }) => {
@@ -103,9 +104,9 @@ const ImagePicker = ({ onPress }) => {
                 )
             }
             <View style={{ flexDirection: 'row' }}>
-                <MeuButtonMetade width={'auto'} texto="Capturar Foto" onClick={handleLaunchCamera}
+                <MeuButtonMetade width={'auto'} cor={COLORS.primaryShadow} texto="Capturar Foto" onClick={handleLaunchCamera}
                 />
-                <MeuButtonMetade width={'auto'} texto="Selecionar Foto" onClick={handleLaunchImageLibrary}
+                <MeuButtonMetade width={'auto'} cor={COLORS.primaryShadow} texto="Selecionar Foto" onClick={handleLaunchImageLibrary}
                 />
                 {imageUri !== undefined && imageUri !== null &&
                     <MeuButtonMetade width={'auto'} cor={'red'} texto="X"
