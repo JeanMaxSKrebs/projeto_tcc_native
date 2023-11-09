@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {COLORS} from '../../assets/colors';
+import { COLORS } from '../../assets/colors';
 
 export const Container = styled.View`
   flex: 1;
@@ -10,23 +10,20 @@ export const Container = styled.View`
 export const TextPlaceholder = styled.Text`
   /* background-color: red; */
   text-align: left;
-  font-size: 10px;
-  margin-bottom: 1px;
-  color: gray;
+  font-size: 16px;
+  margin-bottom: 2px;
+  color: ${COLORS.secundary};
 `;
 
 export const TextInput = styled.TextInput`
-  color: black;
+  color: ${COLORS.secundary};
   width: 70%;
   height: 50px;
-  border-width: 2px;
+  border-width: 1px;
   border-radius: 15px;
   font-size: 16px;
   text-align: center;
-  padding-left: 2px;
-  padding-bottom: 1px;
   margin-bottom: 10px;
-
 `;
 
 export const Text = styled.Text`

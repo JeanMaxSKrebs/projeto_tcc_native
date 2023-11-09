@@ -68,9 +68,9 @@ const ImagePicker = ({ onPress }) => {
         if (value !== '') {
             return <Text style={{
                 textAlign: 'left',
-                fontSize: 10,
+                fontSize: 16,
                 marginBottom: 1,
-                color: 'gray'
+                color: COLORS.secundary,
             }}>
                 {value}
             </Text>
@@ -90,7 +90,11 @@ const ImagePicker = ({ onPress }) => {
                             {renderPlaceholder(imageUri ? 'Nova Logo' : '')}
                         </View>
                         <Image
-                            style={{ width: 200, height: 200 }} source={{ uri: imageUri }}
+                            style={{
+                                width: 200, height: 200,
+                                borderWidth: 1, borderColor: 'black', borderRadius: 15
+                            }}
+                            source={{ uri: imageUri }}
                         />
 
                     </View>

@@ -94,9 +94,9 @@ const AtualizarDados = ({ route, navigation }) => {
                 <View style={{ width: '65%' }} >
                   {renderPlaceholder(logo ? 'Logo' : '')}
                 </View>
-                <View style={{ borderWidth: 3, borderColor: 'black', borderRadius: 10 }}>
+                <View style={{ borderWidth: 1, borderColor: 'black', borderRadius: 15 }}>
                   <Image
-                    style={{ width: 300, height: 300 }}
+                    style={{ width: 300, height: 300, borderRadius: 15 }}
                     source={{ uri: logo }}
                     resizeMode="cover"
                   />
