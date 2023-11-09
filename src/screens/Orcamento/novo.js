@@ -59,12 +59,8 @@ const NovoOrcamento = ({ route, navigation }) => {
       console.log('newOrcamentoWithId');
       console.log(newOrcamentoWithId);
 
-      navigation.dispatch(
-        CommonActions.navigate({
-          name: 'Orcamento',
-          params: { orcamento: newOrcamentoWithId, salao: salao, cliente: cliente },
-        }),
-      );
+      navigation.replace('Orcamento', { orcamento: newOrcamentoWithId, salao: salao, cliente: cliente });
+
     } catch (error) {
       console.error('Erro ao salvar o orçamento:', error);
     }
@@ -85,7 +81,7 @@ const NovoOrcamento = ({ route, navigation }) => {
           <Texto tamanho={40} texto={'Novo Orçamento'} ></Texto>
         </View>
 
-        <ViewInput style={{ marginVertical: 30, backgroundColor: 'red' }}>
+        <ViewInput style={{ marginVertical: 30 }}>
           <View style={{ width: '65%' }} >
             {renderPlaceholder(nome ? 'Nome' : '')}
           </View>

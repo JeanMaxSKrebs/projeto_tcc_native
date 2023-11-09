@@ -8,6 +8,7 @@ import Texto from '../../components/Texto';
 import { Container, FlatList, Content, TextInput, ViewInput, TextPlaceholder } from './styles';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { CommonActions } from '@react-navigation/native';
+import { ToastAndroid } from 'react-native';
 
 const AlterarOrcamento = ({ route, navigation }) => {
   // console.log('route')
@@ -27,6 +28,10 @@ const AlterarOrcamento = ({ route, navigation }) => {
     navigation.goBack();
   };
 
+  const showToast = message => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
+
   useEffect(() => {
     // console.log('orcamento123')
     // console.log(orcamento);
@@ -43,13 +48,25 @@ const AlterarOrcamento = ({ route, navigation }) => {
   }, []);
 
   const salvar = async () => {
+    if (!nome || !descricao || valorBase === 0) {
+      showToast(`Por favor, preencha todos os campos obrigatórios.`);
+
+      return;
+    }
     const newOrcamento = {
       salao_id: salaoId,
       nome: nome,
       descricao: descricao,
       valorBase: valorBase,
       valorItens: orcamento.valorItens,
-      valorTotal: parseFloat(valorBase) + parseFloat(orcamento.valorItens),
+      valorTotal: (valorBase !== undefined
+        ? parseFloat(valorBase)
+        : 0)
+        +
+        (orcamento.valorItens !== undefined
+          ? parseFloat(orcamento.valorItens)
+          : 0)
+
     };
     try {
       // console.log('newOrcamento');
