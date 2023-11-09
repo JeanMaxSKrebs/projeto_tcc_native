@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { SafeAreaView, TouchableOpacity, ToastAndroid, ScrollView} from 'react-native';
+import { SafeAreaView, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
 
@@ -102,8 +102,8 @@ const AdicionarItemSalao = ({ route, navigation }) => {
 
         <Voltar texto="Voltar" onClick={() => voltar()} />
         <View>
-          <View>
-            <Texto tamanho={40} texto={'NOVO ITEM'}></Texto>
+          <View style={{ margin: 40, marginBottom: 30 }}>
+            <Texto tamanho={40} texto={'Novo Item'}></Texto>
           </View>
           <View>
             <TextInput
@@ -153,7 +153,7 @@ const AdicionarItemSalao = ({ route, navigation }) => {
               <TouchableOpacity onPress={toggleInputMethod}>
                 <View style={{
                   flexDirection: 'row', alignItems: 'center',
-                  backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
+                  backgroundColor: `${COLORS.primaryShadow}`, padding: 10, borderRadius: 15,
                 }}>
                   <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
                 </View>
