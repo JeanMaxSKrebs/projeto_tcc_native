@@ -137,7 +137,7 @@ const Gerenciador = ({ navigation }) => {
           {/* {console.log('salao')}
         {console.log(salao)} */}
           {salao ? (
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', margin: 5 }}>
               {salao.logo && (
                 <Image
                   source={{ uri: salao.logo }}

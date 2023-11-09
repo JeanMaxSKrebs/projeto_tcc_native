@@ -26,11 +26,8 @@ const Saloes = ({ route, navigation }) => {
   const [saloesTemp, setSaloesTemp] = useState([]);
   const [cidade, setCidade] = useState(null);
   const [mostrarListaCidades, setMostrarListaCidades] = useState(false);
-  const [desabilitarBotoes, setDesabilitarBotoes] = useState(route.params.desabilitarBotoes ? route.params.desabilitarBotoes : null);
+  const [desabilitarBotoes, setDesabilitarBotoes] = useState(route.params ? route.params.desabilitarBotoes : null);
 
-
-  console.log('desabilitarBotoes');
-  console.log(desabilitarBotoes);
   useEffect(() => {
     // console.log('cliente');
     // console.log(cliente);
