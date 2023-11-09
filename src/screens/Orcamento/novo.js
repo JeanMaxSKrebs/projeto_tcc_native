@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { SafeAreaView } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { COLORS } from '../../assets/colors';
 import LogoutButton from '../../components/LogoutButton';
 import MeuButton from '../../components/MeuButton';
 import Voltar from '../../components/Voltar';
 import Texto from '../../components/Texto';
-import { View, Container, FlatList, Content, TextInput } from './styles';
+import { Container, FlatList, Content, ViewInput, TextInput, TextPlaceholder } from './styles';
 import { OrcamentosContext } from '../../context/OrcamentosProvider';
 import { CommonActions } from '@react-navigation/native';
 import { ToastAndroid } from 'react-native';
@@ -69,32 +69,52 @@ const NovoOrcamento = ({ route, navigation }) => {
       console.error('Erro ao salvar o orçamento:', error);
     }
   };
+  const renderPlaceholder = (value) => {
+    if (value !== '') {
+      return <TextPlaceholder>{value}</TextPlaceholder>;
+    }
+    return null;
+  };
+
 
   return (
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
-      <View>
-        <View>
-          <Texto tamanho={40} texto={'NOVO ORÇAMENTO'}></Texto>
+      <ScrollView>
+        <View style={{ marginVertical: 30 }}>
+          <Texto tamanho={40} texto={'Novo Orçamento'} ></Texto>
         </View>
-        <View>
+
+        <ViewInput style={{ marginVertical: 30, backgroundColor: 'red' }}>
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(nome ? 'Nome' : '')}
+          </View>
           <TextInput placeholder="Nome" value={nome} onChangeText={setNome} />
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(descricao ? 'Descrição' : '')}
+          </View>
           <TextInput
             placeholder="Descrição"
             value={descricao}
             onChangeText={setDescricao}
+            multiline={true}
+            style={{ height: 75 }}
           />
+          <View style={{ width: '65%' }} >
+            {renderPlaceholder(valorBase ? 'Valor Base' : '')}
+          </View>
           <TextInput
             keyboardType="numeric"
             placeholder="Valor Base"
-            value={valorBase !== 0 ? valorBase.toString() : ""}
+            value={valorBase !== 0 ? valorBase.toString() : ''}
             onChangeText={setValorBase}
           />
-        </View>
+        </ViewInput>
+        <ViewInput style={{ marginVertical: 30 }}>
 
-        <MeuButton texto="Criar Orçamento" onClick={() => salvar()} />
-        <MeuButton texto="Voltar" onClick={() => voltar()} />
-      </View>
+          <MeuButton texto="Criar Orçamento" onClick={() => salvar()} />
+        </ViewInput>
+      </ScrollView>
     </SafeAreaView>
   );
 };

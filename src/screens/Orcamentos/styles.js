@@ -27,7 +27,7 @@ export const FlatList = styled.FlatList`
   `;
 
 export const Button = styled.TouchableOpacity`
-    width: 100%;
+    width: 95%;
     text-align: center;
     padding: 10px;
     margin: 10px;
