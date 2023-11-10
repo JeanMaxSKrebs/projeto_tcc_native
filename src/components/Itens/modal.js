@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, Modal, Image, TextInput, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
+  View, Text, Modal, Image, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
 } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import { COLORS } from '../../assets/colors';
@@ -8,6 +8,34 @@ import Texto from '../../components/Texto';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import ModalExclusao from './modalExclusao'
+import styled from 'styled-components/native';
+
+export const TextPlaceholder = styled.Text`
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 2px;
+  color: ${COLORS.secundary};
+`;
+
+export const TextInput = styled.TextInput`
+  color: ${COLORS.secundary};
+  width: 70%;
+  height: 50px;
+  border-width: 1px;
+  border-radius: 15px;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+export const ViewInput = styled.SafeAreaView`
+  color: black;
+  font-size: 30px;
+  align-items: center; 
+  width: 100%;
+  /* background-color: red; */
+`;
+
 const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
   // console.log('item1')
   // console.log(item)
@@ -100,6 +128,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
     if (isItensSaloes) {
       return (<>
         <TextInput
+          keyboardType="numeric"
           style={styles.TextInput}
           placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
           value={novoValorUnitario ? novoValorUnitario.toString() : null}
@@ -112,6 +141,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
     } else {
       return (<>
         <TextInput
+          keyboardType="numeric"
           style={styles.TextInput}
           placeholder={`Valor Unitário: ${valorUnitarioTemp}`}
           value={novoValorUnitario ? novoValorUnitario.toString() : null}
@@ -142,7 +172,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         ) : (
           <TextInput
             style={styles.TextInput}
-            placeholder={`Quantidade Antiga: ${quantidadeMaximaTemp.toString()}`}
+            placeholder={`Quantidade Máxima Antiga: ${quantidadeMaximaTemp.toString()}`}
             value={quantidadeMaxima.toString()}
             onChangeText={(text) => {
               if (text > definicao) {
@@ -159,7 +189,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         <TouchableOpacity onPress={toggleInputMethod}>
           <View style={{
             flexDirection: 'row', alignItems: 'center',
-            backgroundColor: `${COLORS.gray}`, padding: 5, borderRadius: 15, borderColor: 'black', borderWidth: 2
+            backgroundColor: `${COLORS.primaryShadow}`, padding: 10, borderRadius: 15,
           }}>
             <Texto cor={COLORS.secundary} texto={`Usar Modo ${usarPicker ? 'Texto' : 'Escolha'}`}></Texto>
           </View>
@@ -176,7 +206,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               selectedValue={quantidade}
               onValueChange={(item, index) => {
                 setQuantidade(item);
-                setNewItem({ ...newItem, quantidade: item});
+                setNewItem({ ...newItem, quantidade: item });
               }}            >
               {quantidadeMaximaValues.map((value) => (
                 <Picker.Item key={value} label={value} value={value} />
@@ -188,15 +218,15 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
             style={styles.TextInput}
             placeholder={`Quantidade Máxima: ${quantidadeMaximaTemp.toString()}`}
             value={quantidade ? quantidade.toString() : null}
-             onChangeText={(text) => {
-               if (text > quantidadeMaxima) {
+            onChangeText={(text) => {
+              if (text > quantidadeMaxima) {
                 showToast(`Quantidade Máxima de Itens: ${quantidadeMaxima}`);
                 setQuantidade(0);
               } else {
                 setQuantidade(text);
               }
-              setNewItem({ ...newItem, quantidade: text});
-             }}
+              setNewItem({ ...newItem, quantidade: text });
+            }}
             keyboardType="numeric"
           />
         )}
@@ -212,8 +242,12 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
       )
     }
   };
-  //  ○  ✓
-
+  const renderPlaceholder = (value) => {
+    if (value !== '') {
+      return <TextPlaceholder>{value}</TextPlaceholder>;
+    }
+    return null;
+  };
   return (
     <Modal
       visible={isModalVisible}
@@ -229,23 +263,27 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               </TouchableOpacity>
               <>
                 <>
-                  <TouchableOpacity>
-                    <Text>Nome</Text>
-                  </TouchableOpacity>
+                  <View style={{ width: '90%' }} >
+                    {renderPlaceholder(novoNome ? 'Nome' : '')}
+                  </View>
                   <TextInput
                     style={styles.TextInput}
                     placeholder="Nome"
                     value={novoNome === null ? nome : novoNome}
                     onChangeText={(text) => {
+                      console.log('nome');
+                      console.log(nome);
+                      console.log('novoNome');
+                      console.log(novoNome);
                       setNovoNome(text)
                       setNewItem({ ...newItem, novoNome: text })
                     }}
                   />
                 </>
                 <>
-                  <TouchableOpacity>
-                    <Text>Descricão</Text>
-                  </TouchableOpacity>
+                  <View style={{ width: '90%' }} >
+                    {renderPlaceholder(novaDescricao ? 'Descrição' : '')}
+                  </View>
                   <TextInput
                     style={styles.TextInput}
                     placeholder="Descricão"
@@ -257,15 +295,15 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                   />
                 </>
                 <>
-                  <TouchableOpacity>
-                    <Text>Valor Unitário</Text>
-                  </TouchableOpacity>
+                  <View style={{ width: '90%' }} >
+                    {renderPlaceholder(novoValorUnitario ? 'Valor Unitário' : '')}
+                  </View>
                   {renderValorUnitario()}
                 </>
                 <>
-                  <TouchableOpacity>
-                    <Text>Quantidade</Text>
-                  </TouchableOpacity>
+                  <View style={{ width: '90%' }} >
+                    {renderPlaceholder(quantidadeMaxima ? 'Quantidade Máxima' : '')}
+                  </View>
                   {renderQuantidade()}
                 </>
               </>
@@ -314,9 +352,9 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
               </TouchableOpacity>
               <>
                 <>
-                  <TouchableOpacity>
-                    <Text>Nome</Text>
-                  </TouchableOpacity>
+                  <View style={{ width: '65%' }} >
+                    {renderPlaceholder(nome || novoNome ? 'Nomes' : '')}
+                  </View>
                   <TextInput
                     style={styles.TextInput}
                     placeholder="Nome"
@@ -420,9 +458,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     fontSize: 16,
     textAlign: 'center',
-    paddingLeft: 2,
-    paddingBottom: 1,
-    marginBottom: 10
   },
   button: {
     marginTop: 10,
