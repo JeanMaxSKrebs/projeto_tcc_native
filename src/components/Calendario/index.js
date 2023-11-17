@@ -126,20 +126,17 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
     cliente ? (
       markedDates[date] = {
         marked: true,
-        selected: true,
         disabled: true,
         disableTouchEvent: true,
-        // disableTouchEvent: true,
         dotColor: 'red',
-        selectedColor: 'red',
+        // selectedColor: 'red',
       }
     ) : (
       markedDates[date] = {
         hour: hour,
         marked: true,
-        selected: true,
         dotColor: 'green',
-        selectedColor: 'green',
+        // selectedColor: 'green',
       }
     )
   });

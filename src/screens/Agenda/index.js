@@ -66,8 +66,10 @@ const Agenda = ({ route, navigation }) => {
                 navigation.dispatch(
                     CommonActions.navigate({
                         name: dados[0],
-                        params: { dataReserva: dados[1], horarioReserva: dados[2],
-                             salao: salao, cliente: cliente, user: user },
+                        params: {
+                            dataReserva: dados[1], horarioReserva: dados[2],
+                            salao: salao, cliente: cliente, user: user
+                        },
                     }),
                 );
                 break;
@@ -100,7 +102,6 @@ const Agenda = ({ route, navigation }) => {
                         <Calendario reservas={reservas} onPress={routeFor} cliente={cliente} />
                     </View>
                     <MeuButtonMetade
-                        borda
                         width={'auto'}
                         tamanho={25}
                         texto={'Horários Reservados do Salão'}
@@ -114,21 +115,18 @@ const Agenda = ({ route, navigation }) => {
                             setModalVisible(false);
                         }}
                     >
-                        <View style={styles.modal}>
-                            <View style={styles.horario}>
-                                <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
-                                <FlatList
-                                    data={reservas}
-                                    renderItem={renderItem}
-                                    keyExtractor={(item) => item.id.toString()}
-                                />
+                        <View>
+                            <Voltar texto="Voltar" onClick={() => setModalVisible(false)} />
+                            <View style={styles.modal}>
 
-                                <MeuButtonMetade
-                                    width={'auto'}
-                                    tamanho={25}
-                                    texto={'Voltar'}
-                                    onClick={() => setModalVisible(false)}
-                                />
+                                <View style={styles.horario}>
+                                    <Texto texto={'Horários Reservados do Salão'} tamanho={25} />
+                                    <FlatList
+                                        data={reservas}
+                                        renderItem={renderItem}
+                                        keyExtractor={(item) => item.id.toString()}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </Modal>
