@@ -249,7 +249,7 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
                 <Texto tamanho={16} cor={COLORS.green} texto={'Data sem Agendamentos'} style={styles.infoText} />
               )}
 
-              <MeuButtonMetade borda width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
+              <MeuButtonMetade cor={COLORS.primaryShadow} width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
 
               <MeuButtonMetade disabled={!solicitarReserva} width={'50%'} texto={'Solicitar Reserva'}
                 cor={COLORS.primary}
@@ -261,7 +261,7 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
               {selectedMarkedDate ? (
                 <>
                   <Texto tamanho={16} cor={COLORS.green} texto={'Data Agendada'} style={styles.infoText} />
-                  <MeuButtonMetade cor={COLORS.primaryShadow} texto={'Ver Festa'}
+                  <MeuButtonMetade disabled cor={COLORS.primary} texto={'Ver Festa'}
                     onClick={() => onPress(['VerFesta', selected, selectedTime])} style={styles.infoText} />
                 </>
               ) : (
@@ -269,7 +269,7 @@ const Calendario = ({ reservas, onPress, dataReserva, horarioReserva, cliente })
                   <Texto tamanho={16} cor={COLORS.red} texto={'Data sem Agendamentos'} style={styles.infoText} />
                 </>
               )}
-              <MeuButtonMetade borda width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
+              <MeuButtonMetade cor={COLORS.primaryShadow} width={'50%'} texto={selectedTime ? 'Trocar Horário' : 'Escolher Horário'} onClick={showDatePicker} />
 
 
             </View>
