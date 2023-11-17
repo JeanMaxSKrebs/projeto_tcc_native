@@ -14,7 +14,7 @@ export const Container = styled.SafeAreaView`
     padding: 1px;
     align-items: center;
     width: 100%;
-    height: 400px;
+    height: 80%;
     `;
 export const Content = styled.View`
   align-items: center; 

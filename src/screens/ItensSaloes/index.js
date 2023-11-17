@@ -30,7 +30,7 @@ const ItensSaloes = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  
+
   const routeItem = item => {
     // console.log('calica');
     // console.log(item);
@@ -102,8 +102,8 @@ const ItensSaloes = ({ route, navigation }) => {
       case 'excluir':
         {
           newItem.tipoExclusao === 'hardDelete'
-          ? hardDeleteItemSalao(newItem.id)
-          : softDeleteItemSalao(newItem.id)
+            ? hardDeleteItemSalao(newItem.id)
+            : softDeleteItemSalao(newItem.id)
         }
 
         setItensSaloes(getItensSaloes(salao.id))
@@ -154,8 +154,9 @@ const ItensSaloes = ({ route, navigation }) => {
     <SafeAreaView>
       <Voltar texto="Voltar" onClick={() => voltar()} />
       <View>
-        <Texto tamanho={30} cor={COLORS.secundary} texto={'Itens / Utensílios'}></Texto>
-        {/* <ScrollView style={{ height: 400, margin: 10 }}> */}
+        <View style={{ marginVertical: 30 }}>
+          <Texto tamanho={30} cor={COLORS.secundary} texto={'Itens / Utensílios'}></Texto>
+        </View>
         <Container>
 
           {/* Renderize os itens aqui */}
@@ -172,12 +173,12 @@ const ItensSaloes = ({ route, navigation }) => {
           {renderModal()}
 
           <MeuButton
-              texto="Adicionar Item"
-              cor={COLORS.primary}
-              onClick={() => routeItem('AdicionarItem')}
-            />
+            texto="Adicionar Item"
+            cor={COLORS.primary}
+            onClick={() => routeItem('AdicionarItem')}
+          />
         </Container>
-        {/* </ScrollView> */}
+
       </View>
     </SafeAreaView >
   );
