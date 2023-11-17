@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, Modal, Image, TouchableOpacity, StyleSheet, TouchableWithoutFeedback
+  View, Text, Modal, Image, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, ScrollView
 } from 'react-native';
 import { ToastAndroid } from 'react-native';
 import { COLORS } from '../../assets/colors';
@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import ModalExclusao from './modalExclusao'
 import styled from 'styled-components/native';
+import ImagePicker from '../../components/Camera/ImagePicker';
 
 export const TextPlaceholder = styled.Text`
   text-align: left;
@@ -117,6 +118,13 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
         isModalExclusaoVisible
         onConfirm={handleExclusao} />
     );
+  };
+
+  const handleImageSelected = (imageUri) => {
+    console.log('imageUri');
+    console.log(imageUri);
+    setNovaImagem(imageUri);
+    setNewItem({ ...newItem, novaImagem: imageUri })
   };
 
 
@@ -254,180 +262,179 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
       transparent={true}
       animationType="slide"
     >
-      <View onPress={() => onPress('fechar')} style={styles.background}>
-        <TouchableWithoutFeedback>
-          {acao === "atualizar" ? (
-            <View style={styles.content}>
-              <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
-                <Text>X</Text>
-              </TouchableOpacity>
-              <>
+      <ScrollView>
+        <View onPress={() => onPress('fechar')} style={styles.background}>
+          <TouchableWithoutFeedback>
+            {acao === "atualizar" ? (
+              <View style={styles.content}>
+                <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
+                  <Text>X</Text>
+                </TouchableOpacity>
                 <>
-                  <View style={{ width: '90%' }} >
-                    {renderPlaceholder(novoNome ? 'Nome' : '')}
-                  </View>
-                  <TextInput
-                    style={styles.TextInput}
-                    placeholder="Nome"
-                    value={novoNome === null ? nome : novoNome}
-                    onChangeText={(text) => {
-                      console.log('nome');
-                      console.log(nome);
-                      console.log('novoNome');
-                      console.log(novoNome);
-                      setNovoNome(text)
-                      setNewItem({ ...newItem, novoNome: text })
-                    }}
-                  />
+                  <>
+                    <View style={{ width: '90%' }} >
+                      {renderPlaceholder(novoNome ? 'Nome' : '')}
+                    </View>
+                    <TextInput
+                      style={styles.TextInput}
+                      placeholder="Nome"
+                      value={novoNome === null ? nome : novoNome}
+                      onChangeText={(text) => {
+                        console.log('nome');
+                        console.log(nome);
+                        console.log('novoNome');
+                        console.log(novoNome);
+                        setNovoNome(text)
+                        setNewItem({ ...newItem, novoNome: text })
+                      }}
+                    />
+                  </>
+                  <>
+                    <View style={{ width: '90%' }} >
+                      {renderPlaceholder(novaDescricao ? 'Descrição' : '')}
+                    </View>
+                    <TextInput
+                      style={styles.TextInput}
+                      placeholder="Descricão"
+                      value={novaDescricao === null ? descricao : novaDescricao}
+                      onChangeText={(text) => {
+                        setNovaDescricao(text)
+                        setNewItem({ ...newItem, novaDescricao: text })
+                      }}
+                    />
+                  </>
+                  <>
+                    <View style={{ width: '90%' }} >
+                      {renderPlaceholder(novoValorUnitario ? 'Valor Unitário' : '')}
+                    </View>
+                    {renderValorUnitario()}
+                  </>
+                  <>
+                    <View style={{ width: '90%' }} >
+                      {renderPlaceholder(quantidadeMaxima ? 'Quantidade Máxima' : '')}
+                    </View>
+                    {renderQuantidade()}
+                  </>
                 </>
-                <>
-                  <View style={{ width: '90%' }} >
-                    {renderPlaceholder(novaDescricao ? 'Descrição' : '')}
-                  </View>
-                  <TextInput
-                    style={styles.TextInput}
-                    placeholder="Descricão"
-                    value={novaDescricao === null ? descricao : novaDescricao}
-                    onChangeText={(text) => {
-                      setNovaDescricao(text)
-                      setNewItem({ ...newItem, novaDescricao: text })
-                    }}
-                  />
-                </>
-                <>
-                  <View style={{ width: '90%' }} >
-                    {renderPlaceholder(novoValorUnitario ? 'Valor Unitário' : '')}
-                  </View>
-                  {renderValorUnitario()}
-                </>
-                <>
-                  <View style={{ width: '90%' }} >
-                    {renderPlaceholder(quantidadeMaxima ? 'Quantidade Máxima' : '')}
-                  </View>
-                  {renderQuantidade()}
-                </>
-              </>
+                {console.log('novaImagem')}
+                {console.log(novaImagem)}
+                <View style={{ marginTop: 10, alignItems: 'center' }}>
 
-              <View>
-                {/* <TouchableOpacity onPress={pickImage}>
-                <Text>Selecionar Imagem</Text>
-                {/* </TouchableOpacity> */}
-                {novaImagem ? (
-                  <Image source={{ uri: novaImagem }} style={styles.imagem} />
-                ) : (
-                  imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
-                )}
+                  <View style={{ width: '80%' }} >
+                    {renderPlaceholder(novaImagem ? 'Imagem Cadastrada' : 'Sem Imagem Cadastrada')}
+                  </View>
+                  <ImagePicker onPress={handleImageSelected} modal />
+                </View>
+
+                {isModalExclusaoVisible ? renderModalExclusao() : null}
+
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity style={styles.button} onPress={() => {
+                    let newItemWithQuantidade = newItem;
+                    if (!quantidade) {
+                      newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
+                    }
+
+                    const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'atualizar', valorAntigo: valorUnitarioTemp, quantidadeAntiga: quantidadeAntiga };
+                    // console.log('newItemWithSituacao');
+                    // console.log(newItemWithSituacao);
+                    setNewItem(newItemWithSituacao);
+                    onPress(newItemWithSituacao);
+                  }}>
+                    <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonExcluir}
+                    onPress={() => abrirModalExclusao()}
+                  >
+
+                    <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />}></Texto>
+                  </TouchableOpacity>
+                </View>
+              </View >
+            ) : acao === "adicionar"
+              ? (<View style={styles.content}>
+                <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
+                  <Text>X</Text>
+                </TouchableOpacity>
+                <>
+                  <>
+                    <View style={{ width: '65%' }} >
+                      {renderPlaceholder(nome || novoNome ? 'Nomes' : '')}
+                    </View>
+                    <TextInput
+                      style={styles.TextInput}
+                      placeholder="Nome"
+                      value={novoNome === null ? nome : novoNome}
+                      onChangeText={(text) => {
+                        setNovoNome(text)
+                        setNewItem({ ...newItem, novoNome: text })
+                      }}
+                    />
+                  </>
+                  <>
+                    <TouchableOpacity>
+                      <Text>Descricão</Text>
+                    </TouchableOpacity>
+                    <TextInput
+                      style={styles.TextInput}
+                      placeholder="Descricão"
+                      value={novaDescricao === null ? descricao : novaDescricao}
+                      onChangeText={(text) => {
+                        setNovaDescricao(text)
+                        setNewItem({ ...newItem, novaDescricao: text })
+                      }}
+                    />
+                  </>
+                  <>
+                    <TouchableOpacity>
+                      <Text>Valor Unitário</Text>
+                    </TouchableOpacity>
+                    {renderValorUnitario()}
+                  </>
+                </>
+                {renderQuantidade()}
+
+                <View>
+                  {/* <TouchableOpacity onPress={pickImage}> */}
+                  <Text>Selecionar Imagem</Text>
+                  {/* </TouchableOpacity> */}
+                  {novaImagem ? (
+                    <Image source={{ uri: novaImagem }} style={styles.imagem} />
+                  ) : (
+                    imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
+                  )}
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity style={styles.button} onPress={() => {
+                    let newItemWithQuantidade = newItem;
+
+                    if (!quantidade) {
+                      newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
+                    }
+                    const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'adicionar', valorAntigo: valorUnitarioTemp, quantidadeAntiga: quantidadeAntiga };
+                    // console.log('123123');
+                    // console.log(newItemWithSituacao);
+                    setNewItem(newItemWithSituacao);
+                    onPress(newItemWithSituacao);
+                  }}>
+                    <Texto tamanho={0} texto={<Icon name="add" color={COLORS.black} size={35} />}></Texto>
+                  </TouchableOpacity>
+                </View>
               </View>
-              {/* {console.log('isModalExclusaoVisible')}
-              {console.log(isModalExclusaoVisible)} */}
-              {isModalExclusaoVisible ? renderModalExclusao() : null}
-
-              <View style={{ flexDirection: 'row' }}>
+              ) : acao === "excluir" ? (
                 <TouchableOpacity style={styles.button} onPress={() => {
-                  let newItemWithQuantidade = newItem;
-                  if (!quantidade) {
-                    newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
-                  }
-
-                  const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'atualizar', valorAntigo: valorUnitarioTemp, quantidadeAntiga: quantidadeAntiga };
-                  // console.log('newItemWithSituacao');
-                  // console.log(newItemWithSituacao);
+                  const newItemWithSituacao = { ...newItem, situacao: 'excluir' };
                   setNewItem(newItemWithSituacao);
                   onPress(newItemWithSituacao);
                 }}>
-                  <Texto tamanho={0} texto={<Icon name="create" color={COLORS.black} size={35} />} />
+                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonExcluir}
-                  onPress={() => abrirModalExclusao()}
-                >
+              ) : null
+            }
 
-                  <Texto tamanho={0} texto={<Icon name="close" color={COLORS.black} size={35} />}></Texto>
-                </TouchableOpacity>
-              </View>
-            </View >
-          ) : acao === "adicionar"
-            ? (<View style={styles.content}>
-              <TouchableOpacity style={styles.buttonClose} onPress={() => onPress('fechar')}>
-                <Text>X</Text>
-              </TouchableOpacity>
-              <>
-                <>
-                  <View style={{ width: '65%' }} >
-                    {renderPlaceholder(nome || novoNome ? 'Nomes' : '')}
-                  </View>
-                  <TextInput
-                    style={styles.TextInput}
-                    placeholder="Nome"
-                    value={novoNome === null ? nome : novoNome}
-                    onChangeText={(text) => {
-                      setNovoNome(text)
-                      setNewItem({ ...newItem, novoNome: text })
-                    }}
-                  />
-                </>
-                <>
-                  <TouchableOpacity>
-                    <Text>Descricão</Text>
-                  </TouchableOpacity>
-                  <TextInput
-                    style={styles.TextInput}
-                    placeholder="Descricão"
-                    value={novaDescricao === null ? descricao : novaDescricao}
-                    onChangeText={(text) => {
-                      setNovaDescricao(text)
-                      setNewItem({ ...newItem, novaDescricao: text })
-                    }}
-                  />
-                </>
-                <>
-                  <TouchableOpacity>
-                    <Text>Valor Unitário</Text>
-                  </TouchableOpacity>
-                  {renderValorUnitario()}
-                </>
-              </>
-              {renderQuantidade()}
-
-              <View>
-                {/* <TouchableOpacity onPress={pickImage}> */}
-                <Text>Selecionar Imagem</Text>
-                {/* </TouchableOpacity> */}
-                {novaImagem ? (
-                  <Image source={{ uri: novaImagem }} style={styles.imagem} />
-                ) : (
-                  imagem && <Image source={{ uri: imagem }} style={styles.imagem} />
-                )}
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.button} onPress={() => {
-                  let newItemWithQuantidade = newItem;
-
-                  if (!quantidade) {
-                    newItemWithQuantidade = { ...newItem, quantidade: quantidadeMaxima };
-                  }
-                  const newItemWithSituacao = { ...newItemWithQuantidade, situacao: 'adicionar', valorAntigo: valorUnitarioTemp, quantidadeAntiga: quantidadeAntiga };
-                  // console.log('123123');
-                  // console.log(newItemWithSituacao);
-                  setNewItem(newItemWithSituacao);
-                  onPress(newItemWithSituacao);
-                }}>
-                  <Texto tamanho={0} texto={<Icon name="add" color={COLORS.black} size={35} />}></Texto>
-                </TouchableOpacity>
-              </View>
-            </View>
-            ) : acao === "excluir" ? (
-              <TouchableOpacity style={styles.button} onPress={() => {
-                const newItemWithSituacao = { ...newItem, situacao: 'excluir' };
-                setNewItem(newItemWithSituacao);
-                onPress(newItemWithSituacao);
-              }}>
-                <Texto tamanho={0} texto={<Icon name="close" color={COLORS.red} size={35} />}></Texto>
-              </TouchableOpacity>
-            ) : null
-          }
-
-        </TouchableWithoutFeedback >
-      </View >
+          </TouchableWithoutFeedback >
+        </View >
+      </ScrollView>
     </Modal >
   );
 };
@@ -484,6 +491,10 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'flex-end',
     borderRadius: 5,
+  },
+  imagem: {
+    width: 100,
+    height: 100,
   }
 
 })

@@ -9,7 +9,7 @@ import Texto from '../Texto';
 import { COLORS } from '../../assets/colors';
 
 
-const ImagePicker = ({ onPress }) => {
+const ImagePicker = ({ onPress, modal }) => {
     const [imageUri, setImageUri] = useState(null);
 
     const handleLaunchCamera = () => {
@@ -87,11 +87,12 @@ const ImagePicker = ({ onPress }) => {
                 ? (
                     <View>
                         <View style={{ width: '65%', marginTop: 10 }}  >
-                            {renderPlaceholder(imageUri ? 'Nova Logo' : '')}
+                            {renderPlaceholder(imageUri ? 'Nova Imagem' : '')}
                         </View>
                         <Image
                             style={{
-                                width: 200, height: 200,
+                                width: modal ? 100 : 200,
+                                height: modal ? 100 : 200,
                                 borderWidth: 1, borderColor: 'black', borderRadius: 15
                             }}
                             source={{ uri: imageUri }}
@@ -107,17 +108,18 @@ const ImagePicker = ({ onPress }) => {
                     </View>
                 )
             }
+            {imageUri !== undefined && imageUri !== null &&
+                <MeuButtonMetade width={'auto'} cor={'red'} texto="X"
+                    onClick={zerar}
+                />
+            }
             <View style={{ flexDirection: 'row' }}>
-                <MeuButtonMetade width={'auto'} cor={COLORS.primaryShadow} texto="Capturar Foto" onClick={handleLaunchCamera}
+                <MeuButtonMetade width={'auto'} height={'auto'} cor={COLORS.primaryShadow} texto="Capturar Foto" onClick={handleLaunchCamera}
                 />
-                <MeuButtonMetade width={'auto'} cor={COLORS.primaryShadow} texto="Selecionar Foto" onClick={handleLaunchImageLibrary}
+                <MeuButtonMetade width={'auto'} height={'auto'} cor={COLORS.primaryShadow} texto="Selecionar Foto" onClick={handleLaunchImageLibrary}
                 />
-                {imageUri !== undefined && imageUri !== null &&
-                    <MeuButtonMetade width={'auto'} cor={'red'} texto="X"
-                        onClick={zerar}
-                    />
-                }
             </View >
+
 
         </View >
     );
