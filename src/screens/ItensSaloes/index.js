@@ -10,6 +10,7 @@ import ItemButton from '../../components/Itens/ItemButton';
 import ItemModal from '../../components/Itens/modal';
 import { Container, FlatList } from './styles';
 import MeuButton from '../../components/MeuButton'
+import { supabase } from '../../../supabase/supabase';
 
 const ItensSaloes = ({ route, navigation }) => {
   const { itensSaloes, setItensSaloes, getItensSaloes,

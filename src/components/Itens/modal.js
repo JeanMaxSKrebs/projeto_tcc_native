@@ -37,7 +37,7 @@ export const ViewInput = styled.SafeAreaView`
   /* background-color: red; */
 `;
 
-const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
+const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes, salao }) => {
   // console.log('item1')
   // console.log(item)
   // console.log('isModalVisible1')
@@ -82,6 +82,8 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
 
   const [usarPicker, setUsarPicker] = useState(false);
 
+  const [imagemTemp, setImagemTemp] = useState(novaImagem ? novaImagem : imagem);
+
   const showToast = message => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
@@ -124,7 +126,7 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
     console.log('imageUri');
     console.log(imageUri);
     setNovaImagem(imageUri);
-    setNewItem({ ...newItem, novaImagem: imageUri })
+    setNewItem({ ...newItem, novaImagem: imageUri, nomeSalao: salao.nome })
   };
 
 
@@ -321,7 +323,18 @@ const ItemModal = ({ item, isModalVisible, onPress, acao, isItensSaloes }) => {
                 <View style={{ marginTop: 10, alignItems: 'center' }}>
 
                   <View style={{ width: '80%' }} >
-                    {renderPlaceholder(novaImagem ? 'Imagem Cadastrada' : 'Sem Imagem Cadastrada')}
+                    {renderPlaceholder(novaImagem
+                      ? 'Imagem Cadastrada'
+                      : 'Sem Imagem Cadastrada')}
+                    <View style={{ alignItems: 'center' }}>
+                      <Image
+                        style={{
+                          width: 100, height: 100,
+                          borderWidth: 1, borderColor: 'black', borderRadius: 15
+                        }}
+                        source={{ uri: imagemTemp }}
+                      />
+                    </View>
                   </View>
                   <ImagePicker onPress={handleImageSelected} modal />
                 </View>
