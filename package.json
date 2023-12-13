@@ -25,6 +25,7 @@
     "apisauce": "^3.0.1",
     "axios": "^1.4.0",
     "base64-arraybuffer": "^1.0.2",
+    "cpf-cnpj-validator": "^1.0.3",
     "deprecated-react-native-prop-types": "^4.1.0",
     "native": "^0.2.0",
     "react": "18.2.0",
@@ -52,7 +53,7 @@
     "rn-fetch-blob": "^0.12.0",
     "save": "^2.9.0",
     "stack": "^0.1.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",

@@ -9,14 +9,17 @@ import Loading from '../../components/Loading';
 
 import { SalaoContext } from '../../context/SalaoProvider';
 import { ClienteContext } from '../../context/ClienteProvider.js';
+import { cpf } from 'cpf-cnpj-validator';
+import { cnpj } from 'cpf-cnpj-validator';
+import { COLORS } from '../../assets/colors';
 
 const SignUp = ({ navigation }) => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmaSenha, setConfirmaSenha] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [cnpj, setCnpj] = useState('');
+  const [showCpf, setShowCpf] = useState('');
+  const [showCnpj, setShowCnpj] = useState('');
 
   // const [nome, setNome] = useState('jean');
   // const [email, setEmail] = useState('jeanmaxskrebs@gmail.com');
@@ -26,6 +29,7 @@ const SignUp = ({ navigation }) => {
   // const [cnpj, setCnpj] = useState('01855743000106');
 
   const [tipo, setTipo] = useState('Cliente');
+  const [verificado, setVerificado] = useState('none');
 
   const [isChecked, setIsChecked] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -33,13 +37,78 @@ const SignUp = ({ navigation }) => {
   const { saveSalao } = useContext(SalaoContext);
   const { saveCliente } = useContext(ClienteContext);
 
+  const [showVerify, setShowVerify] = useState(false);
   const handleCheck = () => {
     setIsChecked(!isChecked);
     if (!isChecked) {
       setTipo('Cliente');
+      setShowCnpj('')
+      setShowCpf('')
+      setVerificado('none')
     } else {
       setTipo('Salão');
+      setShowCnpj('')
+      setShowCpf('')
+      setVerificado('none')
     }
+  };
+
+  const verifyDocument = () => {
+    if (tipo == 'Cliente') {
+      console.log(showCpf);
+      const cpfApenasNumeros = showCpf.replace(/\D/g, '');
+
+      if (cpf.isValid(cpfApenasNumeros)) {
+        // console.log('aceito');
+        setVerificado('true');
+        return true;
+      }
+    } else {
+      console.log(showCnpj);
+      const cnpjApenasNumeros = showCnpj.replace(/\D/g, '');
+
+      if (cnpj.isValid(cnpjApenasNumeros)) {
+        // console.log('aceito');
+        setVerificado('true');
+        return true;
+      }
+    }
+    // console.log('errou');
+    setVerificado('false');
+    return false;
+  };
+
+  const formatarCPF = (cpf) => {
+    console.log(cpf);
+    const cpfApenasNumeros = cpf.replace(/\D/g, '');
+
+    let cpfFormatado = '';
+
+    for (let i = 0; i < cpfApenasNumeros.length; i++) {
+      cpfFormatado += cpfApenasNumeros[i];
+      if (i === 2 || i === 5) cpfFormatado += '.';
+      if (i === 8) cpfFormatado += '-';
+    }
+
+    console.log(cpfFormatado);
+    return cpfFormatado;
+  };
+
+  const formatarCNPJ = (cnpj) => {
+    console.log(cnpj);
+    const cnpjApenasNumeros = cnpj.replace(/\D/g, '');
+
+    let cnpjFormatado = '';
+
+    for (let i = 0; i < cnpjApenasNumeros.length; i++) {
+      cnpjFormatado += cnpjApenasNumeros[i];
+      if (i === 1 || i === 4) cnpjFormatado += '.';
+      if (i === 7) cnpjFormatado += '/';
+      if (i === 11) cnpjFormatado += '-';
+    }
+
+    console.log(cnpjFormatado);
+    return cnpjFormatado;
   };
 
   const cadastrar = async () => {
@@ -52,7 +121,7 @@ const SignUp = ({ navigation }) => {
             const clienteData = {
               nome: nome,
               email: email,
-              cpf: cpf,
+              cpf: showCpf,
             };
             console.log('clienteData')
             console.log('clienteData')
@@ -63,7 +132,7 @@ const SignUp = ({ navigation }) => {
             const salaoData = {
               nome: nome,
               email: email,
-              cnpj: cnpj,
+              cnpj: showCnpj,
             };
             // console.log(salaoData)
             await saveSalao(salaoData);
@@ -157,23 +226,64 @@ const SignUp = ({ navigation }) => {
             : <Text>Cadastrar como Cliente: ○</Text>}
         </View>
       </TouchableOpacity>
-      {isChecked ? <TextInput
-        placeholder="Cpf"
-        keyboardType="numeric"
-        returnKeyType="next"
-        // defaultValue="04516635078" 
-        onChangeText={t => setCpf(t)}
-      /> : <TextInput
-        placeholder="Cnpj"
-        keyboardType="numeric"
-        returnKeyType="next"
-        // defaultValue="01855743000106" 
-        onChangeText={t => setCnpj(t)}
-      />
+      {isChecked ?
+        <TextInput
+          placeholder="Cpf"
+          keyboardType="numeric"
+          returnKeyType="next"
+          maxLength={14}
+          // defaultValue="04516635078"
+          onChangeText={(t) => {
+            setShowCpf(formatarCPF(t));
+
+            if (t.length === 14) {
+              setShowVerify(true);
+            } else {
+              setShowVerify(false);
+              setVerificado('none')
+            }
+          }}
+          value={showCpf}
+        />
+        : <TextInput
+          placeholder="Cnpj"
+          keyboardType="numeric"
+          returnKeyType="next"
+          maxLength={18}
+          // defaultValue="01855743000106" 
+          onChangeText={(t) => {
+            setShowCnpj(formatarCNPJ(t));
+
+            // formatarCNPJ(t)
+            if (t.length === 18) {
+              setShowVerify(true);
+            } else {
+              setShowVerify(false);
+              setVerificado('none')
+            }
+          }}
+          value={showCnpj}
+        />
       }
-      <MeuButton texto={'Cadastrar'} onClick={cadastrar} />
+      {showVerify &&
+        <TouchableOpacity onPress={verifyDocument} >
+          <View style={{
+            justifyContent: 'center',
+            borderColor: COLORS.primary,
+            borderWidth: 1, padding: 10, borderRadius: 15,
+            backgroundColor: verificado == 'none' ? COLORS.primary : (verificado == 'true' ? COLORS.green : COLORS.red)
+          }}>
+            <Text style={{ fontSize: 18, textAlign: 'center' }}>Verificar </Text>
+          </View>
+        </TouchableOpacity>
+      }
+      {verificado === 'true' ?
+        <MeuButton texto={'Cadastrar'} onClick={cadastrar} />
+        :
+        <MeuButton disabled={true} texto={'Cadastrar'} onClick={cadastrar} />
+      }
       {loading && <Loading />}
-    </Body>
+    </Body >
   );
 };
 
