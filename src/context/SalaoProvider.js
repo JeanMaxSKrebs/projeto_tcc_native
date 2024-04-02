@@ -56,8 +56,6 @@ export const SalaoProvider = ({ children }) => {
   // }, []);
 
   const saveSalao = async salaoData => {
-    // console.log('salaoData');
-    // console.log(salaoData);
 
     try {
       const { data: insertedData, error: insertError } = await supabase
@@ -93,8 +91,8 @@ export const SalaoProvider = ({ children }) => {
         ])
         .select()
 
-      // console.log('data')
-      // console.log(insertedData)
+      console.log('data')
+      console.log(insertedData)
 
       if (insertError) {
         console.error('Erro ao inserir o salão:', insertError);
@@ -113,8 +111,8 @@ export const SalaoProvider = ({ children }) => {
       }
       // console.log('itens inseridos com sucesso:', itemsData);
 
-      console.log('itensdata')
-      console.log(itemsData)
+      // console.log('itensdata')
+      // console.log(itemsData)
 
       // console.log('insertedData[0].id')
       // console.log(insertedData[0].id)
@@ -142,6 +140,7 @@ export const SalaoProvider = ({ children }) => {
         console.error('Erro ao atualizar os itens do salão:', updateError);
         return;
       }
+      await criarPastasSalao(insertedData)
 
       // setSalao((prevSaloes) => [...prevSaloes, data[0]]);
 
@@ -369,6 +368,76 @@ export const SalaoProvider = ({ children }) => {
 
     return count;
   }
+
+  const criarPastasSalao = async (salaoData) => {
+    try {
+      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
+  
+      // Criar as subpastas de imagens para cada objeto
+      const objetos = ["salao", "entrada", "jardim", "area livre", "buffet", "danca", "playground", "cozinha", "banheiro"];
+      for (const objeto of objetos) {
+        await supabase
+          .storage
+          .from('perfil')
+          .upload(`${pastaDesejada}/imagens/${objeto}/empty.txt`, {
+            cacheControl: '3600',
+            upsert: false
+          })      
+      }
+  
+      console.log('Pastas criadas com sucesso.');
+    } catch (error) {
+      console.error('Erro ao criar as pastas:', error);
+    }
+  };
+
+  const saveImagem = async (salaoData) => {
+    try {
+      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
+      
+      const conteudoBlob = await RNFetchBlob.fs.readFile(salaoData.newImagem, 'base64');
+      const nomeArquivo = conteudoBlob.slice(0, 100).replace(/\//g, '');
+  
+      const { data: uploadResponse, error: uploadError } = await supabase
+        .storage
+        .from('perfil') //nome do bucket
+        .upload(
+          `${pastaDesejada}/imagens/${salaoData.tipo}/${nomeArquivo}`,
+          decode(conteudoBlob),
+          {
+            cacheControl: '3600', // configurações de cache
+            contentType: 'image/png'
+          }
+        );
+  
+      if (uploadError) {
+        console.error('Erro ao fazer upload da imagem:', uploadError);
+        return;
+      }
+  
+      const baseUrl = 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/';
+      const imageURL = baseUrl + uploadResponse.path;
+  
+      salaoData.imagens[salaoData.tipo].push(imageURL);
+  
+      const { data: updatedData, error: updateError } = await supabase
+        .from('saloes')
+        .update({
+          imagens: salaoData.imagens,
+        })
+        .match({ id: salaoData.id });
+        
+      if (updateError) {
+        console.error('Erro ao atualizar as imagens do salão:', updateError);
+        return;
+      }
+  
+      console.log('Imagem salva com sucesso:', imageURL);
+    } catch (error) {
+      console.error('Erro ao salvar a imagem:', error);
+    }
+  };
+  
 
 
   const updateImagem = async salaoData => {
