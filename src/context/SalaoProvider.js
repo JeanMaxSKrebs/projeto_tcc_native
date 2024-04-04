@@ -74,7 +74,7 @@ export const SalaoProvider = ({ children }) => {
 
             //logo e imagens e capacidade estaticas
             capacidade: 100,
-            logo: 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/imagens%20saloes/salao%20c.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZW5zIHNhbG9lcy9zYWxhbyBjLmpwZWciLCJpYXQiOjE2ODc5OTg1MjgsImV4cCI6MTcxOTUzNDUyOH0.iJ9sEu3ZVZKffB294lldjTv-cyOZjlfn_sFQUqcI31Q&t=2023-06-29T00%3A28%3A48.663Z',
+            logo: 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/sign/itens/item_default.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpdGVucy9pdGVtX2RlZmF1bHQucG5nIiwiaWF0IjoxNzEyMjUwMzEyLCJleHAiOjI2NTgzMzAzMTJ9.X9H3HOjNDCenwrJwPzcbyX2qmlde9jliN1U1np4tvx8&t=2024-04-04T17%3A05%3A12.331Z',
             imagens: {
               "banheiro": [],
               "jardim": [],
@@ -101,46 +101,69 @@ export const SalaoProvider = ({ children }) => {
       // console.log('Salões inseridos com sucesso:', insertedData);
 
 
-      const { data: itemsData, error: itemsError } = await supabase
-        .from('itens')
-        .select('id');
+      // const { data: itemsData, error: itemsError } = await supabase
+      //   .from('itens')
+      //   .select('id');
 
-      if (itemsError) {
-        console.error('Erro ao pegar itens do salão:', itemsError);
-        return;
-      }
-      // console.log('itens inseridos com sucesso:', itemsData);
+      // if (itemsError) {
+      //   console.error('Erro ao pegar itens do salão:', itemsError);
+      //   return;
+      // }
 
-      // console.log('itensdata')
-      // console.log(itemsData)
 
-      // console.log('insertedData[0].id')
-      // console.log(insertedData[0].id)
-      const newSalaoId = insertedData[0].id;
+      // // console.log('itens inseridos com sucesso:', itemsData);
 
-      const { error: updateError } = await Promise.all(
-        itemsData.map(async item => {
-          const { data, error } = await supabase
-            .from('itens_saloes')
-            .insert([
-              { salao_id: newSalaoId, item_id: item.id },
-            ])
+      // // console.log('itensdata')
+      // // console.log(itemsData)
 
-          if (error) {
-            // Lidar com o erro, se necessário
-            console.log('error')
-            console.log(error)
-          }
-          console.log(data)
-          return data;
-        })
-      );
+      // // console.log('insertedData[0].id')
+      // // console.log(insertedData[0].id)
+      // const newSalaoId = insertedData[0].id;
 
-      if (updateError) {
-        console.error('Erro ao atualizar os itens do salão:', updateError);
-        return;
-      }
-      await criarPastasSalao(insertedData)
+      // const { error: updateError } = await Promise.all(
+      //   itemsData.map(async item => {
+      //     const { data, error } = await supabase
+      //       .from('itens_saloes')
+      //       .insert([
+      //         { salao_id: newSalaoId, item_id: item.id },
+      //       ])
+
+      //     if (error) {
+      //       // Lidar com o erro, se necessário
+      //       console.log('error')
+      //       console.log(error)
+      //     }
+      //     console.log(data)
+      //     return data;
+      //   })
+      // );
+
+      // if (updateError) {
+      //   console.error('Erro ao atualizar os itens do salão:', updateError);
+      //   return;
+      // }
+
+      
+      const pastaDesejada = `${insertedData[0].id}_`;
+      const nomeArquivo = `${insertedData[0].id}_`;
+
+      const { data: logoUploadResponse, error: logoUploadError } = await supabase
+      .storage
+      .from('perfil')
+      .upload(`${pastaDesejada}/logo/${nomeArquivo}`, {
+        cacheControl: '3600', // configurações de cache
+        contentType: 'image/png'
+      },); 
+
+    if (logoUploadError) {
+      console.error('Erro ao fazer upload da logo:', logoUploadError);
+      return;
+    }
+    console.log('logoUploadResponse');
+    console.log(logoUploadResponse);
+
+
+      await criarPastasSalao(insertedData[0])
 
       // setSalao((prevSaloes) => [...prevSaloes, data[0]]);
 
@@ -155,8 +178,8 @@ export const SalaoProvider = ({ children }) => {
     console.log(salaoData);
 
     try {
-      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
-      const nomeArquivo = `${salaoData.id}_${salaoData.nome}`;
+      const pastaDesejada = `${salaoData.id}_`;
+      const nomeArquivo = `${salaoData.id}_${Date.now()}`; // Adicionando um carimbo de data/hora ao nome do arquivo
 
       // Lê o conteúdo do arquivo
       const conteudoBlob = await RNFetchBlob.fs.readFile(salaoData.logo, 'base64');
@@ -182,8 +205,8 @@ export const SalaoProvider = ({ children }) => {
 
       const baseUrl = 'https://dqnwahspllvxaxshzjow.supabase.co/storage/v1/object/public/perfil/';
       const logoURL = baseUrl + logoUploadResponse.path;
-      console.log('logoURL');
-      console.log(logoURL);
+      // console.log('logoURL');
+      // console.log(logoURL);
       const { data: updatedData, error: updateError } = await supabase
         .from('saloes')
         .update({
@@ -197,7 +220,8 @@ export const SalaoProvider = ({ children }) => {
           logo: logoURL,
           imagens: salaoData.imagens,
         })
-        .match({ id: salaoData.id });
+        .eq('id', salaoData.id)
+        .select()
 
       // console.log('data');
       // console.log(updatedData);
@@ -371,7 +395,7 @@ export const SalaoProvider = ({ children }) => {
 
   const criarPastasSalao = async (salaoData) => {
     try {
-      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
+      const pastaDesejada = `${salaoData.id}_`;
   
       // Criar as subpastas de imagens para cada objeto
       const objetos = ["salao", "entrada", "jardim", "area livre", "buffet", "danca", "playground", "cozinha", "banheiro"];
@@ -393,7 +417,7 @@ export const SalaoProvider = ({ children }) => {
 
   const saveImagem = async (salaoData) => {
     try {
-      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
+      const pastaDesejada = `${salaoData.id}_`;
       
       const conteudoBlob = await RNFetchBlob.fs.readFile(salaoData.newImagem, 'base64');
       const nomeArquivo = conteudoBlob.slice(0, 100).replace(/\//g, '');
@@ -446,7 +470,7 @@ export const SalaoProvider = ({ children }) => {
     console.log(salaoData);
 
     try {
-      const pastaDesejada = `${salaoData.id}_${salaoData.nome}`;
+      const pastaDesejada = `${salaoData.id}_`;
 
       console.log('salaoData.imagens');
       console.log(salaoData.imagens);

@@ -139,7 +139,7 @@ const SignUp = ({ navigation }) => {
           }
           console.log('tipo')
           console.log(tipo)
-          await auth().createUserWithEmailAndPassword(email, senha);
+          await auth().createUserWithEmailAndPassword(email, senha, { persistSession: false });
           let userFirebase = auth().currentUser;
           console.log(userFirebase);
           let user = {};
@@ -188,6 +188,7 @@ const SignUp = ({ navigation }) => {
       Alert.alert('Erro', 'Por Favor, preencha todos os campos');
     }
   };
+
   return (
     <Body>
       <TextInput
